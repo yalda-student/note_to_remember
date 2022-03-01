@@ -31,7 +31,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  hive_flutter: ^1.1.0
   flutter_svg: ^1.0.3
   iconsax: ^0.0.8
   google_fonts: ^2.2.0
@@ -39,12 +38,18 @@ dependencies:
   theme_provider: ^0.5.0
   flutter_bloc: ^8.0.1
   flutter_custom_tab_bar: ^1.1.9
+  intl: ^0.16.1
+
+  drift: ^1.4.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.0.0
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_gen_runner:
-  hive_generator: ^1.1.2
+  drift_dev: ^1.4.0
   build_runner: ^2.1.7
 
   # The "flutter_lints" package below contains a set of recommended lints to

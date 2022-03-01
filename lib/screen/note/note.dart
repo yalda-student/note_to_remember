@@ -33,7 +33,7 @@ class NotePage extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-        )
+        ),
       ],
     );
   }

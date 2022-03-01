@@ -6,28 +6,29 @@ class Repository<T> extends ChangeNotifier implements DataSource<T> {
 
   Repository(this.localDataSource);
 
-  @override
-  Future<T> createOrUpdate(T data) async {
-    var result = await localDataSource.createOrUpdate(data);
-    notifyListeners();
-    return result;
+  // @override
+  // Future<T> createOrUpdate(T data) async {
+  //   var result = await localDataSource.createOrUpdate(data);
+  //   notifyListeners();
+  //   return result;
+  // }
+
+    @override
+  Future<int> create(T data) {
+    // TODO: implement create
+    throw UnimplementedError();
   }
 
   @override
-  Future<void> delete(T data) async {
-    await localDataSource.delete(data);
-    notifyListeners();
+  Future<T> update(T data) {
+    // TODO: implement update
+    throw UnimplementedError();
   }
 
-  @override
-  Future<void> deleteAll() async {
-    await localDataSource.deleteAll();
-    notifyListeners();
-  }
 
   @override
-  Future<void> deleteById(id) async {
-    await localDataSource.deleteById(id);
+  Future<void> delete(id) async {
+    await localDataSource.delete(id);
     notifyListeners();
   }
 
@@ -35,4 +36,6 @@ class Repository<T> extends ChangeNotifier implements DataSource<T> {
   Future<List<T>> getData({String keyword = ''}) {
     return localDataSource.getData(keyword: keyword);
   }
+
+
 }

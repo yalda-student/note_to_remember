@@ -9,14 +9,18 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 200,
+      width: 200,
       decoration: BoxDecoration(
-          color: color.withOpacity(0.5),
+          color: color.withOpacity(0.2),
           borderRadius: BorderRadius.circular(15)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Icon(
-            Iconsax.folder,
+            Iconsax.folder_25,
             color: color,
+            size: 50,
           ),
           const Text(
             'category name',
@@ -24,7 +28,7 @@ class CategoryItem extends StatelessWidget {
           ),
           const Text(
             '19 Notes',
-            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
+            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
           ),
         ],
       ),

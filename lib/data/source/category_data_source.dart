@@ -1,25 +1,21 @@
 import 'package:yalda_students_notes/data/source/source.dart';
-import 'package:yalda_students_notes/model/category.dart';
+import 'package:yalda_students_notes/model/category_data.dart';
 
 class CategoryDataSource implements DataSource<Category> {
 
+
   @override
-  Future<Category> createOrUpdate(Category data) {
+  Future<int> create(Category data) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> delete(Category data) {
+  Future<Category> update(Category data) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> deleteAll() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteById(id) {
+  Future<void> delete(id) {
     throw UnimplementedError();
   }
 
@@ -27,5 +23,6 @@ class CategoryDataSource implements DataSource<Category> {
   Future<List<Category>> getData({String keyword = ''}) {
     throw UnimplementedError();
   }
+
 
 }

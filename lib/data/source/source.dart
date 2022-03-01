@@ -1,11 +1,11 @@
 abstract class DataSource<T> {
-  Future<T> createOrUpdate(T data);
+  Future<int> create(T data);
+  
+  Future<T> update(T data);
 
-  Future<void> delete(T data);
-
-  Future<void> deleteById(dynamic id);
-
-  Future<void> deleteAll();
+  Future<void> delete(dynamic id);
 
   Future<List<T>> getData({String keyword = ''});
+
+  //maybe search
 }

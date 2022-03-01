@@ -4,8 +4,15 @@ import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
 import 'package:flutter_custom_tab_bar/indicator/round_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/model/note_data.dart';
 import 'package:yalda_students_notes/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/screen/note/note.dart';
+
+const int homeIndex = 0;
+const int categoryIndex = 1;
+const int settinghIndex = 2;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,56 +26,92 @@ class _HomeScreenState extends State<HomeScreen> {
   late final PageController _controller = PageController(initialPage: 0);
   final CustomTabBarController _tabBarController = CustomTabBarController();
 
+  int selectedScreenIndex = homeIndex;
+
+  final List<int> _history = [];
+
+  final GlobalKey<NavigatorState> _homeKey = GlobalKey();
+  final GlobalKey<NavigatorState> _categoryKey = GlobalKey();
+  final GlobalKey<NavigatorState> _settinghKey = GlobalKey();
+
+  Future<bool> _onWillPop() async {
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // var of = Provider.of<AppDatabase>(context);
+    // of.into(Note).insert(NoteCompanion());
+
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
+      body: WillPopScope(
+        onWillPop: _onWillPop,
+        child: SafeArea(
+          child: Stack(
             children: [
-              const _AppBar(),
-              const Divider(),
               Container(
-                width: 200,
-                padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade400,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                  child: CustomTabBar(
-                    tabBarController: _tabBarController,
-                    height: 35,
-                    itemCount: pageCount,
-                    builder: getTabbarChild,
-                    indicator: RoundIndicator(
-                      color: Colors.black87,
-                      top: 2.5,
-                      bottom: 2.5,
-                      left: 2.5,
-                      right: 2.5,
-                      height: 100,
-                      radius: BorderRadius.circular(10),
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const _AppBar(),
+                    const Divider(),
+                    Container(
+                      width: 200,
+                      padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                        child: CustomTabBar(
+                          tabBarController: _tabBarController,
+                          height: 35,
+                          itemCount: pageCount,
+                          builder: getTabbarChild,
+                          indicator: RoundIndicator(
+                            color: Colors.black87,
+                            top: 2.5,
+                            bottom: 2.5,
+                            left: 2.5,
+                            right: 2.5,
+                            height: 100,
+                            radius: BorderRadius.circular(10),
+                          ),
+                          pageController: _controller,
+                        ),
+                      ),
                     ),
-                    pageController: _controller,
-                  ),
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _controller,
+                        itemCount: pageCount,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: getTabbarPage(index),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _controller,
-                  itemCount: pageCount,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: getTabbarPage(index),
-                    );
-                  },
-                ),
-              ),
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: CustomBottomNavigation(
+                    selectedIndex: selectedScreenIndex,
+                    onTap: (index) {
+                      setState(() {
+                        _history.remove(selectedScreenIndex);
+                        _history.add(selectedScreenIndex);
+                        selectedScreenIndex = index;
+                      });
+                    },
+                  ))
             ],
           ),
         ),
@@ -165,40 +208,49 @@ class _AppBar extends StatelessWidget {
   }
 }
 
+//todo: bottom navigation onTap
 class CustomBottomNavigation extends StatelessWidget {
-  const CustomBottomNavigation({Key? key}) : super(key: key);
-
+  final int selectedIndex;
+  final Function(int index) onTap;
+  const CustomBottomNavigation(
+      {Key? key, required this.selectedIndex, required this.onTap})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 84,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.black,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(18),
+          topLeft: Radius.circular(18),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           BottomNavigationItem(
             icon: Iconsax.home,
-            isActive: false,
-            onTap: () {},
+            isActive: selectedIndex == homeIndex,
+            onTap: () {
+              onTap(homeIndex);
+            },
           ),
           BottomNavigationItem(
-            icon: Iconsax.home,
-            isActive: false,
-            onTap: () {},
+            icon: Iconsax.category_2,
+            isActive: selectedIndex == categoryIndex,
+            onTap: () {
+              onTap(categoryIndex);
+            },
           ),
           BottomNavigationItem(
-            icon: Iconsax.home,
-            isActive: false,
-            onTap: () {},
-          ),
-          BottomNavigationItem(
-            icon: Iconsax.setting,
-            isActive: true,
-            onTap: () {},
+            icon: Iconsax.setting_2,
+            isActive: selectedIndex == settinghIndex,
+            onTap: () {
+              onTap(settinghIndex);
+            },
           ),
         ],
       ),
@@ -224,7 +276,7 @@ class BottomNavigationItem extends StatelessWidget {
       onTap: onTap,
       child: Icon(
         icon,
-        color: isActive ? Colors.white : Colors.grey,
+        color: isActive ? Colors.white : Colors.grey.shade800,
       ),
     );
   }

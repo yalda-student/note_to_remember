@@ -1,4 +1,4 @@
-# yalda_students_notes
+# yalda_student_notes
 
 Note App.
 
@@ -14,7 +14,7 @@ A few resources to get you started if this is your first Flutter project:
 
 ## Packages:
  - cupertino_icons
- - hive_flutter
+ - Drift 
  - flutter_svg
  - provider
  - Bloc

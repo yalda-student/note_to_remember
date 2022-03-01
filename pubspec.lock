@@ -15,6 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.0"
+  analyzer_plugin:
+    dependency: transitive
+    description:
+      name: analyzer_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.0"
   args:
     dependency: transitive
     description:
@@ -190,6 +197,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  drift:
+    dependency: "direct main"
+    description:
+      name: drift
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
+  drift_dev:
+    dependency: "direct dev"
+    description:
+      name: drift_dev
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
   fake_async:
     dependency: transitive
     description:
@@ -303,27 +324,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  hive:
-    dependency: transitive
-    description:
-      name: hive
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.5"
-  hive_flutter:
-    dependency: "direct main"
-    description:
-      name: hive_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
-  hive_generator:
-    dependency: "direct dev"
-    description:
-      name: hive_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.2"
   http:
     dependency: transitive
     description:
@@ -352,6 +352,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.8"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.16.1"
   io:
     dependency: transitive
     description:
@@ -430,7 +437,7 @@ packages:
     source: hosted
     version: "2.0.2"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       url: "https://pub.dartlang.org"
@@ -451,7 +458,7 @@ packages:
     source: hosted
     version: "1.0.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -555,6 +562,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  recase:
+    dependency: transitive
+    description:
+      name: recase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   shared_preferences:
     dependency: transitive
     description:
@@ -637,13 +651,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  source_helper:
-    dependency: transitive
-    description:
-      name: source_helper
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.1"
   source_span:
     dependency: transitive
     description:
@@ -651,6 +658,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+  sqlite3:
+    dependency: transitive
+    description:
+      name: sqlite3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.1"
+  sqlite3_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: sqlite3_flutter_libs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.3"
+  sqlparser:
+    dependency: transitive
+    description:
+      name: sqlparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.20.1"
   stack_trace:
     dependency: transitive
     description:
@@ -771,5 +799,5 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.15.0-178.1.beta <3.0.0"
+  dart: ">=2.15.0 <3.0.0"
   flutter: ">=2.8.0"
