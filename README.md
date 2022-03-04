@@ -13,8 +13,9 @@ A few resources to get you started if this is your first Flutter project:
 
 
 ## Packages:
- - cupertino_icons
- - Drift 
+ - iconsax
+ - drift 
  - flutter_svg
+ - fluuter_gen
  - provider
- - Bloc
+ - bloc

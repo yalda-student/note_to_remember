@@ -11,7 +11,7 @@ class RouteGenerator {
       case AppConstants.homeRoute:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case AppConstants.addNoteRoute:
-        return MaterialPageRoute(builder: (_) =>  AddNoteScreen());
+        return MaterialPageRoute(builder: (_) =>  const AddNoteScreen());
       // case '/edit_employee':
       //   // if (args is int) {
       //   //   return MaterialPageRoute(

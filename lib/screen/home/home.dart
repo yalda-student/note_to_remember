@@ -4,9 +4,6 @@ import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
 import 'package:flutter_custom_tab_bar/indicator/round_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
-import 'package:yalda_students_notes/data/source/database.dart';
-import 'package:yalda_students_notes/model/note_data.dart';
 import 'package:yalda_students_notes/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/screen/note/note.dart';
 

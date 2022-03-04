@@ -20,6 +20,13 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   final TextEditingController _contentController = TextEditingController();
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
@@ -39,7 +46,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               ),
               centerTitle: true,
               leading: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    closePage();
+                  },
                   icon: Icon(Iconsax.close_circle,
                       color: theme.colorScheme.secondary)),
               actions: [
@@ -108,5 +117,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       ));
       Navigator.pop(context);
     }
+  }
+
+  void closePage() {
+    Navigator.pop(context);
   }
 }

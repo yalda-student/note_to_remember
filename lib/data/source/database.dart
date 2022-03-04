@@ -36,12 +36,13 @@ class AppDatabase extends _$AppDatabase {
     return await update(note).replace(noteData);
   }
 
-  Future<List<NoteData>> getAllNotes({String keyword = ''}) async {
-    return await (select(note)
+  Stream<List<NoteData>> getAllNotes({String keyword = ''}) {
+    return (select(note)
           ..where((tbl) {
-            return tbl.title.like('%$keyword%') | tbl.content.like('%$keyword%');
+            return tbl.title.like('%$keyword%') |
+                tbl.content.like('%$keyword%');
           }))
-        .get();
+        .watch();
   }
 
   Future<List<NoteData>> getNotesInCategory(categoryId) async {

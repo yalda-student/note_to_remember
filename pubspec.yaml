@@ -38,7 +38,7 @@ dependencies:
   theme_provider: ^0.5.0
   flutter_bloc: ^8.0.1
   flutter_custom_tab_bar: ^1.1.9
-  intl: ^0.16.1
+  intl: ^0.17.0
 
   drift: ^1.4.0
   sqlite3_flutter_libs: ^0.5.0

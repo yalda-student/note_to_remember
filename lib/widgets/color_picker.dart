@@ -38,6 +38,7 @@ class ColorPicker extends StatelessWidget {
               onTap(index);
             },
             child: Stack(
+              clipBehavior: Clip.antiAlias,
               alignment: Alignment.center,
               children: [
                 Container(
@@ -47,13 +48,13 @@ class ColorPicker extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: colors[index],
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(
+                        color: Colors.black.withOpacity(0.5), width: 1),
                   ),
                 ),
                 selectedIndex == index
-                    ? const Icon(
-                        Icons.check,size: 20,
-                      )
+                    ? Icon(Icons.colorize_rounded,
+                        size: 18, color: Colors.black.withOpacity(0.8))
                     : const SizedBox()
               ],
             ),

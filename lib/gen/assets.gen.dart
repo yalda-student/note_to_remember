@@ -10,9 +10,8 @@ import 'package:flutter/widgets.dart';
 class $AssetImageGen {
   const $AssetImageGen();
 
-  /// File path: asset/image/landscape.png
-  AssetGenImage get landscape =>
-      const AssetGenImage('asset/image/landscape.png');
+  /// File path: asset/image/empty.jpg
+  AssetGenImage get empty => const AssetGenImage('asset/image/empty.jpg');
 }
 
 class Assets {
