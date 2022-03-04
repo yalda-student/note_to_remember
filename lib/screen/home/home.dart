@@ -13,6 +13,7 @@ import 'package:yalda_students_notes/screen/note/note.dart';
 const int homeIndex = 0;
 const int categoryIndex = 1;
 const int settinghIndex = 2;
+const double bottomNavigationHeight = 65;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // var of = Provider.of<AppDatabase>(context);
-    // of.into(Note).insert(NoteCompanion());
 
     return Scaffold(
       body: WillPopScope(
@@ -49,56 +49,60 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SafeArea(
           child: Stack(
             children: [
-              Container(
-                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const _AppBar(),
-                    const Divider(),
-                    Container(
-                      width: 200,
-                      padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade400,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                        child: CustomTabBar(
-                          tabBarController: _tabBarController,
-                          height: 35,
-                          itemCount: pageCount,
-                          builder: getTabbarChild,
-                          indicator: RoundIndicator(
-                            color: Colors.black87,
-                            top: 2.5,
-                            bottom: 2.5,
-                            left: 2.5,
-                            right: 2.5,
-                            height: 100,
-                            radius: BorderRadius.circular(10),
+              Positioned.fill(
+                bottom: bottomNavigationHeight,
+                child: Container(
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const _AppBar(),
+                      const Divider(),
+                      Container(
+                        width: 200,
+                        padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(
+                          child: CustomTabBar(
+                            tabBarController: _tabBarController,
+                            height: 35,
+                            itemCount: pageCount,
+                            builder: getTabbarChild,
+                            indicator: RoundIndicator(
+                              color: Colors.black87,
+                              top: 2.5,
+                              bottom: 2.5,
+                              left: 2.5,
+                              right: 2.5,
+                              height: 100,
+                              radius: BorderRadius.circular(10),
+                            ),
+                            pageController: _controller,
                           ),
-                          pageController: _controller,
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: PageView.builder(
-                        controller: _controller,
-                        itemCount: pageCount,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: getTabbarPage(index),
-                          );
-                        },
+                      Expanded(
+                        child: PageView.builder(
+                          controller: _controller,
+                          itemCount: pageCount,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: getTabbarPage(index),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Positioned(
+                height: bottomNavigationHeight,
                   bottom: 0,
                   right: 0,
                   left: 0,
@@ -219,7 +223,7 @@ class CustomBottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 84,
+      height: bottomNavigationHeight,
       decoration: const BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yalda_students_notes/app.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
-import 'package:yalda_students_notes/data/repo/repositpry.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
-import 'package:yalda_students_notes/data/source/note_data_source.dart';
+import 'package:yalda_students_notes/route_generator.dart';
 
 import 'package:yalda_students_notes/screen/home/home.dart';
 
 void main() async {
   DriftConfig.init();
-  runApp(ChangeNotifierProvider<Repository<NoteCompanion>>(
+  runApp(Provider<AppDatabase>(
     child: const MyApp(),
-  
-    create: (context) => Repository<NoteCompanion>(
-      NoteDataSource(),
-    ),
+    create: (context) => AppDatabase(),
+    dispose: (context, AppDatabase db) {
+      db.close();
+    },
   ));
 }
 
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           primarySwatch: Colors.blue,
           colorScheme: const ColorScheme.light(
@@ -35,7 +35,17 @@ class MyApp extends StatelessWidget {
             secondary: Color(0xff010101),
           ),
           appBarTheme: const AppBarTheme(elevation: 0, color: Colors.white),
-        ),
-        home: const HomeScreen());
+          textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Colors.black,
+              selectionColor: Color(0xffc6c8ce),
+              selectionHandleColor: Color(0xff626362)),
+          inputDecorationTheme: const InputDecorationTheme(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.all(8.0),
+          )),
+      initialRoute: AppConstants.homeRoute,
+      onGenerateRoute: RouteGenerator.generateRoute,
+      home: const HomeScreen(),
+    );
   }
 }

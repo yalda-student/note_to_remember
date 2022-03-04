@@ -3,12 +3,12 @@ import 'package:yalda_students_notes/model/category_data.dart';
 
 class Note extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get title => text().withLength(min: 6, max: 32)();
-  TextColumn get content => text().named('body').nullable()();
+  TextColumn get title => text().withLength(max: 255).nullable()();
+  TextColumn get content => text().named('body')();
   DateTimeColumn get createdAt => dateTime()();
   IntColumn get color => integer()();
-  IntColumn get priority => integer()();
-  IntColumn get category => integer()
+  BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
+  IntColumn get categoryId => integer()
       .nullable()
       .withDefault(const Constant(1))
       .references(Category, #id,

@@ -182,52 +182,52 @@ class $CategoryTable extends Category
 
 class NoteData extends DataClass implements Insertable<NoteData> {
   final int id;
-  final String title;
-  final String? content;
+  final String? title;
+  final String content;
   final DateTime createdAt;
   final int color;
-  final int priority;
-  final int? category;
+  final bool isFavorite;
+  final int? categoryId;
   NoteData(
       {required this.id,
-      required this.title,
-      this.content,
+      this.title,
+      required this.content,
       required this.createdAt,
       required this.color,
-      required this.priority,
-      this.category});
+      required this.isFavorite,
+      this.categoryId});
   factory NoteData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return NoteData(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       title: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}title']),
       content: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}body']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}body'])!,
       createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
       color: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
-      priority: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}priority'])!,
-      category: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}category']),
+      isFavorite: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_favorite'])!,
+      categoryId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}category_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['title'] = Variable<String>(title);
-    if (!nullToAbsent || content != null) {
-      map['body'] = Variable<String?>(content);
+    if (!nullToAbsent || title != null) {
+      map['title'] = Variable<String?>(title);
     }
+    map['body'] = Variable<String>(content);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['color'] = Variable<int>(color);
-    map['priority'] = Variable<int>(priority);
-    if (!nullToAbsent || category != null) {
-      map['category'] = Variable<int?>(category);
+    map['is_favorite'] = Variable<bool>(isFavorite);
+    if (!nullToAbsent || categoryId != null) {
+      map['category_id'] = Variable<int?>(categoryId);
     }
     return map;
   }
@@ -235,16 +235,15 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   NoteCompanion toCompanion(bool nullToAbsent) {
     return NoteCompanion(
       id: Value(id),
-      title: Value(title),
-      content: content == null && nullToAbsent
-          ? const Value.absent()
-          : Value(content),
+      title:
+          title == null && nullToAbsent ? const Value.absent() : Value(title),
+      content: Value(content),
       createdAt: Value(createdAt),
       color: Value(color),
-      priority: Value(priority),
-      category: category == null && nullToAbsent
+      isFavorite: Value(isFavorite),
+      categoryId: categoryId == null && nullToAbsent
           ? const Value.absent()
-          : Value(category),
+          : Value(categoryId),
     );
   }
 
@@ -253,12 +252,12 @@ class NoteData extends DataClass implements Insertable<NoteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return NoteData(
       id: serializer.fromJson<int>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
-      content: serializer.fromJson<String?>(json['content']),
+      title: serializer.fromJson<String?>(json['title']),
+      content: serializer.fromJson<String>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       color: serializer.fromJson<int>(json['color']),
-      priority: serializer.fromJson<int>(json['priority']),
-      category: serializer.fromJson<int?>(json['category']),
+      isFavorite: serializer.fromJson<bool>(json['isFavorite']),
+      categoryId: serializer.fromJson<int?>(json['categoryId']),
     );
   }
   @override
@@ -266,12 +265,12 @@ class NoteData extends DataClass implements Insertable<NoteData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'title': serializer.toJson<String>(title),
-      'content': serializer.toJson<String?>(content),
+      'title': serializer.toJson<String?>(title),
+      'content': serializer.toJson<String>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'color': serializer.toJson<int>(color),
-      'priority': serializer.toJson<int>(priority),
-      'category': serializer.toJson<int?>(category),
+      'isFavorite': serializer.toJson<bool>(isFavorite),
+      'categoryId': serializer.toJson<int?>(categoryId),
     };
   }
 
@@ -281,16 +280,16 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           String? content,
           DateTime? createdAt,
           int? color,
-          int? priority,
-          int? category}) =>
+          bool? isFavorite,
+          int? categoryId}) =>
       NoteData(
         id: id ?? this.id,
         title: title ?? this.title,
         content: content ?? this.content,
         createdAt: createdAt ?? this.createdAt,
         color: color ?? this.color,
-        priority: priority ?? this.priority,
-        category: category ?? this.category,
+        isFavorite: isFavorite ?? this.isFavorite,
+        categoryId: categoryId ?? this.categoryId,
       );
   @override
   String toString() {
@@ -300,15 +299,15 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
           ..write('color: $color, ')
-          ..write('priority: $priority, ')
-          ..write('category: $category')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('categoryId: $categoryId')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, title, content, createdAt, color, priority, category);
+      Object.hash(id, title, content, createdAt, color, isFavorite, categoryId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -318,47 +317,46 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           other.content == this.content &&
           other.createdAt == this.createdAt &&
           other.color == this.color &&
-          other.priority == this.priority &&
-          other.category == this.category);
+          other.isFavorite == this.isFavorite &&
+          other.categoryId == this.categoryId);
 }
 
 class NoteCompanion extends UpdateCompanion<NoteData> {
   final Value<int> id;
-  final Value<String> title;
-  final Value<String?> content;
+  final Value<String?> title;
+  final Value<String> content;
   final Value<DateTime> createdAt;
   final Value<int> color;
-  final Value<int> priority;
-  final Value<int?> category;
+  final Value<bool> isFavorite;
+  final Value<int?> categoryId;
   const NoteCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.color = const Value.absent(),
-    this.priority = const Value.absent(),
-    this.category = const Value.absent(),
+    this.isFavorite = const Value.absent(),
+    this.categoryId = const Value.absent(),
   });
   NoteCompanion.insert({
     this.id = const Value.absent(),
-    required String title,
-    this.content = const Value.absent(),
+    this.title = const Value.absent(),
+    required String content,
     required DateTime createdAt,
     required int color,
-    required int priority,
-    this.category = const Value.absent(),
-  })  : title = Value(title),
+    this.isFavorite = const Value.absent(),
+    this.categoryId = const Value.absent(),
+  })  : content = Value(content),
         createdAt = Value(createdAt),
-        color = Value(color),
-        priority = Value(priority);
+        color = Value(color);
   static Insertable<NoteData> custom({
     Expression<int>? id,
-    Expression<String>? title,
-    Expression<String?>? content,
+    Expression<String?>? title,
+    Expression<String>? content,
     Expression<DateTime>? createdAt,
     Expression<int>? color,
-    Expression<int>? priority,
-    Expression<int?>? category,
+    Expression<bool>? isFavorite,
+    Expression<int?>? categoryId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -366,27 +364,27 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
       if (content != null) 'body': content,
       if (createdAt != null) 'created_at': createdAt,
       if (color != null) 'color': color,
-      if (priority != null) 'priority': priority,
-      if (category != null) 'category': category,
+      if (isFavorite != null) 'is_favorite': isFavorite,
+      if (categoryId != null) 'category_id': categoryId,
     });
   }
 
   NoteCompanion copyWith(
       {Value<int>? id,
-      Value<String>? title,
-      Value<String?>? content,
+      Value<String?>? title,
+      Value<String>? content,
       Value<DateTime>? createdAt,
       Value<int>? color,
-      Value<int>? priority,
-      Value<int?>? category}) {
+      Value<bool>? isFavorite,
+      Value<int?>? categoryId}) {
     return NoteCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,
       createdAt: createdAt ?? this.createdAt,
       color: color ?? this.color,
-      priority: priority ?? this.priority,
-      category: category ?? this.category,
+      isFavorite: isFavorite ?? this.isFavorite,
+      categoryId: categoryId ?? this.categoryId,
     );
   }
 
@@ -397,10 +395,10 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
       map['id'] = Variable<int>(id.value);
     }
     if (title.present) {
-      map['title'] = Variable<String>(title.value);
+      map['title'] = Variable<String?>(title.value);
     }
     if (content.present) {
-      map['body'] = Variable<String?>(content.value);
+      map['body'] = Variable<String>(content.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -408,11 +406,11 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
     if (color.present) {
       map['color'] = Variable<int>(color.value);
     }
-    if (priority.present) {
-      map['priority'] = Variable<int>(priority.value);
+    if (isFavorite.present) {
+      map['is_favorite'] = Variable<bool>(isFavorite.value);
     }
-    if (category.present) {
-      map['category'] = Variable<int?>(category.value);
+    if (categoryId.present) {
+      map['category_id'] = Variable<int?>(categoryId.value);
     }
     return map;
   }
@@ -425,8 +423,8 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
           ..write('color: $color, ')
-          ..write('priority: $priority, ')
-          ..write('category: $category')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('categoryId: $categoryId')
           ..write(')'))
         .toString();
   }
@@ -447,16 +445,15 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   final VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String?> title = GeneratedColumn<String?>(
-      'title', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 6, maxTextLength: 32),
+      'title', aliasedName, true,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 255),
       type: const StringType(),
-      requiredDuringInsert: true);
+      requiredDuringInsert: false);
   final VerificationMeta _contentMeta = const VerificationMeta('content');
   @override
   late final GeneratedColumn<String?> content = GeneratedColumn<String?>(
-      'body', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      'body', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
   late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
@@ -467,15 +464,18 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
       'color', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _priorityMeta = const VerificationMeta('priority');
+  final VerificationMeta _isFavoriteMeta = const VerificationMeta('isFavorite');
   @override
-  late final GeneratedColumn<int?> priority = GeneratedColumn<int?>(
-      'priority', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _categoryMeta = const VerificationMeta('category');
+  late final GeneratedColumn<bool?> isFavorite = GeneratedColumn<bool?>(
+      'is_favorite', aliasedName, false,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (is_favorite IN (0, 1))',
+      defaultValue: const Constant(false));
+  final VerificationMeta _categoryIdMeta = const VerificationMeta('categoryId');
   @override
-  late final GeneratedColumn<int?> category = GeneratedColumn<int?>(
-      'category', aliasedName, true,
+  late final GeneratedColumn<int?> categoryId = GeneratedColumn<int?>(
+      'category_id', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints:
@@ -483,7 +483,7 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
       defaultValue: const Constant(1));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, content, createdAt, color, priority, category];
+      [id, title, content, createdAt, color, isFavorite, categoryId];
   @override
   String get aliasedName => _alias ?? 'note';
   @override
@@ -499,12 +499,12 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
     if (data.containsKey('title')) {
       context.handle(
           _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
-    } else if (isInserting) {
-      context.missing(_titleMeta);
     }
     if (data.containsKey('body')) {
       context.handle(_contentMeta,
           content.isAcceptableOrUnknown(data['body']!, _contentMeta));
+    } else if (isInserting) {
+      context.missing(_contentMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
@@ -518,15 +518,17 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
     } else if (isInserting) {
       context.missing(_colorMeta);
     }
-    if (data.containsKey('priority')) {
-      context.handle(_priorityMeta,
-          priority.isAcceptableOrUnknown(data['priority']!, _priorityMeta));
-    } else if (isInserting) {
-      context.missing(_priorityMeta);
+    if (data.containsKey('is_favorite')) {
+      context.handle(
+          _isFavoriteMeta,
+          isFavorite.isAcceptableOrUnknown(
+              data['is_favorite']!, _isFavoriteMeta));
     }
-    if (data.containsKey('category')) {
-      context.handle(_categoryMeta,
-          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    if (data.containsKey('category_id')) {
+      context.handle(
+          _categoryIdMeta,
+          categoryId.isAcceptableOrUnknown(
+              data['category_id']!, _categoryIdMeta));
     }
     return context;
   }

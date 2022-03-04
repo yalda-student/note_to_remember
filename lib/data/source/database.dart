@@ -21,6 +21,52 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  //-------------Note
+
+  Future<int> addNote(NoteCompanion noteCompanion) async {
+    return await into(note).insert(noteCompanion);
+  }
+
+  void deleteNote(NoteData noteData) {
+    return delete(note).where((tbl) => tbl.id.equals(noteData.id));
+  }
+
+  Future<bool> updateNote(NoteData noteData) async {
+    return await update(note).replace(noteData);
+  }
+
+  Future<List<NoteData>> getAllNotes({String keyword = ''}) async {
+    return await (select(note)
+          ..where((tbl) {
+            return tbl.title.like('%$keyword%') | tbl.content.like('%$keyword%');
+          }))
+        .get();
+  }
+
+  Future<List<NoteData>> getNotesInCategory(categoryId) async {
+    return await (select(note)
+          ..where((tbl) => tbl.categoryId.equals(categoryId)))
+        .get();
+  }
+
+  //-------------Category
+
+  Future<int> addCategory(CategoryCompanion categoryCompanion) async {
+    return await into(category).insert(categoryCompanion);
+  }
+
+  void deleteCategory(CategoryData categoryData) {
+    return delete(category).where((tbl) => tbl.id.equals(categoryData.id));
+  }
+
+  Future<bool> updateCategory(CategoryData categoryData) async {
+    return await update(category).replace(categoryData);
+  }
+
+  Future<List<CategoryData>> getAllCategories() async {
+    return await select(category).get();
+  }
 }
 
 LazyDatabase _openConnection() {
@@ -33,9 +79,3 @@ LazyDatabase _openConnection() {
     return NativeDatabase(file);
   });
 }
-
-
-  // Future<int> create(NoteCompanion noteCompanion)async {
-  // 
-  //   return await into(note).insert(noteCompanion);
-  // }

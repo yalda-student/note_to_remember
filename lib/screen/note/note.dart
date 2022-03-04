@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yalda_students_notes/app.dart';
 
 class NotePage extends StatelessWidget {
   const NotePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Stack(
       children: [
         Column(
@@ -27,11 +29,10 @@ class NotePage extends StatelessWidget {
           bottom: 8,
           right: 8,
           child: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(
-              Iconsax.add,
-              color: Colors.white,
-            ),
+            onPressed: () {
+              Navigator.pushNamed(context, AppConstants.addNoteRoute);
+            },
+            child: Icon(Iconsax.add, color: theme.colorScheme.primary),
           ),
         ),
       ],
