@@ -3,7 +3,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/app.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
-import 'package:yalda_students_notes/widgets/small_note_item.dart';
+import 'package:yalda_students_notes/gen/assets.gen.dart';
+import 'package:yalda_students_notes/widgets/note_item.dart';
 
 class NotePage extends StatelessWidget {
   const NotePage({Key? key}) : super(key: key);
@@ -30,7 +31,12 @@ class NotePage extends StatelessWidget {
                 stream: db.getAllNotes(),
                 builder: (coontext, snapshotdata) {
                   if (snapshotdata.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshotdata.data!.isEmpty) {
+                    return const Center(
+                      child: _EmptyState(),
+                    );
                   }
                   return _NoteList(
                     data: snapshotdata.data!,
@@ -48,6 +54,25 @@ class NotePage extends StatelessWidget {
             child: Icon(Iconsax.add, color: theme.colorScheme.primary),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Assets.image.error404.image(width: 180),
+        const Text(
+          "You don't have any note.",
+          style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+        )
       ],
     );
   }

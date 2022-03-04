@@ -36,11 +36,27 @@ class AppDatabase extends _$AppDatabase {
     return await update(note).replace(noteData);
   }
 
+  Future<NoteData> getNoteById(int id) {
+    return (select(note)
+          ..where((tbl) {
+            return tbl.id.equals(id);
+          }))
+        .getSingle();
+  }
+
   Stream<List<NoteData>> getAllNotes({String keyword = ''}) {
     return (select(note)
           ..where((tbl) {
             return tbl.title.like('%$keyword%') |
                 tbl.content.like('%$keyword%');
+          }))
+        .watch();
+  }
+
+  Stream<List<NoteData>> getStarNotes() {
+    return (select(note)
+          ..where((tbl) {
+            return tbl.isFavorite.equals(true);
           }))
         .watch();
   }

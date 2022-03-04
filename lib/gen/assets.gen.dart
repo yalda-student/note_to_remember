@@ -12,6 +12,10 @@ class $AssetImageGen {
 
   /// File path: asset/image/empty.jpg
   AssetGenImage get empty => const AssetGenImage('asset/image/empty.jpg');
+
+  /// File path: asset/image/error-404.png
+  AssetGenImage get error404 =>
+      const AssetGenImage('asset/image/error-404.png');
 }
 
 class Assets {

@@ -5,19 +5,27 @@ import 'package:drift/drift.dart' as drift;
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
-class AddNoteScreen extends StatefulWidget {
-  const AddNoteScreen({Key? key}) : super(key: key);
+class EditNoteScreen extends StatefulWidget {
+  final NoteData data;
+  const EditNoteScreen({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<AddNoteScreen> createState() => _AddNoteScreenState();
+  State<EditNoteScreen> createState() => _EditNoteScreenState();
 }
 
-class _AddNoteScreenState extends State<AddNoteScreen> {
+class _EditNoteScreenState extends State<EditNoteScreen> {
   int colorIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+
+  @override
+  void initState() {
+    initialFileds();
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -39,7 +47,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             AppBar(
               backgroundColor: colors[colorIndex],
               title: Text(
-                'Add Note',
+                'Edit Note',
                 style: TextStyle(
                     color: theme.colorScheme.secondary,
                     fontWeight: FontWeight.bold),
@@ -54,7 +62,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               actions: [
                 IconButton(
                     onPressed: () {
-                      saveNote(context);
+                      updateNote(context);
                     },
                     icon: Icon(Icons.check_circle_outline_rounded,
                         color: theme.colorScheme.secondary))
@@ -103,16 +111,18 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     );
   }
 
-  void saveNote(BuildContext context) {
+  void updateNote(BuildContext context) {
     var validate = _formKey.currentState!.validate();
 
     if (validate) {
       var appDb = Provider.of<AppDatabase>(context, listen: false);
-      appDb.addNote(NoteCompanion(
-        title: drift.Value(_titleController.text),
-        content: drift.Value(_contentController.text),
-        color: drift.Value(colors[colorIndex].value),
-        createdAt: drift.Value(DateTime.now()),
+      appDb.updateNote(NoteData(
+        id: widget.data.id,
+        title: _titleController.text,
+        content: _contentController.text,
+        color: colors[colorIndex].value,
+        createdAt: DateTime.now(),
+        isFavorite: widget.data.isFavorite,
       ));
       Navigator.pop(context);
     }
@@ -120,5 +130,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
   void closePage() {
     Navigator.pop(context);
+  }
+
+  void initialFileds() {
+    final note = widget.data;
+    _titleController.text = note.title!;
+    _contentController.text = note.content;
+    colorIndex = colors.indexOf(Color(note.color));
   }
 }

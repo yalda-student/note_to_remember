@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/app.dart';
+import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/add_note/add_note_screen.dart';
+import 'package:yalda_students_notes/screen/edit_note/edit_note_screen.dart';
 import 'package:yalda_students_notes/screen/home/home.dart';
 
 class RouteGenerator {
@@ -12,12 +14,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case AppConstants.addNoteRoute:
         return MaterialPageRoute(builder: (_) =>  const AddNoteScreen());
-      // case '/edit_employee':
-      //   // if (args is int) {
-      //   //   return MaterialPageRoute(
-      //   //       builder: (_) => EditEmployeeScreen(id: args));
-      //   // }
-      //   return _errorRoute();
+      case AppConstants.editNoteRoute:
+        if (args is NoteData) {
+          return MaterialPageRoute(
+              builder: (_) => EditNoteScreen(data: args));
+        }
+        return _errorRoute();
 
       default:
         return _errorRoute();

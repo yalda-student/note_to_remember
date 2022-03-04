@@ -5,9 +5,6 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('FavoritePage'),
-      color: Colors.amber,
-    );
+    return const Text('FavoritePage');
   }
 }
