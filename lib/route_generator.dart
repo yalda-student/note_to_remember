@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/app.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/screen/edit_note/edit_note_screen.dart';
-import 'package:yalda_students_notes/screen/home/home.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -11,7 +11,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case AppConstants.homeRoute:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) => const MainScreen());
       case AppConstants.addNoteRoute:
         return MaterialPageRoute(builder: (_) =>  const AddNoteScreen());
       case AppConstants.editNoteRoute:

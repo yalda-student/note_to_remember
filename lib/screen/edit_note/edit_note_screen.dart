@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
@@ -87,6 +86,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               ),
               cursorColor: theme.colorScheme.secondary,
               textInputAction: TextInputAction.next,
+              style: theme.textTheme.headline5!
+                  .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 4),
             Expanded(

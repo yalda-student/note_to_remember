@@ -34,8 +34,13 @@ class NotePage extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (snapshotdata.data!.isEmpty) {
-                    return const Center(
-                      child: _EmptyState(),
+                    return Expanded(
+                      child: Column(
+                        children: const [
+                          SizedBox(height: 100),
+                          _EmptyState(),
+                        ],
+                      ),
                     );
                   }
                   return _NoteList(

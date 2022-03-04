@@ -22,5 +22,6 @@ A few resources to get you started if this is your first Flutter project:
 
 
  ## Features:
+ - dark mode
  - add note
  - star a note bu double tapping on it
