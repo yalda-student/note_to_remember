@@ -9,7 +9,7 @@ import 'package:yalda_students_notes/screen/note/note.dart';
 
 class HomeScreen extends StatelessWidget {
   final int pageCount = 2;
-  late final PageController _controller = PageController(initialPage: 0);
+  final PageController _controller = PageController(initialPage: 0);
   final CustomTabBarController _tabBarController = CustomTabBarController();
 
   HomeScreen({Key? key}) : super(key: key);
@@ -25,9 +25,9 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AppBar(
-            title: const Text('My Note',
+            title: Text('My Note',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: theme.colorScheme.secondary,
                     fontSize: 22,
                     fontWeight: FontWeight.w600)),
             leading:
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
             width: 200,
             padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
             decoration: BoxDecoration(
-                color: Colors.grey.shade400,
+                color: theme.colorScheme.surface,
                 borderRadius: BorderRadius.circular(20)),
             child: Center(
               child: CustomTabBar(
@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                 itemCount: pageCount,
                 builder: getTabbarChild,
                 indicator: RoundIndicator(
-                  color: Colors.black87,
+                  color: theme.colorScheme.secondary,
                   top: 2.5,
                   bottom: 2.5,
                   left: 2.5,
@@ -100,11 +100,12 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget getTabbarChild(BuildContext context, int index) {
+    final theme = Theme.of(context);
     return TabBarItem(
       index: index,
       transform: ColorsTransform(
-        highlightColor: Colors.white,
-        normalColor: Colors.black54,
+        highlightColor: theme.colorScheme.primary,
+        normalColor: theme.colorScheme.onPrimary,
         builder: (context, color) {
           return Container(
             height: 100,

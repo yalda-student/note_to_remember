@@ -5,18 +5,20 @@ import 'package:yalda_students_notes/main.dart';
 class CustomBottomNavigation extends StatelessWidget {
   final int selectedIndex;
   final Function(int index) onTap;
-  
+
   const CustomBottomNavigation(
       {Key? key, required this.selectedIndex, required this.onTap})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: bottomNavigationHeight,
-      decoration: const BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondary,
+        borderRadius: const BorderRadius.only(
           topRight: Radius.circular(18),
           topLeft: Radius.circular(18),
         ),
@@ -73,13 +75,14 @@ class BottomNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       child: Icon(
         icon,
-        color: isActive ? Colors.white : Colors.grey.shade800,
+        color:
+            isActive ? theme.colorScheme.primary : theme.colorScheme.onPrimary,
       ),
     );
   }
 }
-

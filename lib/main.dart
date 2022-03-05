@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/app.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
@@ -8,6 +9,7 @@ import 'package:yalda_students_notes/screen/category/category.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
+import 'package:yalda_students_notes/util/theme_util.dart';
 import 'package:yalda_students_notes/widgets/bottom_navigation.dart';
 
 const int homeIndex = 0;
@@ -18,13 +20,35 @@ const double bottomNavigationHeight = 65;
 
 void main() async {
   DriftConfig.init();
-  runApp(Provider<AppDatabase>(
-    child: const MyApp(),
-    create: (context) => AppDatabase(),
-    dispose: (context, AppDatabase db) {
-      db.close();
-    },
-  ));
+  // runApp(Provider<AppDatabase>(
+  //   child: const MyApp(),
+  //   create: (context) => AppDatabase(),
+  //   dispose: (context, AppDatabase db) {
+  //     db.close();
+  //   },
+  // ));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences.getInstance().then((prefs) {
+    var darkModeOn = prefs.getBool('darkMode') ?? true;
+
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeNotifier>(
+            create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
+          ),
+          Provider<AppDatabase>(
+            create: (context) => AppDatabase(),
+            dispose: (context, AppDatabase db) {
+              db.close();
+            },
+          ),
+        ],
+        child: const MyApp(),
+      ),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -32,25 +56,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return MaterialApp(
       title: 'My Notes',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          colorScheme: const ColorScheme.light(
-            primary: Colors.white,
-            primaryContainer: Color(0xffe8ebed),
-            secondary: Color(0xff010101),
-          ),
-          appBarTheme: const AppBarTheme(elevation: 0, color: Colors.white),
-          textSelectionTheme: const TextSelectionThemeData(
-              cursorColor: Colors.black,
-              selectionColor: Color(0xffc6c8ce),
-              selectionHandleColor: Color(0xff626362)),
-          inputDecorationTheme: const InputDecorationTheme(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.all(8.0),
-          )),
+      theme:
+          themeNotifier.getTheme(),
+
       initialRoute: AppConstants.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
       home: const MainScreen(),

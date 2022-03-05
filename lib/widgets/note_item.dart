@@ -17,13 +17,15 @@ class SmallNoteItem extends StatefulWidget {
 class _SmallNoteItemState extends State<SmallNoteItem> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () => openEditPage(),
       onDoubleTap: () => starNote(),
       child: Container(
         height: 100,
         width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.only(top: 12),
+        margin: const EdgeInsets.fromLTRB(2, 12, 2, 0),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
             color: Color(widget.data.color).withOpacity(0.85),
@@ -51,8 +53,10 @@ class _SmallNoteItemState extends State<SmallNoteItem> {
                     Text(
                       widget.data.title!,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: theme.colorScheme.secondary),
                     ),
                     widget.data.isFavorite
                         ? const Icon(Iconsax.star1,
