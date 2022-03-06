@@ -36,7 +36,7 @@ dependencies:
   google_fonts: ^2.2.0
   provider: ^6.0.2
   theme_provider: ^0.5.0
-  flutter_bloc: ^8.0.1
+  flutter_bloc: ^8.0.3
   flutter_custom_tab_bar: ^1.1.9
   intl: ^0.17.0
 

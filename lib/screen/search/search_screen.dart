@@ -21,6 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final db = Provider.of<AppDatabase>(context, listen: false);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Column(
         children: [
