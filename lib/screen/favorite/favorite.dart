@@ -11,17 +11,19 @@ class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final db = Provider.of<AppDatabase>(context);
+    final theme = Theme.of(context);
+
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Starred Notes',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            ),
-            Icon(Iconsax.sort)
-          ],
+        ListTile(
+          title: const Text(
+            'Starred Notes',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+          leading: Icon(
+            Iconsax.note_favorite,
+            color: theme.colorScheme.secondary,
+          ),
         ),
         StreamBuilder<List<NoteData>>(
             stream: db.getStarNotes(),
@@ -47,5 +49,3 @@ class FavoritePage extends StatelessWidget {
     );
   }
 }
-
-

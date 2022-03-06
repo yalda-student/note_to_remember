@@ -28,8 +28,8 @@ class AppDatabase extends _$AppDatabase {
     return await into(note).insert(noteCompanion);
   }
 
-  void deleteNote(NoteData noteData) {
-    return delete(note).where((tbl) => tbl.id.equals(noteData.id));
+  Future deleteNote(int id) async {
+    await (delete(note)..where((tbl) => tbl.id.equals(id))).go();
   }
 
   Future<bool> updateNote(NoteData noteData) async {

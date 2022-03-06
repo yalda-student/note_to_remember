@@ -56,7 +56,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     onPressed: () {
                       saveNote(context);
                     },
-                    icon: Icon(Icons.check_circle_outline_rounded,
+                    icon: Icon(Iconsax.note_add,
                         color: theme.colorScheme.secondary))
               ],
             ),

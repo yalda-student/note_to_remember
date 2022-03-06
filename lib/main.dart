@@ -20,13 +20,6 @@ const double bottomNavigationHeight = 65;
 
 void main() async {
   DriftConfig.init();
-  // runApp(Provider<AppDatabase>(
-  //   child: const MyApp(),
-  //   create: (context) => AppDatabase(),
-  //   dispose: (context, AppDatabase db) {
-  //     db.close();
-  //   },
-  // ));
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {

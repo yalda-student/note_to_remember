@@ -14,7 +14,7 @@ class NoteList extends StatelessWidget {
         itemCount: data.length,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return SmallNoteItem(
+          return NoteItem(
             data: data[index],
           );
         },

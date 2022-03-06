@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:yalda_students_notes/app.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/screen/edit_note/edit_note_screen.dart';
 
-class SmallNoteItem extends StatefulWidget {
-  const SmallNoteItem({Key? key, required this.data}) : super(key: key);
+class NoteItem extends StatefulWidget {
+  const NoteItem({Key? key, required this.data}) : super(key: key);
 
   final NoteData data;
 
   @override
-  State<SmallNoteItem> createState() => _SmallNoteItemState();
+  State<NoteItem> createState() => _NoteItemState();
 }
 
-class _SmallNoteItemState extends State<SmallNoteItem> {
+class _NoteItemState extends State<NoteItem> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -105,9 +105,10 @@ class _SmallNoteItemState extends State<SmallNoteItem> {
   }
 
   void openEditPage() {
-    Navigator.of(context).pushNamed(
-      AppConstants.editNoteRoute,
-      arguments: widget.data,
-    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditNoteScreen(data: widget.data),
+        ));
   }
 }

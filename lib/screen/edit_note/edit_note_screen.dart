@@ -22,7 +22,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   @override
   void initState() {
     initialFileds();
-
     super.initState();
   }
 
@@ -45,26 +44,31 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
           children: [
             AppBar(
               backgroundColor: colors[colorIndex],
-              title: Text(
+              title: const Text(
                 'Edit Note',
-                style: TextStyle(
-                    color: theme.colorScheme.secondary,
-                    fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
               centerTitle: true,
               leading: IconButton(
                   onPressed: () {
                     closePage();
                   },
-                  icon: Icon(Iconsax.close_circle,
-                      color: theme.colorScheme.secondary)),
+                  icon: const Icon(Iconsax.close_circle, color: Colors.black)),
               actions: [
                 IconButton(
+                  onPressed: () {
+                    updateNote(context);
+                  },
+                  //save icon
+                  icon: const Icon(Iconsax.note_add,
+                      color: Colors.black),
+                ),
+                IconButton(
                     onPressed: () {
-                      updateNote(context);
+                      deleteNote(context);
                     },
-                    icon: Icon(Icons.check_circle_outline_rounded,
-                        color: theme.colorScheme.secondary))
+                    icon: const Icon(Iconsax.note_remove, color: Colors.black))
               ],
             ),
             const Divider(),
@@ -76,35 +80,10 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   setState(() {});
                 }),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: _titleController,
-              maxLength: 255,
-              decoration: InputDecoration(
-                hintText: 'Title',
-                hintStyle: theme.textTheme.headline5!.copyWith(
-                    color: Colors.black54, fontWeight: FontWeight.w600),
-              ),
-              cursorColor: theme.colorScheme.secondary,
-              textInputAction: TextInputAction.next,
-              style: theme.textTheme.headline5!
-                  .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
-            ),
+            _TitleTextField(titleController: _titleController, theme: theme),
             const SizedBox(height: 4),
             Expanded(
-              child: TextFormField(
-                controller: _contentController,
-                decoration: const InputDecoration(
-                  hintText: 'Start typing',
-                ),
-                maxLines: 12,
-                cursorColor: theme.colorScheme.secondary,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Content cannot be empty.';
-                  }
-                  return null;
-                },
-              ),
+              child: _ContentTextField(contentController: _contentController),
             )
           ],
         ),
@@ -125,8 +104,14 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
         createdAt: DateTime.now(),
         isFavorite: widget.data.isFavorite,
       ));
-      Navigator.pop(context);
+      closePage();
     }
+  }
+
+  void deleteNote(BuildContext context) {
+    var appDb = Provider.of<AppDatabase>(context, listen: false);
+    appDb.deleteNote(widget.data.id);
+    closePage();
   }
 
   void closePage() {
@@ -138,5 +123,63 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     _titleController.text = note.title!;
     _contentController.text = note.content;
     colorIndex = colors.indexOf(Color(note.color));
+  }
+}
+
+class _TitleTextField extends StatelessWidget {
+  const _TitleTextField({
+    Key? key,
+    required TextEditingController titleController,
+    required this.theme,
+  })  : _titleController = titleController,
+        super(key: key);
+
+  final TextEditingController _titleController;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: _titleController,
+      maxLength: 255,
+      decoration: InputDecoration(
+        hintText: 'Title',
+        counterStyle: const TextStyle(color: Colors.black),
+        hintStyle: theme.textTheme.headline5!
+            .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
+      ),
+      cursorColor: theme.colorScheme.secondary,
+      textInputAction: TextInputAction.next,
+      style: theme.textTheme.headline5!.copyWith(
+          color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w600),
+    );
+  }
+}
+
+class _ContentTextField extends StatelessWidget {
+  const _ContentTextField({
+    Key? key,
+    required TextEditingController contentController,
+  })  : _contentController = contentController,
+        super(key: key);
+
+  final TextEditingController _contentController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: _contentController,
+      decoration: const InputDecoration(hintText: 'Start typing'),
+      style: const TextStyle(color: Colors.black),
+      maxLines: 100,
+      keyboardType: TextInputType.multiline,
+      cursorColor: Colors.black,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Content cannot be empty.';
+        }
+        return null;
+      },
+    );
   }
 }

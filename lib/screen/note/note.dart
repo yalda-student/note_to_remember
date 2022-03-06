@@ -17,15 +17,15 @@ class NotePage extends StatelessWidget {
       children: [
         Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'List Notes',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                ),
-                Icon(Iconsax.sort)
-              ],
+            ListTile(
+              title: const Text(
+                'List Notes',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              ),
+              leading: Icon(
+                Iconsax.note_21,
+                color: theme.colorScheme.secondary,
+              ),
             ),
             StreamBuilder<List<NoteData>>(
                 stream: db.getAllNotes(),
@@ -50,7 +50,7 @@ class NotePage extends StatelessWidget {
           ],
         ),
         Positioned(
-          bottom: 8,
+          bottom: 16,
           right: 8,
           child: FloatingActionButton(
             onPressed: () {
