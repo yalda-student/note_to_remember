@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/edit_note/edit_note_screen.dart';
+import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
 
 class NoteItem extends StatefulWidget {
   const NoteItem({Key? key, required this.data}) : super(key: key);
@@ -93,15 +94,17 @@ class _NoteItemState extends State<NoteItem> {
   }
 
   void starNote() {
-    var db = context.read<AppDatabase>();
-    db.updateNote(NoteData(
-        id: widget.data.id,
-        title: widget.data.title,
-        content: widget.data.content,
-        createdAt: widget.data.createdAt,
-        color: widget.data.color,
-        isFavorite: !widget.data.isFavorite));
-    setState(() {});
+    context.read<NoteListBloc>().add(
+          NoteListStar(
+            NoteData(
+                id: widget.data.id,
+                title: widget.data.title,
+                content: widget.data.content,
+                createdAt: widget.data.createdAt,
+                color: widget.data.color,
+                isFavorite: !widget.data.isFavorite),
+          ),
+        );
   }
 
   void openEditPage() {
