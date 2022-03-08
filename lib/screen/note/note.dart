@@ -14,6 +14,7 @@ class NotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    debugPrint('note-page build');
     return BlocProvider<NoteListBloc>(
       create: (context) => NoteListBloc(context.read<AppDatabase>()),
       child: Stack(
@@ -33,10 +34,13 @@ class NotePage extends StatelessWidget {
               Consumer<AppDatabase>(
                 builder: (context, value, child) {
                   context.read<NoteListBloc>().add(NoteListStart());
+                  debugPrint('note-page Consumer');
                   return BlocBuilder<NoteListBloc, NoteListState>(
+                   
                       builder: (context, state) {
+                    debugPrint('note-page BlocBuilder');
                     return _handleStates(state);
-                  });
+                  },);
                 },
               )
             ],
@@ -47,10 +51,10 @@ class NotePage extends StatelessWidget {
             child: FloatingActionButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AddNoteScreen(),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AddNoteScreen()),
+                );
               },
               child: Icon(Iconsax.add, color: theme.colorScheme.primary),
             ),
@@ -68,9 +72,7 @@ class NotePage extends StatelessWidget {
     } else if (state is NoteListLoading || state is NoteListInitial) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is NoteListError) {
-      return Center(
-        child: Text(state.errorMessage),
-      );
+      return Center(child: Text(state.errorMessage));
     } else {
       throw Exception('Invalid State');
     }

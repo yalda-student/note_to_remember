@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/screen/edit_note/bloc/editnote_bloc.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
+int colorIndex = 0;
+
 class EditNoteScreen extends StatefulWidget {
-  final NoteData data;
-  const EditNoteScreen({Key? key, required this.data}) : super(key: key);
+  const EditNoteScreen({Key? key}) : super(key: key);
 
   @override
   State<EditNoteScreen> createState() => _EditNoteScreenState();
 }
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
-  int colorIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();
@@ -21,7 +22,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   @override
   void initState() {
-    initialFileds();
+    _initialFileds();
     super.initState();
   }
 
@@ -35,92 +36,92 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: colors[colorIndex],
-      body: SafeArea(
-          child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            AppBar(
-              backgroundColor: colors[colorIndex],
-              title: const Text(
-                'Edit Note',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-              centerTitle: true,
-              leading: IconButton(
-                  onPressed: () {
-                    closePage();
-                  },
-                  icon: const Icon(Iconsax.close_circle, color: Colors.black)),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    updateNote(context);
-                  },
-                  //save icon
-                  icon: const Icon(Iconsax.note_add,
-                      color: Colors.black),
-                ),
-                IconButton(
-                    onPressed: () {
-                      deleteNote(context);
-                    },
-                    icon: const Icon(Iconsax.note_remove, color: Colors.black))
-              ],
-            ),
-            const Divider(),
-            const SizedBox(height: 8),
-            ColorPicker(
-                selectedIndex: colorIndex,
-                onTap: (index) {
-                  colorIndex = index;
-                  setState(() {});
-                }),
-            const SizedBox(height: 8),
-            _TitleTextField(titleController: _titleController, theme: theme),
-            const SizedBox(height: 4),
-            Expanded(
-              child: _ContentTextField(contentController: _contentController),
-            )
-          ],
-        ),
-      )),
+    return Consumer(
+      builder: (context, value, child) =>
+          BlocBuilder<EditNoteBloc, EditNoteState>(
+        builder: (ctx, state) {
+          return Scaffold(
+            backgroundColor: colors[colorIndex],
+            body: SafeArea(
+                child: state is EditNoteInitial
+                    ? Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            _appBar(),
+                            const Divider(),
+                            const SizedBox(height: 8),
+                            ColorPicker(
+                                selectedIndex: colorIndex,
+                                onTap: (index) {
+                                  colorIndex = index;
+                                  context
+                                      .read<EditNoteBloc>()
+                                      .add(EditNoteColorChange(colors[index]));
+                                }),
+                            const SizedBox(height: 8),
+                            _TitleTextField(
+                                titleController: _titleController,
+                                theme: theme),
+                            const SizedBox(height: 4),
+                            Expanded(
+                              child: _ContentTextField(
+                                  contentController: _contentController),
+                            )
+                          ],
+                        ),
+                      )
+                    : const CircularProgressIndicator()),
+          );
+        },
+      ),
     );
   }
 
-  void updateNote(BuildContext context) {
+  AppBar _appBar() {
+    return AppBar(
+      backgroundColor: colors[colorIndex],
+      title: const Text(
+        'Edit Note',
+        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      ),
+      centerTitle: true,
+      leading: IconButton(
+          onPressed: () => _closePage(),
+          icon: const Icon(Iconsax.close_circle, color: Colors.black)),
+      actions: [
+        IconButton(
+          onPressed: () => _updateNote(),
+          icon: const Icon(Iconsax.note_add, color: Colors.black),
+        ),
+        IconButton(
+            onPressed: () => _deleteNote(),
+            icon: const Icon(Iconsax.note_remove, color: Colors.black))
+      ],
+    );
+  }
+
+  void _updateNote() {
     var validate = _formKey.currentState!.validate();
 
     if (validate) {
-      var appDb = Provider.of<AppDatabase>(context, listen: false);
-      appDb.updateNote(NoteData(
-        id: widget.data.id,
-        title: _titleController.text,
-        content: _contentController.text,
-        color: colors[colorIndex].value,
-        createdAt: DateTime.now(),
-        isFavorite: widget.data.isFavorite,
-      ));
-      closePage();
+      context.read<EditNoteBloc>().add(EditNoteUpdate());
+      _closePage();
     }
   }
 
-  void deleteNote(BuildContext context) {
-    var appDb = Provider.of<AppDatabase>(context, listen: false);
-    appDb.deleteNote(widget.data.id);
-    closePage();
+  void _deleteNote() {
+    context.read<EditNoteBloc>().add(EditNoteDelete());
+    _closePage();
   }
 
-  void closePage() {
-    Navigator.pop(context);
+  void _closePage() {
+    Navigator.of(context).pop();
   }
 
-  void initialFileds() {
-    final note = widget.data;
-    _titleController.text = note.title!;
+  void _initialFileds() {
+    final note = context.read<EditNoteBloc>().state.noteData;
+    _titleController.text = note.title ?? '';
     _contentController.text = note.content;
     colorIndex = colors.indexOf(Color(note.color));
   }

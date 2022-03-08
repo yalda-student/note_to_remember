@@ -54,9 +54,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Notes',
       debugShowCheckedModeBanner: false,
-      theme:
-          themeNotifier.getTheme(),
-
+      theme: themeNotifier.getTheme(),
       initialRoute: AppConstants.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
       home: const MainScreen(),

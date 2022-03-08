@@ -7,7 +7,7 @@ part 'addnote_state.dart';
 class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
   AddNoteBloc() : super(AddNoteInitial()) {
     on<AddNoteEvent>((event, emit) {
-      // TODO: implement event handler
+      
     });
   }
 }

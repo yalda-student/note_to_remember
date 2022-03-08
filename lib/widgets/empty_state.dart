@@ -8,14 +8,17 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Assets.image.error404.image(width: 180, color: Theme.of(context).colorScheme.secondary),
-        const Text(
-          "You don't have any note.",
-          style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
-        )
-      ],
+    return Expanded(
+      child: Column(
+        children: [
+           const SizedBox(height: 100),
+          Assets.image.error404.image(width: 180, color: Theme.of(context).colorScheme.secondary),
+          const Text(
+            "You don't have any note.",
+            style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+          )
+        ],
+      ),
     );
   }
 }

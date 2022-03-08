@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/screen/edit_note/bloc/editnote_bloc.dart';
 import 'package:yalda_students_notes/screen/edit_note/edit_note_screen.dart';
 import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
 
@@ -52,7 +53,7 @@ class _NoteItemState extends State<NoteItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.data.title!,
+                      widget.data.title ?? '',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -95,23 +96,26 @@ class _NoteItemState extends State<NoteItem> {
 
   void starNote() {
     context.read<NoteListBloc>().add(
-          NoteListStar(
-            NoteData(
-                id: widget.data.id,
-                title: widget.data.title,
-                content: widget.data.content,
-                createdAt: widget.data.createdAt,
-                color: widget.data.color,
-                isFavorite: !widget.data.isFavorite),
-          ),
+          NoteListStar(NoteData(
+              id: widget.data.id,
+              title: widget.data.title,
+              content: widget.data.content,
+              createdAt: widget.data.createdAt,
+              color: widget.data.color,
+              isFavorite: !widget.data.isFavorite)),
         );
   }
 
   void openEditPage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditNoteScreen(data: widget.data),
-        ));
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BlocProvider<EditNoteBloc>(
+          create: (context) =>
+              EditNoteBloc(context.read<AppDatabase>(), widget.data),
+          child: const EditNoteScreen(),
+        ),
+      ),
+    );
   }
 }

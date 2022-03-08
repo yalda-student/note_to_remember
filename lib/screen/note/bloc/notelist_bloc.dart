@@ -10,6 +10,7 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
 
   NoteListBloc(this.database) : super(NoteListInitial()) {
     on<NoteListEvent>((event, emit) async {
+      debugPrint('sdfsdvsdvasv  NoteListBloc');
       if (event is NoteListStar) {
         await database.updateNote(event.noteData);
         add(NoteListStart());
@@ -17,18 +18,23 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
 
       if (event is NoteListStart) {
         emit(NoteListLoading());
-        try {
-          final isEmpty = await database.getAllNotes().isEmpty;
-          if (isEmpty) {
-            emit(NoteListEmpty());
-          } else {
-            final noteList = await database.getAllNotes().first;
-            emit(NoteListSuccess(noteList));
-          }
-        } catch (e) {
-          emit(NoteListError('Error'));
-        }
+        await _initialList(emit);
       }
     });
+  }
+
+  Future<void> _initialList(Emitter<NoteListState> emit) async {
+    try {
+      final isEmpty = await database.getAllNotes().isEmpty;
+      if (isEmpty) {
+        emit(NoteListEmpty());
+      } else {
+        final noteList = await database.getAllNotes().first;
+         debugPrint('$noteList');
+        emit(NoteListSuccess(noteList));
+      }
+    } catch (e) {
+      emit(NoteListError('Error'));
+    }
   }
 }
