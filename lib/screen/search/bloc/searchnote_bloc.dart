@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 
 part 'searchnote_event.dart';

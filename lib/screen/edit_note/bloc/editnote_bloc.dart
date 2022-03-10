@@ -19,9 +19,30 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
       } else if (event is EditNoteColorChange) {
         _noteData = NoteData(
             id: _noteData.id,
+            title: _noteData.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
             color: event.color.value,
+            isFavorite: _noteData.isFavorite);
+
+        emit(EditNoteInitial(_noteData));
+      } else if (event is EditNoteTitleChange) {
+        _noteData = NoteData(
+            id: _noteData.id,
+            title: event.title,
+            content: _noteData.content,
+            createdAt: _noteData.createdAt,
+            color: _noteData.color,
+            isFavorite: _noteData.isFavorite);
+
+        emit(EditNoteInitial(_noteData));
+      } else if (event is EditNoteContentChange) {
+        _noteData = NoteData(
+            id: _noteData.id,
+            title: _noteData.title,
+            content: event.content,
+            createdAt: _noteData.createdAt,
+            color: _noteData.color,
             isFavorite: _noteData.isFavorite);
 
         emit(EditNoteInitial(_noteData));
