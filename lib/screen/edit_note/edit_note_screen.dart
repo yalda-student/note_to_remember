@@ -40,6 +40,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
       builder: (context, value, child) =>
           BlocBuilder<EditNoteBloc, EditNoteState>(
         builder: (ctx, state) {
+          debugPrint('${context.findAncestorWidgetOfExactType<BlocProvider>()}');
           return Scaffold(
             backgroundColor: colors[colorIndex],
             body: SafeArea(
@@ -149,6 +150,9 @@ class _TitleTextField extends StatelessWidget {
         hintStyle: theme.textTheme.headline5!
             .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
       ),
+      onChanged: (value) {
+        context.read<EditNoteBloc>().add(EditNoteTitleChange(value));
+      },
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
       style: theme.textTheme.headline5!.copyWith(
@@ -180,6 +184,9 @@ class _ContentTextField extends StatelessWidget {
           return 'Content cannot be empty.';
         }
         return null;
+      },
+      onChanged: (value) {
+        context.read<EditNoteBloc>().add(EditNoteContentChange(value));
       },
     );
   }

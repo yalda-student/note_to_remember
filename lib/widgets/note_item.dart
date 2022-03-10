@@ -107,7 +107,6 @@ class _NoteItemState extends State<NoteItem> {
   }
 
   void openEditPage() {
-
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => BlocProvider<EditNoteBloc>(

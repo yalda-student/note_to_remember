@@ -1,4 +1,8 @@
 part of 'starrednotes_bloc.dart';
 
 @immutable
-abstract class StarrednotesEvent {}
+abstract class StarredNotesEvent {}
+
+class  StarredNotesStart extends StarredNotesEvent{
+  
+}

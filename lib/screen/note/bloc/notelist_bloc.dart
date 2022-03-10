@@ -10,7 +10,7 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
 
   NoteListBloc(this.database) : super(NoteListInitial()) {
     on<NoteListEvent>((event, emit) async {
-      debugPrint('sdfsdvsdvasv  NoteListBloc');
+      // debugPrint('NoteListBloc');
       if (event is NoteListStar) {
         await database.updateNote(event.noteData);
         add(NoteListStart());
@@ -30,7 +30,6 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
         emit(NoteListEmpty());
       } else {
         final noteList = await database.getAllNotes().first;
-         debugPrint('$noteList');
         emit(NoteListSuccess(noteList));
       }
     } catch (e) {

@@ -1,6 +1,22 @@
 part of 'starrednotes_bloc.dart';
 
 @immutable
-abstract class StarrednotesState {}
+abstract class StarredNotesState {}
 
-class StarrednotesInitial extends StarrednotesState {}
+class StarredNotesInitial extends StarredNotesState {}
+
+class StarredNotesSuccess extends StarredNotesState {
+  final List<NoteData> noteList;
+
+  StarredNotesSuccess(this.noteList);
+}
+
+class StarredNotesEmpty extends StarredNotesState {}
+
+class StarredNotesError extends StarredNotesState {
+  final String message;
+
+  StarredNotesError(this.message);
+}
+
+class StarredNotesLoading extends StarredNotesState {}

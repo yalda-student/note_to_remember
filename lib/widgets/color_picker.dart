@@ -10,8 +10,9 @@ const colors = <Color>[
   Color(0xffbbcef8),
   Color(0xffe1bbf8),
   Color(0xff9dc89f),
-  Color(0xffc8c09d),
+  Color(0xffff707e),
   Color(0xffd3fcff),
+  Color(0xffc8c09d),
   Color(0xfff8bbe2),
 ];
 

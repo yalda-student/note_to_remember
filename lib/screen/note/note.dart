@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/add_note/add_note_screen.dart';
+import 'package:yalda_students_notes/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
 import 'package:yalda_students_notes/widgets/empty_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
@@ -34,13 +36,13 @@ class NotePage extends StatelessWidget {
               Consumer<AppDatabase>(
                 builder: (context, value, child) {
                   context.read<NoteListBloc>().add(NoteListStart());
-                  debugPrint('note-page Consumer');
+                  // debugPrint('note-page Consumer');
                   return BlocBuilder<NoteListBloc, NoteListState>(
-                   
-                      builder: (context, state) {
-                    debugPrint('note-page BlocBuilder');
-                    return _handleStates(state);
-                  },);
+                    builder: (context, state) {
+                      // debugPrint('note-page BlocBuilder');
+                      return _handleStates(state);
+                    },
+                  );
                 },
               )
             ],
@@ -50,11 +52,12 @@ class NotePage extends StatelessWidget {
             right: 8,
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AddNoteScreen()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const AddNoteScreen()),
+                // );
+                _openAddNotePage(context);
               },
               child: Icon(Iconsax.add, color: theme.colorScheme.primary),
             ),
@@ -76,5 +79,23 @@ class NotePage extends StatelessWidget {
     } else {
       throw Exception('Invalid State');
     }
+  }
+
+  void _openAddNotePage(BuildContext context) {
+    final _note = NoteCompanion(
+      title: const drift.Value(''),
+      color: drift.Value(Colors.white.value),
+      createdAt: drift.Value(DateTime.now()),
+    );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BlocProvider<AddNoteBloc>(
+          create: (context) => AddNoteBloc(context.read<AppDatabase>(), _note),
+          child: const AddNoteScreen(),
+        ),
+      ),
+    );
+
+    
   }
 }

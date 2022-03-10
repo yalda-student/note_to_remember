@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/app.dart';
@@ -31,11 +32,8 @@ void main() async {
           ChangeNotifierProvider<ThemeNotifier>(
             create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
           ),
-          Provider<AppDatabase>(
+          RepositoryProvider<AppDatabase>(
             create: (context) => AppDatabase(),
-            dispose: (context, AppDatabase db) {
-              db.close();
-            },
           ),
         ],
         child: const MyApp(),
