@@ -1,0 +1,19 @@
+{
+    "profileTitle": "My Notes",
+    "notes":"Notes",
+    "notesList":"List Notes",
+    "favoriteNotes":"Favorite Notes",
+    "search":"Search",
+    "categories":"Categories",
+    "setting":"Setting",
+    "startSearching":"Start Searching",
+    "darkMode":"Start Searching",
+    "addNote":"Add Note",
+    "editNote":"Edit Note",
+    "title":"Title",
+    "content":"Content",
+    "contentCannotBeEmpty":"content Can not Be Empty.",
+    "startTyping":"Start Typing",
+    "listCategories":"List Categories"
+    
+}
