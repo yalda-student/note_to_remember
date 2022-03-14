@@ -4,6 +4,7 @@ import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
 import 'package:flutter_custom_tab_bar/indicator/round_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:yalda_students_notes/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/screen/note/note.dart';
 
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localization = AppLocalizations.of(context);
 
     return Container(
       padding: const EdgeInsets.only(left: 12.0, right: 12.0),
@@ -25,7 +27,7 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AppBar(
-            title: Text('My Note',
+            title: Text(localization!.profileTitle,
                 style: TextStyle(
                     color: theme.colorScheme.secondary,
                     fontSize: 22,
@@ -88,12 +90,14 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  String getTabbarTitle(int index) {
+  String getTabbarTitle(BuildContext context, int index) {
+
+    final localization = AppLocalizations.of(context)!;
     switch (index) {
       case 0:
-        return 'Notes';
+        return localization.notes;
       case 1:
-        return 'Favorite Notes';
+        return localization.favoriteNotes;
       default:
         return '';
     }
@@ -113,7 +117,7 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.center,
             constraints: const BoxConstraints(minWidth: 60),
             child: Text(
-              getTabbarTitle(index),
+              getTabbarTitle(context, index),
               style: TextStyle(
                 fontSize: 14,
                 color: color,

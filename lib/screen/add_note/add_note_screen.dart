@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
-import 'package:drift/drift.dart' as drift;
-import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
