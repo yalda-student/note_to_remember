@@ -96,18 +96,20 @@ class _NoteItemState extends State<NoteItem> {
 
   void starNote() {
     context.read<NoteListBloc>().add(
-          NoteListStar(NoteData(
-              id: widget.data.id,
-              title: widget.data.title,
-              content: widget.data.content,
-              createdAt: widget.data.createdAt,
-              color: widget.data.color,
-              isFavorite: !widget.data.isFavorite)),
+          NoteListStar(
+            NoteData(
+                id: widget.data.id,
+                title: widget.data.title,
+                content: widget.data.content,
+                createdAt: widget.data.createdAt,
+                color: widget.data.color,
+                isFavorite: !widget.data.isFavorite),
+          ),
         );
   }
 
   void openEditPage() {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => BlocProvider<EditNoteBloc>(
           create: (context) =>

@@ -55,11 +55,6 @@ class NotePage extends StatelessWidget {
             right: 8,
             child: FloatingActionButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const AddNoteScreen()),
-                // );
                 _openAddNotePage(context);
               },
               child: Icon(Iconsax.add, color: theme.colorScheme.primary),
@@ -91,7 +86,7 @@ class NotePage extends StatelessWidget {
       color: drift.Value(Colors.white.value),
       createdAt: drift.Value(DateTime.now()),
     );
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => BlocProvider<AddNoteBloc>(
           create: (context) => AddNoteBloc(context.read<AppDatabase>(), _note),

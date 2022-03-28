@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/screen/edit_note/bloc/editnote_bloc.dart';
+import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
@@ -120,7 +121,12 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   }
 
   void _closePage() {
-    Navigator.of(context).pop();
+   Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ),
+    );
   }
 
   void _initialFileds() {

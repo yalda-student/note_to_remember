@@ -23,7 +23,6 @@ class StarredNotesBloc extends Bloc<StarredNotesEvent, StarredNotesState> {
         emit(StarredNotesEmpty());
       } else {
         final noteList = await database.getStarNotes().first;
-        debugPrint('starred: $noteList');
         emit(StarredNotesSuccess(noteList));
       }
     } catch (e) {

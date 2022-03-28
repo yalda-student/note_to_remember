@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/screen/add_note/bloc/addnote_bloc.dart';
+import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
@@ -97,12 +98,17 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
     if (validate) {
       context.read<AddNoteBloc>().add(AddNoteSave());
-      Navigator.of(context).pop();
+      closePage();
     }
   }
 
   void closePage() {
-    Navigator.pop(context);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ),
+    );
   }
 }
 
