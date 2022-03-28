@@ -1,8 +1,11 @@
 import 'package:day_night_switcher/day_night_switcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/util/theme_util.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -28,14 +31,14 @@ class _SettingScreenState extends State<SettingScreen> {
           children: [
             AppBar(
               title: Text(
-                'Setting',
+                LocaleKeys.setting.tr(),
                 style: TextStyle(color: theme.colorScheme.secondary),
               ),
               leading: const Icon(Iconsax.setting),
             ),
             const Divider(),
             ListTile(
-              title: const Text('Dark mode'),
+              title: const Text(LocaleKeys.darkMode).tr(),
               trailing: SizedBox(
                 width: 60,
                 height: 50,
@@ -48,6 +51,37 @@ class _SettingScreenState extends State<SettingScreen> {
                       _enableDarkTheme = val;
                     });
                     onThemeChanged(val, themeNotifier);
+                  },
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text(LocaleKeys.language).tr(),
+              trailing: SizedBox(
+                width: 151,
+                height: 40,
+                child: ToggleSwitch(
+                  minWidth: 75.0,
+                  cornerRadius: 20.0,
+                  activeBgColors: [
+                    [theme.colorScheme.secondary],
+                    [theme.colorScheme.secondary]
+                  ],
+                  activeFgColor: theme.colorScheme.surface,
+                  inactiveBgColor:  theme.colorScheme.surface,
+                  inactiveFgColor:theme.colorScheme.onPrimary,
+                  initialLabelIndex: 0,
+                  totalSwitches: 2,
+                  labels: const ['English', 'فارسی'],
+                  curve: Curves.linear,
+                  customTextStyles: [
+                    theme.textTheme.subtitle1!.copyWith(color: const Color(0xff6996ea),fontSize: 13),
+                    theme.textTheme.subtitle1!.copyWith(color: const Color(0xff6996ea),fontSize: 13)
+                  ],
+                  radiusStyle: true,
+                  animate: true,
+                  onToggle: (index) {
+                    print('switched to: $index');
                   },
                 ),
               ),

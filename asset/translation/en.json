@@ -1,0 +1,20 @@
+{
+  "profileTitle": "My Notes",
+  "notes": "Notes",
+  "notesList": "List Notes",
+  "search": "Search",
+  "categories": "Categories",
+  "setting": "Setting",
+  "startSearching": "Start Searching",
+  "darkMode": "Dark mode",
+  "editNote": "Edit Note",
+  "title": "Title",
+  "content": "Content",
+  "startTyping": "Start Typing",
+  "listCategories": "List Categories",
+  "language": "Language",
+  "add_note": "Add Note",
+  "content_Cannot_Be_Empty": "content Can not Be Empty.",
+  "favorite_Notes": "Favorite Notes",
+  "any_note": "You don't have any note."
+}

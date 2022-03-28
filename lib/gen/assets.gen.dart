@@ -10,6 +10,9 @@ import 'package:flutter/widgets.dart';
 class $AssetImageGen {
   const $AssetImageGen();
 
+  /// File path: asset/image/Visa_Inc._logo.svg
+  String get visaIncLogo => 'asset/image/Visa_Inc._logo.svg';
+
   /// File path: asset/image/empty.jpg
   AssetGenImage get empty => const AssetGenImage('asset/image/empty.jpg');
 

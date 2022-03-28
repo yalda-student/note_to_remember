@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/gen/assets.gen.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 
 class EmptyState extends StatelessWidget {
   const EmptyState({
@@ -13,9 +15,9 @@ class EmptyState extends StatelessWidget {
         children: [
            const SizedBox(height: 100),
           Assets.image.error404.image(width: 180, color: Theme.of(context).colorScheme.secondary),
-          const Text(
-            "You don't have any note.",
-            style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+           Text(
+            LocaleKeys.any_note.tr(),
+            style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
           )
         ],
       ),

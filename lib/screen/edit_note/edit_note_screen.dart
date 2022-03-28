@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/screen/edit_note/bloc/editnote_bloc.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
 int colorIndex = 0;
@@ -40,7 +42,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
       builder: (context, value, child) =>
           BlocBuilder<EditNoteBloc, EditNoteState>(
         builder: (ctx, state) {
-          debugPrint('${context.findAncestorWidgetOfExactType<BlocProvider>()}');
+          debugPrint(
+              '${context.findAncestorWidgetOfExactType<BlocProvider>()}');
           return Scaffold(
             backgroundColor: colors[colorIndex],
             body: SafeArea(
@@ -82,8 +85,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   AppBar _appBar() {
     return AppBar(
       backgroundColor: colors[colorIndex],
-      title: const Text(
-        'Edit Note',
+      title: Text(
+        LocaleKeys.editNote.tr(),
         style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
       centerTitle: true,
@@ -145,7 +148,7 @@ class _TitleTextField extends StatelessWidget {
       controller: _titleController,
       maxLength: 255,
       decoration: InputDecoration(
-        hintText: 'Title',
+        hintText: LocaleKeys.title.tr(),
         counterStyle: const TextStyle(color: Colors.black),
         hintStyle: theme.textTheme.headline5!
             .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
@@ -174,14 +177,14 @@ class _ContentTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: _contentController,
-      decoration: const InputDecoration(hintText: 'Start typing'),
+      decoration: InputDecoration(hintText: LocaleKeys.startTyping.tr()),
       style: const TextStyle(color: Colors.black),
       maxLines: 100,
       keyboardType: TextInputType.multiline,
       cursorColor: Colors.black,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Content cannot be empty.';
+          return LocaleKeys.content_Cannot_Be_Empty;
         }
         return null;
       },

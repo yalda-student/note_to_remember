@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,6 +8,7 @@ import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/empty_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
 
@@ -24,9 +26,10 @@ class NotePage extends StatelessWidget {
           Column(
             children: [
               ListTile(
-                title: const Text(
-                  'List Notes',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                title: Text(
+                  LocaleKeys.notesList.tr(),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 17),
                 ),
                 leading: Icon(
                   Iconsax.note_21,
@@ -70,6 +73,7 @@ class NotePage extends StatelessWidget {
   Widget _handleStates(NoteListState state) {
     if (state is NoteListSuccess) {
       return NoteList(data: state.noteList);
+      // return Image.asset(Assets.image.visaIncLogo);
     } else if (state is NoteListEmpty) {
       return const EmptyState();
     } else if (state is NoteListLoading || state is NoteListInitial) {
@@ -95,7 +99,5 @@ class NotePage extends StatelessWidget {
         ),
       ),
     );
-
-    
   }
 }

@@ -1,10 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
-import 'package:drift/drift.dart' as drift;
-import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/add_note/bloc/addnote_bloc.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
 class AddNoteScreen extends StatefulWidget {
@@ -48,11 +47,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 AppBar(
                   backgroundColor: colors[colorIndex],
                   title: Text(
-                    'Add Note',
+                    LocaleKeys.add_note,
                     style: TextStyle(
                         color: theme.colorScheme.secondary,
                         fontWeight: FontWeight.bold),
-                  ),
+                  ).tr(),
                   centerTitle: true,
                   leading: IconButton(
                       onPressed: () {
@@ -124,7 +123,7 @@ class _TitleTextField extends StatelessWidget {
       controller: _titleController,
       maxLength: 255,
       decoration: InputDecoration(
-        hintText: 'Title',
+        hintText: LocaleKeys.title.tr(),
         hintStyle: theme.textTheme.headline5!
             .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
       ),
@@ -153,14 +152,14 @@ class _ContextTextField extends StatelessWidget {
     return Expanded(
       child: TextFormField(
         controller: _contentController,
-        decoration: const InputDecoration(
-          hintText: 'Start typing',
+        decoration: InputDecoration(
+          hintText: LocaleKeys.startTyping.tr(),
         ),
         maxLines: 12,
         cursorColor: theme.colorScheme.secondary,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Content cannot be empty.';
+            return LocaleKeys.content_Cannot_Be_Empty.tr();
           }
           return null;
         },

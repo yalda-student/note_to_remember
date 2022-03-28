@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/search/bloc/searchnote_bloc.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/empty_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
 
@@ -45,7 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: TextFormField(
         controller: _controller,
         decoration: InputDecoration(
-          hintText: 'Search',
+          hintText: LocaleKeys.search.tr(),
           icon: Icon(
             Iconsax.search_normal,
             color: theme.colorScheme.secondary,
@@ -92,9 +94,9 @@ class _SearchScreenState extends State<SearchScreen> {
               color: Colors.black54,
             ),
             Text(
-              'Start searching',
+              LocaleKeys.startSearching,
               style: theme.textTheme.headline4,
-            ),
+            ).tr(),
           ],
         ),
       ],

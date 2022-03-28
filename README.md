@@ -19,6 +19,7 @@ A few resources to get you started if this is your first Flutter project:
  - fluuter_gen
  - provider
  - bloc
+ - easy location
 
 
  ## Features:
@@ -26,7 +27,7 @@ A few resources to get you started if this is your first Flutter project:
  - add note
  - star a note by double tapping on it
  - multi language
- - 
+
 
 
  ## Screenshots:

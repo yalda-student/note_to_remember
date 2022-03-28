@@ -1,0 +1,20 @@
+{
+  "profileTitle": "یادداشت های من",
+  "notes": "یادداشت ها",
+  "notesList": "لیست یادداشت ها",
+  "search": "جستجو",
+  "categories": "دسته ها",
+  "setting": "تنظیمات",
+  "startSearching": "جستجو را آغاز کنید",
+  "darkMode": "حالت شب",
+  "editNote": "ویرایش یادداشت",
+  "title": "عنوان",
+  "content": "محتوا",
+  "startTyping": "تایپ کنید",
+  "listCategories": "لیست دسته ها",
+  "language": "زبان",
+  "add_note": "اضافه کردن یادداشت",
+  "content_Cannot_Be_Empty": "محتوا نمی تواند خال باشد",
+  "favorite_Notes": "یادداشت های مورد علاقه",
+  "any_note": "شما یادداشتی ندارید"
+}

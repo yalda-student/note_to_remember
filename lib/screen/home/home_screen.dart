@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
 import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/screen/note/note.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 
 class HomeScreen extends StatelessWidget {
   final int pageCount = 2;
@@ -25,7 +27,7 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AppBar(
-            title: Text('My Note',
+            title: Text(LocaleKeys.profileTitle.tr(),
                 style: TextStyle(
                     color: theme.colorScheme.secondary,
                     fontSize: 22,
@@ -34,30 +36,33 @@ class HomeScreen extends StatelessWidget {
                 Icon(Iconsax.note_text, color: theme.colorScheme.secondary),
           ),
           const Divider(),
-          Container(
-            width: 200,
-            padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
-            decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(20)),
-            child: Center(
-              child: CustomTabBar(
-                tabBarController: _tabBarController,
-                height: 35,
-                itemCount: pageCount,
-                builder: getTabbarChild,
-                indicator: RoundIndicator(
-                  color: theme.colorScheme.secondary,
-                  top: 2.5,
-                  bottom: 2.5,
-                  left: 2.5,
-                  right: 2.5,
-                  height: 100,
-                  radius: BorderRadius.circular(10),
+          Wrap(
+            children: [
+              Container(
+                // width: 100,
+                padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
+                decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(20)),
+                child: CustomTabBar(
+                  width: 300,
+                  height: 35,
+                  itemCount: pageCount,
+                  builder: getTabbarChild,
+                  tabBarController: _tabBarController,
+                  indicator: RoundIndicator(
+                    color: theme.colorScheme.secondary,
+                    top: 2.5,
+                    bottom: 2.5,
+                    left: 2.5,
+                    right: 2.5,
+                    height: 100,
+                    radius: BorderRadius.circular(10),
+                  ),
+                  pageController: _controller,
                 ),
-                pageController: _controller,
-              ),
-            ),
+              )
+            ],
           ),
           Expanded(
             child: PageView.builder(
@@ -88,17 +93,6 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  String getTabbarTitle(int index) {
-    switch (index) {
-      case 0:
-        return 'Notes';
-      case 1:
-        return 'Favorite Notes';
-      default:
-        return '';
-    }
-  }
-
   Widget getTabbarChild(BuildContext context, int index) {
     final theme = Theme.of(context);
     return TabBarItem(
@@ -111,9 +105,8 @@ class HomeScreen extends StatelessWidget {
             height: 100,
             padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
             alignment: Alignment.center,
-            constraints: const BoxConstraints(minWidth: 60),
             child: Text(
-              getTabbarTitle(index),
+              getTabbarTitle(context, index),
               style: TextStyle(
                 fontSize: 14,
                 color: color,
@@ -124,5 +117,16 @@ class HomeScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String getTabbarTitle(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        return LocaleKeys.notes.tr();
+      case 1:
+        return LocaleKeys.favorite_Notes.tr();
+      default:
+        return '';
+    }
   }
 }

@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/favorite/bloc/starrednotes_bloc.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/empty_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
 
@@ -16,32 +18,30 @@ class FavoritePage extends StatelessWidget {
 
     return BlocProvider<StarredNotesBloc>(
       create: (context) => StarredNotesBloc(context.read<AppDatabase>()),
-      child:  Column(
-          children: [
-            ListTile(
-              title: const Text(
-                'Favorite Notes',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-              ),
-              leading: Icon(
-                Iconsax.note_favorite,
-                color: theme.colorScheme.secondary,
-              ),
+      child: Column(
+        children: [
+          ListTile(
+            title: const Text(
+              LocaleKeys.favorite_Notes,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            ).tr(),
+            leading: Icon(
+              Iconsax.note_favorite,
+              color: theme.colorScheme.secondary,
             ),
-            Consumer<AppDatabase>(
-              builder: (context, value, child) {
-                context.read<StarredNotesBloc>().add(StarredNotesStart());
-                return BlocBuilder<StarredNotesBloc, StarredNotesState>(
-                 
-                  builder: (context, state) {
-                    return _handleStates(state);
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      
+          ),
+          Consumer<AppDatabase>(
+            builder: (context, value, child) {
+              context.read<StarredNotesBloc>().add(StarredNotesStart());
+              return BlocBuilder<StarredNotesBloc, StarredNotesState>(
+                builder: (context, state) {
+                  return _handleStates(state);
+                },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 

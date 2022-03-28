@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,8 @@ import 'package:yalda_students_notes/screen/category/category.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
+import 'package:yalda_students_notes/translation/codegen_loader.g.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/util/theme_util.dart';
 import 'package:yalda_students_notes/widgets/bottom_navigation.dart';
 
@@ -22,21 +25,29 @@ const double bottomNavigationHeight = 65;
 void main() async {
   DriftConfig.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
 
     runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeNotifier>(
-            create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
-          ),
-          RepositoryProvider<AppDatabase>(
-            create: (context) => AppDatabase(),
-          ),
-        ],
-        child: const MyApp(),
+      EasyLocalization(
+        path: 'asset/translation',
+        supportedLocales: languagesMap.keys.toList(),
+        fallbackLocale: const Locale('en'),
+        startLocale: const Locale('en'),
+        assetLoader: const CodegenLoader(),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<ThemeNotifier>(
+              create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
+            ),
+            RepositoryProvider<AppDatabase>(
+              create: (context) => AppDatabase(),
+            ),
+          ],
+          child: const MyApp(),
+        ),
       ),
     );
   });
@@ -50,12 +61,15 @@ class MyApp extends StatelessWidget {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return MaterialApp(
-      title: 'My Notes',
+      title: LocaleKeys.profileTitle.tr(),
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.getTheme(),
+      home: const MainScreen(),
       initialRoute: AppConstants.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
-      home: const MainScreen(),
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
     );
   }
 }
