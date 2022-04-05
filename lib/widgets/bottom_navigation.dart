@@ -50,9 +50,9 @@ class CustomBottomNavigation extends StatelessWidget {
           ),
           BottomNavigationItem(
             icon: Iconsax.setting_2,
-            isActive: selectedIndex == settinghIndex,
+            isActive: selectedIndex == settingIndex,
             onTap: () {
-              onTap(settinghIndex);
+              onTap(settingIndex);
             },
           ),
         ],

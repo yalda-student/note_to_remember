@@ -12,14 +12,13 @@ import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
 import 'package:yalda_students_notes/translation/codegen_loader.g.dart';
-import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/util/theme_util.dart';
 import 'package:yalda_students_notes/widgets/bottom_navigation.dart';
 
 const int homeIndex = 0;
 const int searchIndex = 1;
 const int categoryIndex = 2;
-const int settinghIndex = 3;
+const int settingIndex = 3;
 const double bottomNavigationHeight = 65;
 
 void main() async {
@@ -27,6 +26,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
+  String? languageCode = await getLanguageCode();
   SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
 
@@ -34,8 +34,8 @@ void main() async {
       EasyLocalization(
         path: 'asset/translation',
         supportedLocales: languagesMap.keys.toList(),
-        fallbackLocale: const Locale('en'),
-        startLocale: const Locale('en'),
+        fallbackLocale: const Locale('fa'),
+        useOnlyLangCode: true,
         assetLoader: const CodegenLoader(),
         child: MultiProvider(
           providers: [
@@ -46,28 +46,35 @@ void main() async {
               create: (context) => AppDatabase(),
             ),
           ],
-          child: const MyApp(),
+          child: MyApp(
+            languageCode: languageCode,
+          ),
         ),
       ),
     );
   });
 }
 
+
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String? languageCode;
+
+  const MyApp({Key? key,  this.languageCode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    final languageCode =
+        EasyLocalization.of(context)!.currentLocale!.languageCode;
 
     return MaterialApp(
-      title: LocaleKeys.profileTitle.tr(),
+      title: 'My Notes',
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.getTheme(),
       home: const MainScreen(),
       initialRoute: AppConstants.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
-      locale: context.locale,
+      locale: Locale(languageCode),
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
     );
@@ -89,13 +96,13 @@ class _MainScreenState extends State<MainScreen> {
     homeIndex: _homeKey,
     searchIndex: _searchKey,
     categoryIndex: _categoryKey,
-    settinghIndex: _settinghKey,
+    settingIndex: _settingKey,
   };
 
   final GlobalKey<NavigatorState> _homeKey = GlobalKey();
   final GlobalKey<NavigatorState> _searchKey = GlobalKey();
   final GlobalKey<NavigatorState> _categoryKey = GlobalKey();
-  final GlobalKey<NavigatorState> _settinghKey = GlobalKey();
+  final GlobalKey<NavigatorState> _settingKey = GlobalKey();
 
   Future<bool> _onWillPop() async {
     final NavigatorState currentSelectedTabNavigatorState =
@@ -131,7 +138,7 @@ class _MainScreenState extends State<MainScreen> {
                     _navigator(
                         _categoryKey, categoryIndex, const CategoryScreen()),
                     _navigator(
-                        _settinghKey, settinghIndex, const SettingScreen()),
+                        _settingKey, settingIndex, const SettingScreen()),
                   ],
                 ),
               ),

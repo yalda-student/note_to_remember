@@ -68,21 +68,25 @@ class _SettingScreenState extends State<SettingScreen> {
                     [theme.colorScheme.secondary]
                   ],
                   activeFgColor: theme.colorScheme.surface,
-                  inactiveBgColor:  theme.colorScheme.surface,
-                  inactiveFgColor:theme.colorScheme.onPrimary,
-                  initialLabelIndex: 0,
+                  inactiveBgColor: theme.colorScheme.surface,
+                  inactiveFgColor: theme.colorScheme.onPrimary,
+                  initialLabelIndex:
+                      EasyLocalization.of(context)!.currentLocale ==
+                              const Locale('en', 'US')
+                          ? 0
+                          : 1,
                   totalSwitches: 2,
                   labels: const ['English', 'فارسی'],
                   curve: Curves.linear,
                   customTextStyles: [
-                    theme.textTheme.subtitle1!.copyWith(color: const Color(0xff6996ea),fontSize: 13),
-                    theme.textTheme.subtitle1!.copyWith(color: const Color(0xff6996ea),fontSize: 13)
+                    theme.textTheme.subtitle1!
+                        .copyWith(color: const Color(0xff6996ea), fontSize: 13),
+                    theme.textTheme.subtitle1!
+                        .copyWith(color: const Color(0xff6996ea), fontSize: 13)
                   ],
                   radiusStyle: true,
                   animate: true,
-                  onToggle: (index) {
-                    print('switched to: $index');
-                  },
+                  onToggle: (index) => onLanguageChange(index!),
                 ),
               ),
             ),
@@ -98,5 +102,16 @@ class _SettingScreenState extends State<SettingScreen> {
         : themeNotifier.setTheme(lightTheme);
     var prefs = await SharedPreferences.getInstance();
     prefs.setBool('darkMode', value);
+  }
+
+  void onLanguageChange(int index) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (index == 0) {
+      await context.setLocale(const Locale('en', 'US'));
+      prefs.setString('appLang', const Locale('en', 'US').languageCode);
+    } else {
+      await context.setLocale(const Locale('fa', 'IR'));
+      prefs.setString('appLang', const Locale('fa', 'IR').languageCode);
+    }
   }
 }

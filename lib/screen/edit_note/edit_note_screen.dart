@@ -88,7 +88,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
       backgroundColor: colors[colorIndex],
       title: Text(
         LocaleKeys.editNote.tr(),
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
       centerTitle: true,
       leading: IconButton(
