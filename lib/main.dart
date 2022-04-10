@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:yalda_students_notes/app.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/route_generator.dart';
+import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/category/category.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/screen/search/search_screen.dart';
@@ -42,9 +46,9 @@ void main() async {
             ChangeNotifierProvider<ThemeNotifier>(
               create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
             ),
-            RepositoryProvider<AppDatabase>(
-              create: (context) => AppDatabase(),
-            ),
+            RepositoryProvider<AppDatabase>(create: (context) => AppDatabase()),
+            BlocProvider(
+                create: (context) => CategoryBloc(context.read<AppDatabase>()))
           ],
           child: MyApp(
             languageCode: languageCode,
@@ -55,11 +59,10 @@ void main() async {
   });
 }
 
-
 class MyApp extends StatelessWidget {
   final String? languageCode;
 
-  const MyApp({Key? key,  this.languageCode}) : super(key: key);
+  const MyApp({Key? key, this.languageCode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +92,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int selectedScreenIndex = homeIndex;
+  int selectedScreenIndex = categoryIndex;
 
   final List<int> _history = [];
   late final map = {
@@ -118,6 +121,19 @@ class _MainScreenState extends State<MainScreen> {
       return false;
     }
     return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer(const Duration(seconds: 3), () {
+      isFirstTime().then((isFirstTime) {
+        if (isFirstTime) {
+          createNoneCategory();
+        }
+      });
+    });
   }
 
   @override
@@ -176,5 +192,23 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           );
+  }
+
+  Future<bool> isFirstTime() async {
+    final pref = await SharedPreferences.getInstance();
+    var isFirstTime = pref.getBool('first_time');
+    if (isFirstTime != null && !isFirstTime) {
+      pref.setBool('first_time', false);
+      return false;
+    } else {
+      pref.setBool('first_time', false);
+      return true;
+    }
+  }
+
+  void createNoneCategory() async{
+   await context
+        .read<AppDatabase>()
+        .addCategory(const CategoryCompanion(title: drift.Value('None')));
   }
 }

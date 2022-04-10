@@ -7,6 +7,7 @@ import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/favorite/bloc/starrednotes_bloc.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/empty_state.dart';
+import 'package:yalda_students_notes/widgets/loading_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -51,7 +52,7 @@ class FavoritePage extends StatelessWidget {
     } else if (state is StarredNotesEmpty) {
       return const EmptyState();
     } else if (state is StarredNotesLoading || state is StarredNotesInitial) {
-      return const Center(child: CircularProgressIndicator());
+      return const LoadingState();
     } else if (state is StarredNotesError) {
       return Center(child: Text(state.message));
     } else {

@@ -1,11 +1,11 @@
 import 'package:drift/drift.dart';
-import 'package:yalda_students_notes/model/category_data.dart';
+import 'package:yalda_students_notes/data/table/category_data.dart';
 
 class Note extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text().withLength(max: 255).nullable()();
   TextColumn get content => text().named('body')();
-  DateTimeColumn get deletedAt => dateTime()();
+  DateTimeColumn get createdAt => dateTime()();
   IntColumn get color => integer()();
   BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
   IntColumn get categoryId => integer()

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 
 part 'notelist_event.dart';
+
 part 'notelist_state.dart';
 
 class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {

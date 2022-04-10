@@ -1,10 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:yalda_students_notes/data/source/source.dart';
 
-class Repository<T> extends ChangeNotifier implements DataSource<T> {
-  final DataSource<T> localDataSource;
-
-  Repository(this.localDataSource);
+class Repository<T> extends ChangeNotifier {
+  Repository();
 
   // @override
   // Future<T> createOrUpdate(T data) async {
@@ -13,7 +10,7 @@ class Repository<T> extends ChangeNotifier implements DataSource<T> {
   //   return result;
   // }
 
-    @override
+  @override
   Future<int> create(T data) {
     throw UnimplementedError();
   }
@@ -23,17 +20,15 @@ class Repository<T> extends ChangeNotifier implements DataSource<T> {
     throw UnimplementedError();
   }
 
-
-  @override
-  Future<void> delete(id) async {
-    await localDataSource.delete(id);
-    notifyListeners();
-  }
-
-  @override
-  Future<List<T>> getData({String keyword = ''}) {
-    return localDataSource.getData(keyword: keyword);
-  }
-
+// @override
+// Future<void> delete(id) async {
+//   await localDataSource.delete(id);
+//   notifyListeners();
+// }
+//
+// @override
+// Future<List<T>> getData({String keyword = ''}) {
+//   // return localDataSource.getData(keyword: keyword);
+// }
 
 }

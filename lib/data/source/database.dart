@@ -4,8 +4,9 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:yalda_students_notes/model/category_data.dart';
-import 'package:yalda_students_notes/model/note_data.dart';
+import 'package:yalda_students_notes/data/model/category_model.dart';
+import 'package:yalda_students_notes/data/table/category_data.dart';
+import 'package:yalda_students_notes/data/table/note_data.dart';
 
 part 'database.g.dart';
 
@@ -73,24 +74,50 @@ class AppDatabase extends _$AppDatabase {
     return await into(category).insert(categoryCompanion);
   }
 
-  void deleteCategory(CategoryData categoryData) {
-    return delete(category).where((tbl) => tbl.id.equals(categoryData.id));
+  Future deleteCategory(int categoryId) async {
+    delete(category).where((tbl) => tbl.id.equals(categoryId));
   }
 
   Future<bool> updateCategory(CategoryData categoryData) async {
     return await update(category).replace(categoryData);
   }
 
-  Future<List<CategoryData>> getAllCategories() async {
-    return await select(category).get();
+  // Future<List<CategoryData>> getAllCategories() async {
+  //   return await select(category).get();
+  // }
+
+  Future<List<CategoryModel>> getAllCategories() async {
+    // void getAllCategories2() async {
+    final numberOfNotes = note.id.count();
+
+    final query = select(category).join([
+      leftOuterJoin(note, note.categoryId.equalsExp(category.id),
+          useColumns: false)
+    ])
+      ..addColumns([numberOfNotes])
+      ..groupBy([category.id, category.title]);
+    final result = await query.watch().first;
+    return _fetchData(result, numberOfNotes);
+  }
+
+  List<CategoryModel> _fetchData(
+      List<TypedResult> result, Expression<int> numberOfNotes) {
+    final categories = <CategoryModel>[];
+    for (final row in result) {
+      var categoryData = row.readTable(category);
+      final model = CategoryModel(
+          id: categoryData.id,
+          title: categoryData.title,
+          numberOfNotes: row.read(numberOfNotes));
+      categories.add(model);
+    }
+
+    return categories;
   }
 }
 
 LazyDatabase _openConnection() {
-  // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
     return NativeDatabase(file);

@@ -10,6 +10,7 @@ import 'package:yalda_students_notes/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/empty_state.dart';
+import 'package:yalda_students_notes/widgets/loading_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
 
 class NotePage extends StatelessWidget {
@@ -72,7 +73,7 @@ class NotePage extends StatelessWidget {
     } else if (state is NoteListEmpty) {
       return const EmptyState();
     } else if (state is NoteListLoading || state is NoteListInitial) {
-      return const Center(child: CircularProgressIndicator());
+      return const LoadingState();
     } else if (state is NoteListError) {
       return Center(child: Text(state.errorMessage));
     } else {

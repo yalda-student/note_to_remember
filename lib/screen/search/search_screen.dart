@@ -6,6 +6,7 @@ import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/search/bloc/searchnote_bloc.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/empty_state.dart';
+import 'package:yalda_students_notes/widgets/loading_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -71,9 +72,7 @@ class _SearchScreenState extends State<SearchScreen> {
     } else if (state is SearchNoteSuccess) {
       return NoteList(data: state.list);
     } else if (state is SearchNoteLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const LoadingState();
     } else if (state is SearchNoteInitial) {
       return _initialState(theme);
     } else {

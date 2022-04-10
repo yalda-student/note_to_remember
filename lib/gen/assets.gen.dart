@@ -10,9 +10,6 @@ import 'package:flutter/widgets.dart';
 class $AssetImageGen {
   const $AssetImageGen();
 
-  /// File path: asset/image/Visa_Inc._logo.svg
-  String get visaIncLogo => 'asset/image/Visa_Inc._logo.svg';
-
   /// File path: asset/image/empty.jpg
   AssetGenImage get empty => const AssetGenImage('asset/image/empty.jpg');
 
@@ -21,10 +18,21 @@ class $AssetImageGen {
       const AssetGenImage('asset/image/error-404.png');
 }
 
+class $AssetTranslationGen {
+  const $AssetTranslationGen();
+
+  /// File path: asset/translation/en.json
+  String get en => 'asset/translation/en.json';
+
+  /// File path: asset/translation/fa.json
+  String get fa => 'asset/translation/fa.json';
+}
+
 class Assets {
   Assets._();
 
   static const $AssetImageGen image = $AssetImageGen();
+  static const $AssetTranslationGen translation = $AssetTranslationGen();
 }
 
 class AssetGenImage extends AssetImage {
