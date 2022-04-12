@@ -10,7 +10,9 @@ part of 'database.dart';
 class CategoryData extends DataClass implements Insertable<CategoryData> {
   final int id;
   final String title;
-  CategoryData({required this.id, required this.title});
+  final DateTime createdAt;
+  CategoryData(
+      {required this.id, required this.title, required this.createdAt});
   factory CategoryData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return CategoryData(
@@ -18,6 +20,8 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       title: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
     );
   }
   @override
@@ -25,6 +29,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
@@ -32,6 +37,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
     return CategoryCompanion(
       id: Value(id),
       title: Value(title),
+      createdAt: Value(createdAt),
     );
   }
 
@@ -41,6 +47,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
     return CategoryData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -49,57 +56,70 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  CategoryData copyWith({int? id, String? title}) => CategoryData(
+  CategoryData copyWith({int? id, String? title, DateTime? createdAt}) =>
+      CategoryData(
         id: id ?? this.id,
         title: title ?? this.title,
+        createdAt: createdAt ?? this.createdAt,
       );
   @override
   String toString() {
     return (StringBuffer('CategoryData(')
           ..write('id: $id, ')
-          ..write('title: $title')
+          ..write('title: $title, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title);
+  int get hashCode => Object.hash(id, title, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CategoryData &&
           other.id == this.id &&
-          other.title == this.title);
+          other.title == this.title &&
+          other.createdAt == this.createdAt);
 }
 
 class CategoryCompanion extends UpdateCompanion<CategoryData> {
   final Value<int> id;
   final Value<String> title;
+  final Value<DateTime> createdAt;
   const CategoryCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
+    this.createdAt = const Value.absent(),
   });
   CategoryCompanion.insert({
     this.id = const Value.absent(),
     required String title,
-  }) : title = Value(title);
+    required DateTime createdAt,
+  })  : title = Value(title),
+        createdAt = Value(createdAt);
   static Insertable<CategoryData> custom({
     Expression<int>? id,
     Expression<String>? title,
+    Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
+      if (createdAt != null) 'created_at': createdAt,
     });
   }
 
-  CategoryCompanion copyWith({Value<int>? id, Value<String>? title}) {
+  CategoryCompanion copyWith(
+      {Value<int>? id, Value<String>? title, Value<DateTime>? createdAt}) {
     return CategoryCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -112,6 +132,9 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     return map;
   }
 
@@ -119,7 +142,8 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
   String toString() {
     return (StringBuffer('CategoryCompanion(')
           ..write('id: $id, ')
-          ..write('title: $title')
+          ..write('title: $title, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -143,8 +167,13 @@ class $CategoryTable extends Category
   late final GeneratedColumn<String?> title = GeneratedColumn<String?>(
       'title', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
-  List<GeneratedColumn> get $columns => [id, title];
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, title, createdAt];
   @override
   String get aliasedName => _alias ?? 'category';
   @override
@@ -162,6 +191,12 @@ class $CategoryTable extends Category
           _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
     } else if (isInserting) {
       context.missing(_titleMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
     }
     return context;
   }

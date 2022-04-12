@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/app.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
@@ -17,8 +18,10 @@ class CategoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      body: Column(
+    return SingleChildScrollView(
+        child: SizedBox(
+      height: MediaQuery.of(context).size.height - 50,
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -33,10 +36,15 @@ class CategoryScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold, fontSize: 18)),
             ),
           ),
-          const _CategoryData(),
+          Consumer<AppDatabase>(
+            builder: (context, value, child) {
+              context.read<CategoryBloc>().add(CategoryStart());
+              return const _CategoryData();
+            },
+          )
         ],
       ),
-    );
+    ));
   }
 }
 
@@ -55,13 +63,77 @@ class _AppBar extends StatelessWidget {
       centerTitle: true,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => _showDialog(context, theme),
           icon: Icon(
             Iconsax.add_circle,
             color: theme.colorScheme.secondary,
           ),
         )
       ],
+    );
+  }
+
+  Future<void> _showDialog(BuildContext context, ThemeData theme) async {
+    final outlineInputBorder = OutlineInputBorder(
+      borderSide: BorderSide(
+          color: theme.colorScheme.onPrimary.withOpacity(0.5), width: 2.0),
+      borderRadius: BorderRadius.circular(12.0),
+    );
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('New Category'),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          content: SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: ListBody(
+                children: <Widget>[
+                  TextFormField(
+                    maxLength: 255,
+                    decoration: InputDecoration(
+                        hintText: 'Category',
+                        filled: true,
+                        fillColor: theme.colorScheme.surface.withOpacity(0.5),
+                        enabledBorder: outlineInputBorder,
+                        focusedBorder: outlineInputBorder,
+                        contentPadding: const EdgeInsets.all(10.0)),
+                    onChanged: (value) {
+                      context
+                          .read<CategoryBloc>()
+                          .add(CategoryTextFieldChange(value));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: theme.colorScheme.secondary.withOpacity(0.7)),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text(
+                'Create',
+                style: TextStyle(color: theme.colorScheme.secondary),
+              ),
+              onPressed: () {
+                context.read<CategoryBloc>().add(CategoryInsert());
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -71,7 +143,6 @@ class _CategoryData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CategoryBloc>().add(CategoryStart());
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
         if (state is CategoryLoading || state is CategoryInitial) {
@@ -80,7 +151,6 @@ class _CategoryData extends StatelessWidget {
           return Center(child: Text(state.message));
         } else if (state is CategorySuccess) {
           List<CategoryModel> data = state.data;
-
           return Expanded(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

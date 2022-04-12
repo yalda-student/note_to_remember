@@ -5,6 +5,7 @@ class CategoryNotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //view notes and rename category
     return Scaffold(
       body:Column(children: [],)
     );

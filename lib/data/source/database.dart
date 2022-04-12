@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:yalda_students_notes/data/model/category_model.dart';
@@ -70,12 +71,12 @@ class AppDatabase extends _$AppDatabase {
 
   //-------------Category
 
-  Future<int> addCategory(CategoryCompanion categoryCompanion) async {
-    return await into(category).insert(categoryCompanion);
+  Future<void> addCategory(CategoryCompanion categoryCompanion) async {
+    await into(category).insert(categoryCompanion);
   }
 
   Future deleteCategory(int categoryId) async {
-    delete(category).where((tbl) => tbl.id.equals(categoryId));
+    await (delete(category)..where((tbl) => tbl.id.equals(categoryId))).go();
   }
 
   Future<bool> updateCategory(CategoryData categoryData) async {
@@ -86,8 +87,7 @@ class AppDatabase extends _$AppDatabase {
   //   return await select(category).get();
   // }
 
-  Future<List<CategoryModel>> getAllCategories() async {
-    // void getAllCategories2() async {
+  Stream<List<TypedResult>> getAllCategories() {
     final numberOfNotes = note.id.count();
 
     final query = select(category).join([
@@ -96,8 +96,10 @@ class AppDatabase extends _$AppDatabase {
     ])
       ..addColumns([numberOfNotes])
       ..groupBy([category.id, category.title]);
-    final result = await query.watch().first;
-    return _fetchData(result, numberOfNotes);
+    // final result = await query.watch().first;
+    // return _fetchData(result, numberOfNotes);
+
+    return query.watch();
   }
 
   List<CategoryModel> _fetchData(

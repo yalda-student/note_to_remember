@@ -13,13 +13,12 @@ import 'package:yalda_students_notes/widgets/empty_state.dart';
 import 'package:yalda_students_notes/widgets/loading_state.dart';
 import 'package:yalda_students_notes/widgets/note_list.dart';
 
-class NotePage extends StatelessWidget {
-  const NotePage({Key? key}) : super(key: key);
+class NoteScreen extends StatelessWidget {
+  const NoteScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    debugPrint('note-page build');
     return BlocProvider<NoteListBloc>(
       create: (context) => NoteListBloc(context.read<AppDatabase>()),
       child: Stack(
@@ -40,10 +39,8 @@ class NotePage extends StatelessWidget {
               Consumer<AppDatabase>(
                 builder: (context, value, child) {
                   context.read<NoteListBloc>().add(NoteListStart());
-                  // debugPrint('note-page Consumer');
                   return BlocBuilder<NoteListBloc, NoteListState>(
                     builder: (context, state) {
-                      // debugPrint('note-page BlocBuilder');
                       return _handleStates(state);
                     },
                   );

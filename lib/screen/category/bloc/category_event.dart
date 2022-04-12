@@ -9,6 +9,20 @@ class CategoryStart extends CategoryEvent {
   List<Object?> get props => [];
 }
 
+class CategoryTextFieldChange extends CategoryEvent {
+  final String categoryName;
+
+  const CategoryTextFieldChange(this.categoryName);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class CategoryInsert extends CategoryEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class CategoryDelete extends CategoryEvent {
   final int categoryId;
 

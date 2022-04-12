@@ -44,15 +44,14 @@ void main() async {
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider<ThemeNotifier>(
-              create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
-            ),
+                create: (_) =>
+                    ThemeNotifier(darkModeOn ? darkTheme : lightTheme)),
             RepositoryProvider<AppDatabase>(create: (context) => AppDatabase()),
-            BlocProvider(
-                create: (context) => CategoryBloc(context.read<AppDatabase>()))
+            BlocProvider<CategoryBloc>(
+                create: (context) => CategoryBloc(
+                    context.read<AppDatabase>(), const CategoryCompanion())),
           ],
-          child: MyApp(
-            languageCode: languageCode,
-          ),
+          child: MyApp(languageCode: languageCode),
         ),
       ),
     );
@@ -206,9 +205,11 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  void createNoneCategory() async{
-   await context
-        .read<AppDatabase>()
-        .addCategory(const CategoryCompanion(title: drift.Value('None')));
+  void createNoneCategory() async {
+    await context.read<AppDatabase>().addCategory(
+          CategoryCompanion(
+              title: const drift.Value('None'),
+              createdAt: drift.Value(DateTime.now())),
+        );
   }
 }

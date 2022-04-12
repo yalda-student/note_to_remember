@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
   Widget getTabbarPage(int index) {
     switch (index) {
       case 0:
-        return const NotePage();
+        return const NoteScreen();
       case 1:
         return const FavoritePage();
       default:
