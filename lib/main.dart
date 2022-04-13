@@ -13,6 +13,7 @@ import 'package:yalda_students_notes/route_generator.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/category/category.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
+import 'package:yalda_students_notes/screen/note/note.dart';
 import 'package:yalda_students_notes/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
 import 'package:yalda_students_notes/translation/codegen_loader.g.dart';
@@ -46,7 +47,8 @@ void main() async {
             ChangeNotifierProvider<ThemeNotifier>(
                 create: (_) =>
                     ThemeNotifier(darkModeOn ? darkTheme : lightTheme)),
-            RepositoryProvider<AppDatabase>(create: (context) => AppDatabase()),
+            ChangeNotifierProvider<AppDatabase>(
+                create: (context) => AppDatabase()),
             BlocProvider<CategoryBloc>(
                 create: (context) => CategoryBloc(
                     context.read<AppDatabase>(), const CategoryCompanion())),

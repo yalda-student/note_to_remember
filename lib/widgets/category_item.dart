@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
+import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
+import 'package:yalda_students_notes/screen/category_notes/bloc/category_notes_bloc.dart';
 import 'package:yalda_students_notes/screen/category_notes/category_notes.dart';
 
 class CategoryItem extends StatelessWidget {
@@ -20,7 +23,12 @@ class CategoryItem extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CategoryNotesScreen(),
+              builder: (context) => BlocProvider(
+                create: (context) =>
+                    CategoryNotesBloc(appDatabase: context.read<AppDatabase>(),
+                    categoryId:  categoryData.id),
+                child: CategoryNotesScreen(categoryTitle: categoryData.title),
+              ),
             ));
       },
       onLongPress: () {

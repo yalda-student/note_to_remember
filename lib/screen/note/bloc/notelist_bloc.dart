@@ -13,7 +13,6 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
     on<NoteListEvent>((event, emit) async {
       if (event is NoteListStar) {
         await database.updateNote(event.noteData);
-        add(NoteListStart());
       }
 
       if (event is NoteListStart) {

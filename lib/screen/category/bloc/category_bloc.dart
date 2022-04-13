@@ -21,12 +21,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       } else if (event is CategoryInsert) {
         // emit(CategoryLoading());
         database.addCategory(_category);
-        add(CategoryStart());
+        // add(CategoryStart());
       }
       if (event is CategoryDelete) {
         await database.deleteCategory(event.categoryId);
-        add(CategoryStart());
-        debugPrint('delete');
+        // add(CategoryStart());
       } else if (event is CategoryTextFieldChange) {
         _category = CategoryCompanion(
             title: drift.Value(event.categoryName),
@@ -36,9 +35,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   }
 
   Future<void> _initialList(Emitter<CategoryState> emit) async {
-    final x = await database.getAllCategories().first;
-    final categoryList = _fetchData(x, database.note.id.count());
-    debugPrint(categoryList.length.toString());
+    final data = await database.getAllCategories().first;
+    final categoryList = _fetchData(data, database.note.id.count());
     emit(CategorySuccess(categoryList));
   }
 

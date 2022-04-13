@@ -5,14 +5,13 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/table/category_data.dart';
 import 'package:yalda_students_notes/data/table/note_data.dart';
 
 part 'database.g.dart';
 
 @DriftDatabase(tables: [Note, Category])
-class AppDatabase extends _$AppDatabase {
+class AppDatabase extends _$AppDatabase with ChangeNotifier {
   static final AppDatabase _instance = AppDatabase._internal();
 
   factory AppDatabase() {
@@ -32,10 +31,12 @@ class AppDatabase extends _$AppDatabase {
 
   Future deleteNote(int id) async {
     await (delete(note)..where((tbl) => tbl.id.equals(id))).go();
+    notifyListeners();
   }
 
-  Future<bool> updateNote(NoteData noteData) async {
-    return await update(note).replace(noteData);
+  Future<void> updateNote(NoteData noteData) async {
+    await update(note).replace(noteData);
+    notifyListeners();
   }
 
   Future<NoteData> getNoteById(int id) {
@@ -73,19 +74,18 @@ class AppDatabase extends _$AppDatabase {
 
   Future<void> addCategory(CategoryCompanion categoryCompanion) async {
     await into(category).insert(categoryCompanion);
+    notifyListeners();
   }
 
   Future deleteCategory(int categoryId) async {
     await (delete(category)..where((tbl) => tbl.id.equals(categoryId))).go();
+    notifyListeners();
   }
 
-  Future<bool> updateCategory(CategoryData categoryData) async {
-    return await update(category).replace(categoryData);
+  Future<void> updateCategory(CategoryData categoryData) async {
+     await update(category).replace(categoryData);
+     notifyListeners();
   }
-
-  // Future<List<CategoryData>> getAllCategories() async {
-  //   return await select(category).get();
-  // }
 
   Stream<List<TypedResult>> getAllCategories() {
     final numberOfNotes = note.id.count();
@@ -100,21 +100,6 @@ class AppDatabase extends _$AppDatabase {
     // return _fetchData(result, numberOfNotes);
 
     return query.watch();
-  }
-
-  List<CategoryModel> _fetchData(
-      List<TypedResult> result, Expression<int> numberOfNotes) {
-    final categories = <CategoryModel>[];
-    for (final row in result) {
-      var categoryData = row.readTable(category);
-      final model = CategoryModel(
-          id: categoryData.id,
-          title: categoryData.title,
-          numberOfNotes: row.read(numberOfNotes));
-      categories.add(model);
-    }
-
-    return categories;
   }
 }
 
