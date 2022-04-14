@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/widgets/note_item.dart';
 
 class NoteList extends StatelessWidget {

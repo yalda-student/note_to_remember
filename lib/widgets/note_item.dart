@@ -53,13 +53,16 @@ class _NoteItemState extends State<NoteItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.data.title ?? '',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: theme.colorScheme.secondary),
+                    Expanded(
+                      child: Text(
+                        widget.data.title ?? '',
+                        maxLines: 1,
+                        style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18,
+                            color: theme.colorScheme.secondary),
+                      ),
                     ),
                     widget.data.isFavorite
                         ? const Icon(Iconsax.star1,

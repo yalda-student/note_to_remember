@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 
@@ -28,19 +27,6 @@ mixin FetchNote {
   }
 }
 
-class AppConstants {
-  static const String homeRoute = '/';
-  static const String addNoteRoute = '/add_note';
-  static const String editNoteRoute = '/edit_note';
-
-  static const String isFirstRun = 'isFirstRun';
-}
-
-Map<Locale, String> languagesMap = {
-  const Locale('en', 'US'): "English",
-  const Locale('fa', 'IR'): "فارسی",
-};
-
 List<Color> categoryColors = [
   Colors.yellow,
   Colors.deepPurple,
@@ -51,9 +37,3 @@ List<Color> categoryColors = [
   Colors.indigo,
   Colors.teal,
 ];
-
-Future<String?> getLanguageCode() async {
-  final prefs = await SharedPreferences.getInstance();
-  String? code = prefs.getString('appLang');
-  return code;
-}

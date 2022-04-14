@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/app.dart';
+import 'package:yalda_students_notes/common/const.dart';
 import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/screen/edit_note/edit_note_screen.dart';

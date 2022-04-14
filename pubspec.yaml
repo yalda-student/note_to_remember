@@ -53,6 +53,7 @@ dependencies:
   equatable: ^2.0.3
   easy_localization: ^3.0.0
   toggle_switch: ^1.4.0
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:

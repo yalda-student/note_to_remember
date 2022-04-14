@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/app.dart';
+import 'package:yalda_students_notes/common/app.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 

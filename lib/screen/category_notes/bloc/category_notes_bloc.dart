@@ -15,7 +15,7 @@ class CategoryNotesBloc extends Bloc<CategoryNotesEvent, CategoryNotesState> {
       if (event is CategoryNoteStart) {
         final list = await appDatabase.getNotesInCategory(categoryId);
         if (list.isNotEmpty) {
-          // emit(CategoryNotesSuccess(list));
+          emit(CategoryNotesSuccess(list));
         } else {
           emit(CategoryNotesEmptyState());
         }
