@@ -2,15 +2,15 @@ part of 'editnote_bloc.dart';
 
 @immutable
 abstract class EditNoteState {
-  final NoteData noteData;
+  final NoteModel noteData;
 
   const EditNoteState(this.noteData);
 }
 
 class EditNoteInitial extends EditNoteState {
-  const EditNoteInitial(NoteData noteData) : super(noteData);
+  const EditNoteInitial(NoteModel noteData) : super(noteData);
 }
 
 class EditNoteLoading extends EditNoteState {
-  const EditNoteLoading(NoteData noteData) : super(noteData);
+  const EditNoteLoading(NoteModel noteData) : super(noteData);
 }

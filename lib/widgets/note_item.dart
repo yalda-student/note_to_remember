@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/edit_note/bloc/editnote_bloc.dart';
 import 'package:yalda_students_notes/screen/edit_note/edit_note_screen.dart';
@@ -10,7 +11,7 @@ import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
 class NoteItem extends StatefulWidget {
   const NoteItem({Key? key, required this.data}) : super(key: key);
 
-  final NoteData data;
+  final NoteModel data;
 
   @override
   State<NoteItem> createState() => _NoteItemState();
@@ -70,9 +71,9 @@ class _NoteItemState extends State<NoteItem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'School cat.',
-                    style: TextStyle(
+                  Text(
+                    widget.data.category,
+                    style: const TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 13,
                         color: Colors.black54),
@@ -95,15 +96,17 @@ class _NoteItemState extends State<NoteItem> {
   }
 
   void starNote() {
+    final note = widget.data;
     context.read<NoteListBloc>().add(
           NoteListStar(
             NoteData(
-                id: widget.data.id,
-                title: widget.data.title,
-                content: widget.data.content,
-                createdAt: widget.data.createdAt,
-                color: widget.data.color,
-                isFavorite: !widget.data.isFavorite),
+                id: note.id,
+                title: note.title,
+                content: note.content,
+                createdAt: note.createdAt,
+                color: note.color,
+                isFavorite: !note.isFavorite,
+                categoryId: note.categoryId),
           ),
         );
   }

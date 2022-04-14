@@ -1,11 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:yalda_students_notes/app.dart';
+import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 
 part 'searchnote_event.dart';
+
 part 'searchnote_state.dart';
 
-class SearchNoteBloc extends Bloc<SearchNoteEvent, SearchNoteState> {
+class SearchNoteBloc extends Bloc<SearchNoteEvent, SearchNoteState>
+    with FetchNote {
   final AppDatabase _database;
 
   SearchNoteBloc(this._database) : super(SearchNoteInitial()) {
@@ -19,15 +23,14 @@ class SearchNoteBloc extends Bloc<SearchNoteEvent, SearchNoteState> {
     });
   }
 
-  
-  Future<void> _initialList(Emitter<SearchNoteState> emit, String expression) async {
+  Future<void> _initialList(
+      Emitter<SearchNoteState> emit, String expression) async {
     try {
-      final isEmpty = await _database.getAllNotes().isEmpty;
-      if (isEmpty) {
+      final data = await _database.getAllNotes(keyword: expression).first;
+      if (data.isEmpty) {
         emit(SearchNoteEmpty());
       } else {
-        final noteList = await _database.getAllNotes(keyword: expression).first;
-         debugPrint('$noteList');
+        final noteList = fetchNoteData(_database, data);
         emit(SearchNoteSuccess(noteList));
       }
     } catch (e) {

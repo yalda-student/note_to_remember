@@ -93,7 +93,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int selectedScreenIndex = categoryIndex;
+  int selectedScreenIndex = homeIndex;
 
   final List<int> _history = [];
   late final map = {

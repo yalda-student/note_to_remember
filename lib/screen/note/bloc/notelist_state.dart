@@ -10,7 +10,7 @@ class NoteListEmpty extends NoteListState {}
 class NoteListLoading extends NoteListState {}
 
 class NoteListSuccess extends NoteListState {
-  final List<NoteData> noteList;
+  final List<NoteModel> noteList;
 
   NoteListSuccess(this.noteList);
 }

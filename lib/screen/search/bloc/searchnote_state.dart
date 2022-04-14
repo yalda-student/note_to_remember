@@ -6,7 +6,7 @@ abstract class SearchNoteState {}
 class SearchNoteInitial extends SearchNoteState {}
 
 class SearchNoteSuccess extends SearchNoteState {
-  final List<NoteData> list;
+  final List<NoteModel> list;
 
   SearchNoteSuccess(this.list);
 }

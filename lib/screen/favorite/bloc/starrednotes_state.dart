@@ -6,7 +6,7 @@ abstract class StarredNotesState {}
 class StarredNotesInitial extends StarredNotesState {}
 
 class StarredNotesSuccess extends StarredNotesState {
-  final List<NoteData> noteList;
+  final List<NoteModel> noteList;
 
   StarredNotesSuccess(this.noteList);
 }

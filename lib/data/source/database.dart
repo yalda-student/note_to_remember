@@ -34,8 +34,8 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateNote(NoteData noteData) async {
-    await update(note).replace(noteData);
+  Future updateNote(NoteData noteData) async {
+   await update(note).replace(noteData);
     notifyListeners();
   }
 
@@ -47,21 +47,26 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
         .getSingle();
   }
 
-  Stream<List<NoteData>> getAllNotes({String keyword = ''}) {
-    return (select(note)
+  Stream<List<TypedResult>> getAllNotes({String keyword = ''}) {
+    final query = (select(note)
           ..where((tbl) {
             return tbl.title.like('%$keyword%') |
                 tbl.content.like('%$keyword%');
           }))
-        .watch();
+        .join([
+      innerJoin(category, note.categoryId.equalsExp(category.id),
+          useColumns: true)
+    ]);
+    return query.watch();
   }
 
-  Stream<List<NoteData>> getStarNotes() {
-    return (select(note)
-          ..where((tbl) {
-            return tbl.isFavorite.equals(true);
-          }))
-        .watch();
+  Stream<List<TypedResult>> getStarNotes() {
+    final query = (select(note)..where((tbl) => tbl.isFavorite.equals(true)))
+        .join([
+      innerJoin(category, note.categoryId.equalsExp(category.id),
+          useColumns: true)
+    ]);
+    return query.watch();
   }
 
   Future<List<NoteData>> getNotesInCategory(categoryId) async {
@@ -83,8 +88,8 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
   }
 
   Future<void> updateCategory(CategoryData categoryData) async {
-     await update(category).replace(categoryData);
-     notifyListeners();
+    await update(category).replace(categoryData);
+    notifyListeners();
   }
 
   Stream<List<TypedResult>> getAllCategories() {
@@ -96,11 +101,11 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
     ])
       ..addColumns([numberOfNotes])
       ..groupBy([category.id, category.title]);
-    // final result = await query.watch().first;
-    // return _fetchData(result, numberOfNotes);
 
     return query.watch();
   }
+
+// Future<String>
 }
 
 LazyDatabase _openConnection() {

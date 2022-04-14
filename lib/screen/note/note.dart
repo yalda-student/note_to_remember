@@ -66,7 +66,6 @@ class NoteScreen extends StatelessWidget {
   Widget _handleStates(NoteListState state) {
     if (state is NoteListSuccess) {
       return NoteList(data: state.noteList);
-      // return Image.asset(Assets.image.visaIncLogo);
     } else if (state is NoteListEmpty) {
       return const EmptyState();
     } else if (state is NoteListLoading || state is NoteListInitial) {
