@@ -1,9 +1,10 @@
 class CategoryModel {
   final int id;
   final String title;
-  final int numberOfNotes;
+  int numberOfNotes;
 
-  CategoryModel({required this.id, required this.title, required this.numberOfNotes});
+  CategoryModel(
+      {required this.id, required this.title, this.numberOfNotes = 0});
 
   @override
   String toString() {

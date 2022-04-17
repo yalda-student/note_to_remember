@@ -20,7 +20,7 @@ class CategoryNotesEmptyState extends CategoryNotesState {
 }
 
 class CategoryNotesSuccess extends CategoryNotesState {
-  final List<NoteModel> data;
+  final List<NoteData> data;
 
   const CategoryNotesSuccess(this.data);
 

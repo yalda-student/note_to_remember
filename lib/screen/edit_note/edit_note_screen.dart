@@ -2,13 +2,20 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:yalda_students_notes/data/model/category_model.dart';
+import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/edit_note/bloc/editnote_bloc.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
+import 'package:yalda_students_notes/widgets/loading_state.dart';
 
 int colorIndex = 0;
+final _formKey = GlobalKey<FormState>();
 
 class EditNoteScreen extends StatefulWidget {
   const EditNoteScreen({Key? key}) : super(key: key);
@@ -18,14 +25,12 @@ class EditNoteScreen extends StatefulWidget {
 }
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
-  final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
   @override
   void initState() {
-    _initialFileds();
+    _initialFields();
     super.initState();
   }
 
@@ -43,8 +48,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
       builder: (context, value, child) =>
           BlocBuilder<EditNoteBloc, EditNoteState>(
         builder: (ctx, state) {
-          debugPrint(
-              '${context.findAncestorWidgetOfExactType<BlocProvider>()}');
           return Scaffold(
             backgroundColor: colors[colorIndex],
             body: SafeArea(
@@ -53,7 +56,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            _appBar(),
+                            const _AppBar(),
                             const Divider(),
                             const SizedBox(height: 8),
                             ColorPicker(
@@ -76,52 +79,92 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                           ],
                         ),
                       )
-                    : const CircularProgressIndicator()),
+                    : const LoadingState()),
           );
         },
       ),
     );
   }
 
-  AppBar _appBar() {
+  void _initialFields() {
+    final note = context.read<EditNoteBloc>().state.noteData;
+    _titleController.text = note.title ?? '';
+    _contentController.text = note.content;
+    colorIndex = colors.indexOf(Color(note.color));
+  }
+}
+
+class _AppBar extends StatelessWidget {
+  const _AppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: colors[colorIndex],
       title: Text(
         LocaleKeys.editNote.tr(),
-        style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
       centerTitle: true,
       leading: IconButton(
-          onPressed: () => _closePage(),
+          onPressed: () => _closePage(context),
           icon: const Icon(Iconsax.close_circle, color: Colors.black)),
       actions: [
-        IconButton(
-          onPressed: () => _updateNote(),
-          icon: const Icon(Iconsax.note_add, color: Colors.black),
+        PopupMenuButton(
+          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+            PopupMenuItem(
+              child: TextButton.icon(
+                onPressed: () => _updateNote(context),
+                icon: const Icon(Iconsax.note_add, color: Colors.black),
+                label: const Text(
+                  'Update',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+            PopupMenuItem(
+              child: TextButton.icon(
+                onPressed: () => _openCategoryList(context),
+                icon: const Icon(Iconsax.category_2, color: Colors.black),
+                label: const Text(
+                  'Move',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+            PopupMenuItem(
+              child: TextButton.icon(
+                onPressed: () => _deleteNote(context),
+                icon: const Icon(Iconsax.note_remove, color: Colors.black),
+                label: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+          ],
         ),
-        IconButton(
-            onPressed: () => _deleteNote(),
-            icon: const Icon(Iconsax.note_remove, color: Colors.black))
       ],
     );
   }
 
-  void _updateNote() {
+  void _updateNote(BuildContext context) {
     var validate = _formKey.currentState!.validate();
 
     if (validate) {
       context.read<EditNoteBloc>().add(EditNoteUpdate());
-      _closePage();
+      _closePage(context);
     }
   }
 
-  void _deleteNote() {
+  void _deleteNote(BuildContext context) {
     context.read<EditNoteBloc>().add(EditNoteDelete());
-    _closePage();
+    _closePage(context);
   }
 
-  void _closePage() {
-   Navigator.pushReplacement(
+  void _closePage(BuildContext context) {
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => HomeScreen(),
@@ -129,11 +172,38 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     );
   }
 
-  void _initialFileds() {
-    final note = context.read<EditNoteBloc>().state.noteData;
-    _titleController.text = note.title ?? '';
-    _contentController.text = note.content;
-    colorIndex = colors.indexOf(Color(note.color));
+  void _openCategoryList(BuildContext context) async {
+    final result = await showCupertinoModalBottomSheet(
+      context: context,
+      enableDrag: true,
+      isDismissible: true,
+      bounce: true,
+      topRadius: const Radius.circular(15),
+      duration: const Duration(milliseconds: 750),
+      builder: (context) => BlocProvider(
+        create: (context) => CategoryBloc(
+            context.read<AppDatabase>(), const CategoryCompanion()),
+        child: const CategoryBottomSheet(),
+      ),
+    );
+
+    var categoryModel = _extractCategoryData(result);
+
+    context.read<EditNoteBloc>().add(EditNoteCategoryChange(categoryModel));
+  }
+
+  CategoryModel _extractCategoryData(String data) {
+    final split = data.split(',');
+    List values = [];
+    for (int i = 0; i < split.length; i++) {
+      values.add(split[i]);
+    }
+
+    int id = int.parse(values[0]!);
+    values.removeAt(0);
+    String title = values.join();
+
+    return CategoryModel(id: id, title: title);
   }
 }
 

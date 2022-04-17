@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:drift/drift.dart' as drift;
-import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 

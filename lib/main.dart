@@ -6,14 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:drift/drift.dart' as drift;
-import 'package:yalda_students_notes/app.dart';
+import 'package:yalda_students_notes/common/const.dart';
+import 'package:yalda_students_notes/common/lang.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/route_generator.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/category/category.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
-import 'package:yalda_students_notes/screen/note/note.dart';
+import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
 import 'package:yalda_students_notes/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
 import 'package:yalda_students_notes/translation/codegen_loader.g.dart';
@@ -33,7 +34,7 @@ void main() async {
 
   String? languageCode = await getLanguageCode();
   SharedPreferences.getInstance().then((prefs) {
-    var darkModeOn = prefs.getBool('darkMode') ?? true;
+    var darkModeOn = prefs.getBool('darkMode') ?? false;
 
     runApp(
       EasyLocalization(
@@ -52,6 +53,8 @@ void main() async {
             BlocProvider<CategoryBloc>(
                 create: (context) => CategoryBloc(
                     context.read<AppDatabase>(), const CategoryCompanion())),
+            BlocProvider<NoteListBloc>(
+                create: (context) => NoteListBloc(context.read<AppDatabase>()))
           ],
           child: MyApp(languageCode: languageCode),
         ),

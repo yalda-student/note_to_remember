@@ -27,3 +27,10 @@ class EditNoteColorChange extends EditNoteEvent {
 
   EditNoteColorChange(this.color);
 }
+
+class EditNoteCategoryChange extends EditNoteEvent{
+
+  final CategoryModel category;
+
+  EditNoteCategoryChange(this.category);
+}

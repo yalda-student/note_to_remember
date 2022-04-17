@@ -19,47 +19,45 @@ class NoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocProvider<NoteListBloc>(
-      create: (context) => NoteListBloc(context.read<AppDatabase>()),
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              ListTile(
-                title: Text(
-                  LocaleKeys.notesList.tr(),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 17),
-                ),
-                leading: Icon(
-                  Iconsax.note_21,
-                  color: theme.colorScheme.secondary,
-                ),
+    return Stack(
+      children: [
+        Column(
+          children: [
+            // GameCard(),
+            ListTile(
+              title: Text(
+                LocaleKeys.notesList.tr(),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 17),
               ),
-              Consumer<AppDatabase>(
-                builder: (context, value, child) {
-                  context.read<NoteListBloc>().add(NoteListStart());
-                  return BlocBuilder<NoteListBloc, NoteListState>(
-                    builder: (context, state) {
-                      return _handleStates(state);
-                    },
-                  );
-                },
-              )
-            ],
-          ),
-          Positioned(
-            bottom: 16,
-            right: 8,
-            child: FloatingActionButton(
-              onPressed: () {
-                _openAddNotePage(context);
-              },
-              child: Icon(Iconsax.add, color: theme.colorScheme.primary),
+              leading: Icon(
+                Iconsax.note_21,
+                color: theme.colorScheme.secondary,
+              ),
             ),
+            Consumer<AppDatabase>(
+              builder: (context, value, child) {
+                context.read<NoteListBloc>().add(NoteListStart());
+                return BlocBuilder<NoteListBloc, NoteListState>(
+                  builder: (context, state) {
+                    return _handleStates(state);
+                  },
+                );
+              },
+            )
+          ],
+        ),
+        Positioned(
+          bottom: 16,
+          right: 8,
+          child: FloatingActionButton(
+            onPressed: () {
+              _openAddNotePage(context);
+            },
+            child: Icon(Iconsax.add, color: theme.colorScheme.primary),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
