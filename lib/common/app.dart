@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 
@@ -24,6 +25,22 @@ mixin FetchNote {
       categories.add(model);
     }
     return categories;
+  }
+}
+
+mixin ExtractCategoryData {
+  CategoryModel extractCategoryData(String data) {
+    final split = data.split(',');
+    List values = [];
+    for (int i = 0; i < split.length; i++) {
+      values.add(split[i]);
+    }
+
+    int id = int.parse(values[0]!);
+    values.removeAt(0);
+    String title = values.join();
+
+    return CategoryModel(id: id, title: title);
   }
 }
 

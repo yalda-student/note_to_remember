@@ -14,6 +14,7 @@ import 'package:yalda_students_notes/route_generator.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/category/category.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
+import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
 import 'package:yalda_students_notes/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
 import 'package:yalda_students_notes/translation/codegen_loader.g.dart';
@@ -52,6 +53,8 @@ void main() async {
             BlocProvider<CategoryBloc>(
                 create: (context) => CategoryBloc(
                     context.read<AppDatabase>(), const CategoryCompanion())),
+            BlocProvider<NoteListBloc>(
+                create: (context) => NoteListBloc(context.read<AppDatabase>()))
           ],
           child: MyApp(languageCode: languageCode),
         ),
@@ -93,7 +96,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int selectedScreenIndex = categoryIndex;
+  int selectedScreenIndex = homeIndex;
 
   final List<int> _history = [];
   late final map = {

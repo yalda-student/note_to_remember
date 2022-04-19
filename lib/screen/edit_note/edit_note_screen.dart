@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
+import 'package:yalda_students_notes/common/app.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/edit_note/bloc/editnote_bloc.dart';
@@ -94,7 +94,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   }
 }
 
-class _AppBar extends StatelessWidget {
+class _AppBar extends StatelessWidget with ExtractCategoryData{
   const _AppBar({Key? key}) : super(key: key);
 
   @override
@@ -187,24 +187,11 @@ class _AppBar extends StatelessWidget {
       ),
     );
 
-    var categoryModel = _extractCategoryData(result);
+    var categoryModel = extractCategoryData(result);
 
     context.read<EditNoteBloc>().add(EditNoteCategoryChange(categoryModel));
   }
 
-  CategoryModel _extractCategoryData(String data) {
-    final split = data.split(',');
-    List values = [];
-    for (int i = 0; i < split.length; i++) {
-      values.add(split[i]);
-    }
-
-    int id = int.parse(values[0]!);
-    values.removeAt(0);
-    String title = values.join();
-
-    return CategoryModel(id: id, title: title);
-  }
 }
 
 class _TitleTextField extends StatelessWidget {

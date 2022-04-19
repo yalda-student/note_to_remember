@@ -2,9 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:yalda_students_notes/common/app.dart';
+import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/screen/add_note/bloc/addnote_bloc.dart';
+import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/widgets/color_picker.dart';
 
 class AddNoteScreen extends StatefulWidget {
@@ -14,7 +19,7 @@ class AddNoteScreen extends StatefulWidget {
   State<AddNoteScreen> createState() => _AddNoteScreenState();
 }
 
-class _AddNoteScreenState extends State<AddNoteScreen> {
+class _AddNoteScreenState extends State<AddNoteScreen> with ExtractCategoryData{
   int colorIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
@@ -61,12 +66,30 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       icon: Icon(Iconsax.close_circle,
                           color: theme.colorScheme.secondary)),
                   actions: [
-                    IconButton(
-                        onPressed: () {
-                          saveNote(context);
-                        },
-                        icon: Icon(Iconsax.note_add,
-                            color: theme.colorScheme.secondary))
+                    PopupMenuButton(
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: TextButton.icon(
+                            onPressed: () => saveNote(context),
+                            icon: const Icon(Iconsax.note_add, color: Colors.black),
+                            label: const Text(
+                              'Save',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          child: TextButton.icon(
+                            onPressed: () => _openCategoryList(context),
+                            icon: const Icon(Iconsax.category_2, color: Colors.black),
+                            label: const Text(
+                              'Move',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 const Divider(),
@@ -110,6 +133,27 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       ),
     );
   }
+
+  void _openCategoryList(BuildContext context) async {
+    final result = await showCupertinoModalBottomSheet(
+      context: context,
+      enableDrag: true,
+      isDismissible: true,
+      bounce: true,
+      topRadius: const Radius.circular(15),
+      duration: const Duration(milliseconds: 750),
+      builder: (context) => BlocProvider(
+        create: (context) => CategoryBloc(
+            context.read<AppDatabase>(), const CategoryCompanion()),
+        child: const CategoryBottomSheet(),
+      ),
+    );
+
+    var categoryModel = extractCategoryData(result);
+
+    context.read<AddNoteBloc>().add(AddNoteCategoryChange(categoryModel));
+  }
+
 }
 
 class _TitleTextField extends StatelessWidget {

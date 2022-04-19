@@ -22,3 +22,10 @@ class AddNoteTitleChange extends AddNoteEvent {
 
   AddNoteTitleChange(this.title);
 }
+
+class AddNoteCategoryChange extends AddNoteEvent{
+
+  final CategoryModel category;
+
+  AddNoteCategoryChange(this.category);
+}

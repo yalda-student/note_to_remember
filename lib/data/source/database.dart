@@ -23,6 +23,13 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
   @override
   int get schemaVersion => 1;
 
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON');
+    });
+  }
+
   //-------------Note
 
   Future<int> addNote(NoteCompanion noteCompanion) async {
@@ -35,7 +42,7 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
   }
 
   Future updateNote(NoteData noteData) async {
-   await update(note).replace(noteData);
+    await update(note).replace(noteData);
     notifyListeners();
   }
 
