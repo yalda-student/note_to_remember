@@ -18,13 +18,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       if (event is CategoryStart) {
         await _initialList(emit);
       } else if (event is CategoryInsert) {
-        // emit(CategoryLoading());
         database.addCategory(_category);
-        // add(CategoryStart());
       }
       if (event is CategoryDelete) {
         await database.deleteCategory(event.categoryId);
-        // add(CategoryStart());
       } else if (event is CategoryTextFieldChange) {
         _category = CategoryCompanion(
             title: drift.Value(event.categoryName),

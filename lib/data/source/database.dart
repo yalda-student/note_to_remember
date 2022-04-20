@@ -76,7 +76,7 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
     return query.watch();
   }
 
-  Future<List<NoteData>> getNotesInCategory(categoryId) async {
+  Future<List<NoteData>> getNotesInCategory(int categoryId) async {
     return await (select(note)
           ..where((tbl) => tbl.categoryId.equals(categoryId)))
         .get();
@@ -112,7 +112,14 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
     return query.watch();
   }
 
-// Future<String>
+  Future<String> getCategoryTitle(int categoryId) {
+    final query = select(category)
+      ..where((tbl) {
+        return tbl.id.equals(categoryId);
+      });
+
+    return query.map((row) => row.title).getSingle();
+  }
 }
 
 LazyDatabase _openConnection() {

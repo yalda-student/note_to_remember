@@ -4,10 +4,9 @@ Note App.
 
 ## Description
 
-Note app; User can categorize their notes; favorite notes
+Note app; User can categorize their notes; star notes
 
-
-A few resources to get you started if this is your first Flutter project:
+This Note app is implemented with bloc and provider. It supports dark mode and user can switch between English or Persian language.
 
 - [UI design](https://dribbble.com/shots/16811788-Notes-app)
 
@@ -16,7 +15,7 @@ A few resources to get you started if this is your first Flutter project:
  - iconsax
  - drift 
  - flutter_svg
- - fluuter_gen
+ - flutter_gen
  - provider
  - bloc
  - easy localization
@@ -24,15 +23,20 @@ A few resources to get you started if this is your first Flutter project:
 
  ## Features:
  - dark mode
- - add note
+ - add, update and delete a note
  - star a note by double tapping on it
  - multi language
+ - categorize notes
+ - add, rename and delete(by long pressing on each category) a category
 
+
+ If you enjoy this project, STAR it ;)
 
 
  ## Screenshots:
 
-<img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_note_list.jpg?raw=true" width="200" alt="notw list in dark">
+<img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_note_list.jpg?raw=true" width="200" alt="note list in dark">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_search_404.jpg?raw=true" width="200" alt="search not found in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_favorite.jpg?raw=true" width="200" alt="favorite in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_search.jpg?raw=true" width="200" alt="search in dark">
+<img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_categories.jpg?raw=true" width="200" alt="light categories">

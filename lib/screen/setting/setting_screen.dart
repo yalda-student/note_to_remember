@@ -38,7 +38,7 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             const Divider(),
             ListTile(
-              title: const Text(LocaleKeys.darkMode).tr(),
+              title: const Text(LocaleKeys.theme).tr(),
               trailing: SizedBox(
                 width: 60,
                 height: 50,

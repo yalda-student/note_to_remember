@@ -22,7 +22,6 @@ class CodegenLoader extends AssetLoader{
   "categories": "Categories",
   "setting": "Setting",
   "startSearching": "Start Searching",
-  "darkMode": "Dark mode",
   "editNote": "Edit Note",
   "title": "Title",
   "content": "Content",
@@ -32,7 +31,8 @@ class CodegenLoader extends AssetLoader{
   "add_note": "Add Note",
   "content_Cannot_Be_Empty": "content Can not Be Empty.",
   "favorite_Notes": "Favorite Notes",
-  "any_note": "You don't have any note."
+  "any_note": "You don't have any note.",
+  "theme": "Theme"
 };
 static const Map<String,dynamic> fa = {
   "profileTitle": "یادداشت های من",
@@ -42,7 +42,6 @@ static const Map<String,dynamic> fa = {
   "categories": "دسته ها",
   "setting": "تنظیمات",
   "startSearching": "جستجو را آغاز کنید",
-  "darkMode": "حالت شب",
   "editNote": "ویرایش یادداشت",
   "title": "عنوان",
   "content": "محتوا",
@@ -52,7 +51,8 @@ static const Map<String,dynamic> fa = {
   "add_note": "اضافه کردن یادداشت",
   "content_Cannot_Be_Empty": "محتوا نمی تواند خال باشد",
   "favorite_Notes": "یادداشت های مورد علاقه",
-  "any_note": "شما یادداشتی ندارید"
+  "any_note": "شما یادداشتی ندارید",
+  "theme": "تم"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "fa": fa};
 }

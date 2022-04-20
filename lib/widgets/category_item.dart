@@ -22,12 +22,7 @@ class CategoryItem extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                create: (context) =>
-                    CategoryNotesBloc(appDatabase: context.read<AppDatabase>(),
-                    categoryId:  categoryData.id),
-                child: CategoryNotesScreen(categoryTitle: categoryData.title),
-              ),
+              builder: (context) => CategoryNotesScreen(category: categoryData),
             ));
       },
       onLongPress: () {

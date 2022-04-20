@@ -6,7 +6,6 @@
   "categories": "دسته ها",
   "setting": "تنظیمات",
   "startSearching": "جستجو را آغاز کنید",
-  "darkMode": "حالت شب",
   "editNote": "ویرایش یادداشت",
   "title": "عنوان",
   "content": "محتوا",
@@ -16,5 +15,6 @@
   "add_note": "اضافه کردن یادداشت",
   "content_Cannot_Be_Empty": "محتوا نمی تواند خال باشد",
   "favorite_Notes": "یادداشت های مورد علاقه",
-  "any_note": "شما یادداشتی ندارید"
+  "any_note": "شما یادداشتی ندارید",
+  "theme": "تم"
 }

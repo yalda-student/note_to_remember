@@ -20,10 +20,19 @@ class CategoryNotesEmptyState extends CategoryNotesState {
 }
 
 class CategoryNotesSuccess extends CategoryNotesState {
+  // final String title;
   final List<NoteData> data;
 
   const CategoryNotesSuccess(this.data);
 
   @override
   List<Object?> get props => [data];
+}
+
+class CategoryNotesName extends CategoryNotesState{
+  final String title;
+
+  const CategoryNotesName(this.title);
+  @override
+  List<Object?> get props => [title];
 }

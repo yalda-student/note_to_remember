@@ -8,7 +8,6 @@ abstract class  LocaleKeys {
   static const categories = 'categories';
   static const setting = 'setting';
   static const startSearching = 'startSearching';
-  static const darkMode = 'darkMode';
   static const editNote = 'editNote';
   static const title = 'title';
   static const content = 'content';
@@ -19,5 +18,6 @@ abstract class  LocaleKeys {
   static const content_Cannot_Be_Empty = 'content_Cannot_Be_Empty';
   static const favorite_Notes = 'favorite_Notes';
   static const any_note = 'any_note';
+  static const theme = 'theme';
 
 }
