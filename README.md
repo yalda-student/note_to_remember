@@ -30,12 +30,14 @@ This Note app is implemented with bloc and provider. It supports dark mode and u
  - add, rename and delete(by long pressing on each category) a category
 
 
- If you enjoy this project, STAR it ;)
+
+ ----> If you enjoy this project, STAR it ;)
 
 
  ## Screenshots:
 
-<img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_note_list.jpg?raw=true" width="200" alt="note list in dark">
+<img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_persian_note_list.png?raw=true" width="200" alt="note list in dark">
+<img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_note_list.png?raw=true" width="200" alt="note list in dark">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_search_404.jpg?raw=true" width="200" alt="search not found in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_favorite.jpg?raw=true" width="200" alt="favorite in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_search.jpg?raw=true" width="200" alt="search in dark">
