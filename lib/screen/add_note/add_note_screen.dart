@@ -129,7 +129,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> with ExtractCategoryData{
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomeScreen(),
+        builder: (context) => const HomeScreen(),
       ),
     );
   }

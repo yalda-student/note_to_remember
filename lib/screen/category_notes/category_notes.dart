@@ -41,8 +41,8 @@ class CategoryNotesScreen extends StatelessWidget {
                       style: TextStyle(color: theme.colorScheme.secondary)),
                   centerTitle: true,
                   leading: IconButton(
-                    icon: const Icon(Iconsax.arrow_circle_left,
-                        color: Colors.black),
+                    icon:  Icon(Iconsax.arrow_circle_left,
+                        color:theme.colorScheme.secondary),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   actions: [

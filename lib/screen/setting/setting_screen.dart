@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:yalda_students_notes/screen/about/about_screen.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/util/theme_util.dart';
 
@@ -90,6 +91,17 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
             ),
+            ListTile(
+              title: const Text('About'),
+              trailing: IconButton(
+                  onPressed: (() {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const AboutScreen(),
+                    ));
+                  }),
+                  icon: Icon(Iconsax.arrow_circle_right,
+                      color: theme.colorScheme.secondary)),
+            )
           ],
         ),
       ),

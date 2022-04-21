@@ -1,8 +1,6 @@
 name: yalda_students_notes
 description: A new Flutter project.
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -20,12 +18,6 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.15.0-178.1.beta <3.0.0"
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
@@ -55,6 +47,8 @@ dependencies:
   expandable: ^5.0.1
   modal_bottom_sheet: ^2.0.1
   contained_tab_bar_view: ^0.8.0
+  flutter_feather_icons: ^2.0.0+1
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_test:
@@ -71,7 +65,7 @@ flutter:
   uses-material-design: true
   generate: true
 
-  # To add assets to your application, add an assets section, like this:
+
   assets:
     - asset/image/
     - asset/translation/
@@ -80,11 +74,3 @@ flutter:
     - family: ic_font
       fonts:
           - asset: asset/fonts/ic_font.ttf
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages

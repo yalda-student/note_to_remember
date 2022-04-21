@@ -44,45 +44,41 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Consumer(
-      builder: (context, value, child) =>
-          BlocBuilder<EditNoteBloc, EditNoteState>(
-        builder: (ctx, state) {
-          return Scaffold(
-            backgroundColor: colors[colorIndex],
-            body: SafeArea(
-                child: state is EditNoteInitial
-                    ? Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            const _AppBar(),
-                            const Divider(),
-                            const SizedBox(height: 8),
-                            ColorPicker(
-                                selectedIndex: colorIndex,
-                                onTap: (index) {
-                                  colorIndex = index;
-                                  context
-                                      .read<EditNoteBloc>()
-                                      .add(EditNoteColorChange(colors[index]));
-                                }),
-                            const SizedBox(height: 8),
-                            _TitleTextField(
-                                titleController: _titleController,
-                                theme: theme),
-                            const SizedBox(height: 4),
-                            Expanded(
-                              child: _ContentTextField(
-                                  contentController: _contentController),
-                            )
-                          ],
-                        ),
-                      )
-                    : const LoadingState()),
-          );
-        },
-      ),
+    return BlocBuilder<EditNoteBloc, EditNoteState>(
+      builder: (ctx, state) {
+        return Scaffold(
+          backgroundColor: colors[colorIndex],
+          body: SafeArea(
+              child: state is EditNoteInitial
+                  ? Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          const _AppBar(),
+                          const Divider(),
+                          const SizedBox(height: 8),
+                          ColorPicker(
+                              selectedIndex: colorIndex,
+                              onTap: (index) {
+                                colorIndex = index;
+                                context
+                                    .read<EditNoteBloc>()
+                                    .add(EditNoteColorChange(colors[index]));
+                              }),
+                          const SizedBox(height: 8),
+                          _TitleTextField(
+                              titleController: _titleController, theme: theme),
+                          const SizedBox(height: 4),
+                          Expanded(
+                            child: _ContentTextField(
+                                contentController: _contentController),
+                          )
+                        ],
+                      ),
+                    )
+                  : const LoadingState()),
+        );
+      },
     );
   }
 
@@ -94,58 +90,68 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   }
 }
 
-class _AppBar extends StatelessWidget with ExtractCategoryData{
+class _AppBar extends StatelessWidget with ExtractCategoryData {
   const _AppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: colors[colorIndex],
-      title: Text(
-        LocaleKeys.editNote.tr(),
-        style:
-            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-      ),
-      centerTitle: true,
-      leading: IconButton(
-          onPressed: () => _closePage(context),
-          icon: const Icon(Iconsax.close_circle, color: Colors.black)),
-      actions: [
-        PopupMenuButton(
-          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            PopupMenuItem(
-              child: TextButton.icon(
-                onPressed: () => _updateNote(context),
-                icon: const Icon(Iconsax.note_add, color: Colors.black),
-                label: const Text(
-                  'Update',
-                  style: TextStyle(color: Colors.black),
+    return BlocBuilder<EditNoteBloc, EditNoteState>(
+      builder: (context, state) {
+        return state is EditNoteInitial
+            ? AppBar(
+                backgroundColor: colors[colorIndex],
+                title: Text(
+                  LocaleKeys.editNote.tr(),
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
-              ),
-            ),
-            PopupMenuItem(
-              child: TextButton.icon(
-                onPressed: () => _openCategoryList(context),
-                icon: const Icon(Iconsax.category_2, color: Colors.black),
-                label: const Text(
-                  'Move',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            ),
-            PopupMenuItem(
-              child: TextButton.icon(
-                onPressed: () => _deleteNote(context),
-                icon: const Icon(Iconsax.note_remove, color: Colors.black),
-                label: const Text(
-                  'Delete',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+                centerTitle: true,
+                leading: IconButton(
+                    onPressed: () => _closePage(context),
+                    icon:
+                        const Icon(Iconsax.close_circle, color: Colors.black)),
+                actions: [
+                  PopupMenuButton(
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                      PopupMenuItem(
+                        child: TextButton.icon(
+                          onPressed: () => _updateNote(context),
+                          icon:
+                              const Icon(Iconsax.note_add, color: Colors.black),
+                          label: const Text(
+                            'Update',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        child: TextButton.icon(
+                          onPressed: () => _openCategoryList(context),
+                          icon: const Icon(Iconsax.category_2,
+                              color: Colors.black),
+                          label: const Text(
+                            'Move',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        child: TextButton.icon(
+                          onPressed: () => _deleteNote(context),
+                          icon: const Icon(Iconsax.note_remove,
+                              color: Colors.black),
+                          label: const Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            : const LoadingState();
+      },
     );
   }
 
@@ -167,7 +173,7 @@ class _AppBar extends StatelessWidget with ExtractCategoryData{
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomeScreen(),
+        builder: (context) => const HomeScreen(),
       ),
     );
   }
@@ -191,7 +197,6 @@ class _AppBar extends StatelessWidget with ExtractCategoryData{
 
     context.read<EditNoteBloc>().add(EditNoteCategoryChange(categoryModel));
   }
-
 }
 
 class _TitleTextField extends StatelessWidget {

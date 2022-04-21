@@ -158,7 +158,7 @@ class _MainScreenState extends State<MainScreen> {
                 child: IndexedStack(
                   index: selectedScreenIndex,
                   children: [
-                    _navigator(_homeKey, homeIndex, HomeScreen()),
+                    _navigator(_homeKey, homeIndex, const HomeScreen()),
                     _navigator(_searchKey, searchIndex, const SearchScreen()),
                     _navigator(
                         _categoryKey, categoryIndex, const CategoryScreen()),

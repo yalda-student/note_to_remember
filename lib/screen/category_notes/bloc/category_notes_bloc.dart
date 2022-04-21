@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
 
 part 'category_notes_event.dart';
