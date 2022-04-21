@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yalda_students_notes/common/const.dart';
 import 'package:yalda_students_notes/main.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int selectedIndex;
   final Function(int index) onTap;
 
-  const CustomBottomNavigation(
-      {Key? key, required this.selectedIndex, required this.onTap})
-      : super(key: key);
+  const CustomBottomNavigation({
+    Key? key,
+    required this.selectedIndex,
+    required this.onTap,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: bottomNavigationHeight,
+      height: AppConstants.bottomNavigationHeight,
       decoration: BoxDecoration(
         color: theme.colorScheme.secondary,
         borderRadius: const BorderRadius.only(

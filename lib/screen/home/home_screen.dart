@@ -32,8 +32,6 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             child: Container(
               padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ContainedTabBarView(
                   tabs: [
                     const Text(LocaleKeys.notes).tr(),
@@ -47,15 +45,15 @@ class HomeScreen extends StatelessWidget {
                       physics: BouncingScrollPhysics()),
                   tabBarProperties: TabBarProperties(
                       height: 44,
-                      width: MediaQuery.of(context).size.width * 0.72,
+                      width: MediaQuery.of(context).size.width * 0.8,
                       background: Container(
                         decoration: BoxDecoration(
                           color: theme.colorScheme.surface,
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(8.0)),
+                              const BorderRadius.all(Radius.circular(12.0)),
                         ),
                       ),
-                      indicatorPadding: const EdgeInsets.all(6),
+                      indicatorPadding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
                       position: TabBarPosition.top,
                       alignment: TabBarAlignment.center,
                       indicatorColor: Colors.transparent,

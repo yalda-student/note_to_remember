@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +27,6 @@ const int homeIndex = 0;
 const int searchIndex = 1;
 const int categoryIndex = 2;
 const int settingIndex = 3;
-const double bottomNavigationHeight = 65;
 
 void main() async {
   DriftConfig.init();
@@ -35,7 +35,10 @@ void main() async {
 
   String? languageCode = await getLanguageCode();
   SharedPreferences.getInstance().then((prefs) {
-    var darkModeOn = prefs.getBool('darkMode') ?? true;
+    var brightness = SchedulerBinding.instance!.window.platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
+    var darkModeOn = prefs.getBool('darkMode') ?? isDarkMode;
 
     runApp(
       EasyLocalization(
@@ -154,7 +157,7 @@ class _MainScreenState extends State<MainScreen> {
           child: Stack(
             children: [
               Positioned.fill(
-                bottom: bottomNavigationHeight,
+                bottom: AppConstants.bottomNavigationHeight ,
                 child: IndexedStack(
                   index: selectedScreenIndex,
                   children: [

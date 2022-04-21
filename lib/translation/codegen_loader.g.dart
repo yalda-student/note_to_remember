@@ -32,7 +32,8 @@ class CodegenLoader extends AssetLoader{
   "content_Cannot_Be_Empty": "content Can not Be Empty.",
   "favorite_Notes": "Favorite Notes",
   "any_note": "You don't have any note.",
-  "theme": "Theme"
+  "theme": "Theme",
+  "about": "About us"
 };
 static const Map<String,dynamic> fa = {
   "profileTitle": "یادداشت های من",
@@ -52,7 +53,8 @@ static const Map<String,dynamic> fa = {
   "content_Cannot_Be_Empty": "محتوا نمی تواند خال باشد",
   "favorite_Notes": "یادداشت های مورد علاقه",
   "any_note": "شما یادداشتی ندارید",
-  "theme": "تم"
+  "theme": "تم",
+  "about": "درباره ما"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "fa": fa};
 }

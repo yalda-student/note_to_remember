@@ -58,41 +58,14 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             ListTile(
               title: const Text(LocaleKeys.language).tr(),
-              trailing: SizedBox(
+              trailing: const SizedBox(
                 width: 151,
                 height: 40,
-                child: ToggleSwitch(
-                  minWidth: 75.0,
-                  cornerRadius: 20.0,
-                  activeBgColors: [
-                    [theme.colorScheme.secondary],
-                    [theme.colorScheme.secondary]
-                  ],
-                  activeFgColor: theme.colorScheme.surface,
-                  inactiveBgColor: theme.colorScheme.surface,
-                  inactiveFgColor: theme.colorScheme.onPrimary,
-                  initialLabelIndex:
-                      EasyLocalization.of(context)!.currentLocale ==
-                              const Locale('en', 'US')
-                          ? 0
-                          : 1,
-                  totalSwitches: 2,
-                  labels: const ['English', 'فارسی'],
-                  curve: Curves.linear,
-                  customTextStyles: [
-                    theme.textTheme.subtitle1!
-                        .copyWith(color: const Color(0xff6996ea), fontSize: 13),
-                    theme.textTheme.subtitle1!
-                        .copyWith(color: const Color(0xff6996ea), fontSize: 13)
-                  ],
-                  radiusStyle: true,
-                  animate: true,
-                  onToggle: (index) => onLanguageChange(index!),
-                ),
+                child: _LanguageSwitcher(),
               ),
             ),
             ListTile(
-              title: const Text('About'),
+              title: const Text(LocaleKeys.about).tr(),
               trailing: IconButton(
                   onPressed: (() {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -115,8 +88,45 @@ class _SettingScreenState extends State<SettingScreen> {
     var prefs = await SharedPreferences.getInstance();
     prefs.setBool('darkMode', value);
   }
+}
 
-  void onLanguageChange(int index) async {
+class _LanguageSwitcher extends StatelessWidget {
+  const _LanguageSwitcher({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return ToggleSwitch(
+      minWidth: 75.0,
+      cornerRadius: 20.0,
+      activeBgColors: [
+        [theme.colorScheme.secondary],
+        [theme.colorScheme.secondary]
+      ],
+      activeFgColor: theme.colorScheme.surface,
+      inactiveBgColor: theme.colorScheme.surface,
+      inactiveFgColor: theme.colorScheme.onPrimary,
+      initialLabelIndex: EasyLocalization.of(context)!.currentLocale ==
+              const Locale('en', 'US')
+          ? 0
+          : 1,
+      totalSwitches: 2,
+      labels: const ['English', 'فارسی'],
+      curve: Curves.linear,
+      customTextStyles: [
+        theme.textTheme.subtitle1!
+            .copyWith(color: const Color(0xff6996ea), fontSize: 13),
+        theme.textTheme.subtitle1!
+            .copyWith(color: const Color(0xff6996ea), fontSize: 13)
+      ],
+      radiusStyle: true,
+      animate: true,
+      onToggle: (index) => onLanguageChange(context, index!),
+    );
+  }
+
+  void onLanguageChange(BuildContext context, int index) async {
     final prefs = await SharedPreferences.getInstance();
     if (index == 0) {
       await context.setLocale(const Locale('en', 'US'));

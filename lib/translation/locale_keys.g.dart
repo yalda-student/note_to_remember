@@ -19,5 +19,6 @@ abstract class  LocaleKeys {
   static const favorite_Notes = 'favorite_Notes';
   static const any_note = 'any_note';
   static const theme = 'theme';
+  static const about = 'about';
 
 }
