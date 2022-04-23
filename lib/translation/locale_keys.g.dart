@@ -20,5 +20,14 @@ abstract class  LocaleKeys {
   static const any_note = 'any_note';
   static const theme = 'theme';
   static const about = 'about';
+  static const lets_go = 'lets_go';
+  static const Colorful_Notes = 'Colorful_Notes';
+  static const note_tutorial = 'note_tutorial';
+  static const find_quickly = 'find_quickly';
+  static const search_easily = 'search_easily';
+  static const Manage_Notes = 'Manage_Notes';
+  static const categorize_notes = 'categorize_notes';
+  static const select_language = 'select_language';
+  static const done = 'done';
 
 }

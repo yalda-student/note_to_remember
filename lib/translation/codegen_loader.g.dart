@@ -33,7 +33,16 @@ class CodegenLoader extends AssetLoader{
   "favorite_Notes": "Favorite Notes",
   "any_note": "You don't have any note.",
   "theme": "Theme",
-  "about": "About us"
+  "about": "About us",
+  "lets_go": "Let's go right away!",
+  "Colorful_Notes": "Colorful Notes",
+  "note_tutorial": "Write and Save whatever you want.\nDouble tap on each one to star it.",
+  "find_quickly": "Find out Quickly",
+  "search_easily": "You can easily search between notes \nand find what you want.",
+  "Manage_Notes": "Manage Notes",
+  "categorize_notes": "Make as many categories as you want and categorize your notes.\n\nYou can delete any category by long pressing on it.",
+  "select_language": "Select your preferred language.",
+  "done": "Done"
 };
 static const Map<String,dynamic> fa = {
   "profileTitle": "یادداشت های من",
@@ -54,7 +63,16 @@ static const Map<String,dynamic> fa = {
   "favorite_Notes": "یادداشت های مورد علاقه",
   "any_note": "شما یادداشتی ندارید",
   "theme": "تم",
-  "about": "درباره ما"
+  "about": "درباره ما",
+  "lets_go": "بزن بریم",
+  "Colorful_Notes": "یادداشت های رنگی",
+  "note_tutorial": "هر چیزی رو که میخوای بنویس و ذخیره اش کن.\n میتونی دوبار روش ضربه بزنی تا ستاره دار بشه.",
+  "find_quickly": "سریع پیداش کن",
+  "search_easily": "می تونی به راحتی بین یادداشت های جستجو کنی\nو هرچیزی رو که میخوای پیدا کنی.",
+  "Manage_Notes": "مدیریت یادداشت ها",
+  "categorize_notes": "هر تعداد که میخوای دسته بساز و یادداشت هات رو دسته بندی کن.\n\nبا دوبار ضربه روی اون میتونی حذفشون کنی.",
+  "select_language": "زبان مورد نظر خود را انتخاب کنید.",
+  "done": "تمام"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "fa": fa};
 }

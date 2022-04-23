@@ -23,7 +23,6 @@ class NoteScreen extends StatelessWidget {
       children: [
         Column(
           children: [
-            // GameCard(),
             ListTile(
               title: Text(
                 LocaleKeys.notesList.tr(),

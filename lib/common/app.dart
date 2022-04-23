@@ -1,8 +1,22 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yalda_students_notes/common/const.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/source/database.dart';
+
+Future<bool> isFirstTime() async {
+  final pref = await SharedPreferences.getInstance();
+  var isFirstTime = pref.getBool(AppConstants.isFirstRun);
+  if (isFirstTime != null && !isFirstTime) {
+    pref.setBool('first_time', false);
+    return false;
+  } else {
+    pref.setBool(AppConstants.isFirstRun, false);
+    return true;
+  }
+}
 
 mixin FetchNote {
   List<NoteModel> fetchNoteData(

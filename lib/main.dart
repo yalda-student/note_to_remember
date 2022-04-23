@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:yalda_students_notes/common/app.dart';
 import 'package:yalda_students_notes/common/const.dart';
 import 'package:yalda_students_notes/common/lang.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
@@ -14,6 +15,7 @@ import 'package:yalda_students_notes/data/source/database.dart';
 import 'package:yalda_students_notes/route_generator.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/category/category.dart';
+import 'package:yalda_students_notes/screen/onboarding/onboard_screen.dart';
 import 'package:yalda_students_notes/screen/category_notes/bloc/category_notes_bloc.dart';
 import 'package:yalda_students_notes/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
@@ -22,6 +24,9 @@ import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
 import 'package:yalda_students_notes/translation/codegen_loader.g.dart';
 import 'package:yalda_students_notes/util/theme_util.dart';
 import 'package:yalda_students_notes/widgets/bottom_navigation.dart';
+import 'package:yalda_students_notes/widgets/loading_state.dart';
+
+import 'screen/onboarding/bloc/language_bloc.dart';
 
 const int homeIndex = 0;
 const int searchIndex = 1;
@@ -33,7 +38,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  String? languageCode = await getLanguageCode();
   SharedPreferences.getInstance().then((prefs) {
     var brightness = SchedulerBinding.instance!.window.platformBrightness;
     bool isDarkMode = brightness == Brightness.dark;
@@ -59,12 +63,13 @@ void main() async {
                     context.read<AppDatabase>(), const CategoryCompanion())),
             BlocProvider<NoteListBloc>(
                 create: (context) => NoteListBloc(context.read<AppDatabase>())),
+            BlocProvider(create: (context) => LanguageBloc()),
             BlocProvider<CategoryNotesBloc>(
               create: (context) =>
                   CategoryNotesBloc(appDatabase: context.read<AppDatabase>()),
             )
           ],
-          child: MyApp(languageCode: languageCode),
+          child: const MyApp(),
         ),
       ),
     );
@@ -72,9 +77,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final String? languageCode;
-
-  const MyApp({Key? key, this.languageCode}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +89,18 @@ class MyApp extends StatelessWidget {
       title: 'My Notes',
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.getTheme(),
-      home: const MainScreen(),
+      home: FutureBuilder<bool>(
+          future: isFirstTime(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const LoadingState();
+            }
+            if (snapshot.data!) {
+              return const OnBoardingScreen();
+            } else {
+              return const MainScreen();
+            }
+          }),
       initialRoute: AppConstants.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
       locale: Locale(languageCode),
@@ -139,7 +153,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 1), () {
       isFirstTime().then((isFirstTime) {
         if (isFirstTime) {
           createNoneCategory();
@@ -157,7 +171,7 @@ class _MainScreenState extends State<MainScreen> {
           child: Stack(
             children: [
               Positioned.fill(
-                bottom: AppConstants.bottomNavigationHeight ,
+                bottom: AppConstants.bottomNavigationHeight,
                 child: IndexedStack(
                   index: selectedScreenIndex,
                   children: [
@@ -204,18 +218,6 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           );
-  }
-
-  Future<bool> isFirstTime() async {
-    final pref = await SharedPreferences.getInstance();
-    var isFirstTime = pref.getBool('first_time');
-    if (isFirstTime != null && !isFirstTime) {
-      pref.setBool('first_time', false);
-      return false;
-    } else {
-      pref.setBool('first_time', false);
-      return true;
-    }
   }
 
   void createNoneCategory() async {

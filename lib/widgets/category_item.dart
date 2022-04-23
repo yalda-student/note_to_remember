@@ -23,7 +23,7 @@ class CategoryItem extends StatelessWidget {
               builder: (context) => CategoryNotesScreen(category: categoryData),
             ));
       },
-      onLongPress: () {
+      onDoubleTap: () {
         //delete category
         if (categoryData.id != 1) {
           context.read<CategoryBloc>().add(CategoryDelete(categoryData.id));

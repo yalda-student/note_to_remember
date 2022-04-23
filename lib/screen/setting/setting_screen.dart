@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:yalda_students_notes/common/lang.dart';
 import 'package:yalda_students_notes/screen/about/about_screen.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/util/theme_util.dart';
@@ -22,7 +23,6 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     _enableDarkTheme = (themeNotifier.getTheme() == darkTheme);
 
@@ -47,7 +47,6 @@ class _SettingScreenState extends State<SettingScreen> {
                   isDarkModeEnabled: _enableDarkTheme,
                   sunColor: Colors.amber,
                   onStateChanged: (val) {
-                    debugPrint('onStateChanged: $val');
                     setState(() {
                       _enableDarkTheme = val;
                     });
@@ -90,7 +89,7 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 }
 
-class _LanguageSwitcher extends StatelessWidget {
+class _LanguageSwitcher extends StatelessWidget with AppLanguage {
   const _LanguageSwitcher({Key? key}) : super(key: key);
 
   @override
@@ -108,7 +107,7 @@ class _LanguageSwitcher extends StatelessWidget {
       inactiveBgColor: theme.colorScheme.surface,
       inactiveFgColor: theme.colorScheme.onPrimary,
       initialLabelIndex: EasyLocalization.of(context)!.currentLocale ==
-              const Locale('en', 'US')
+          const Locale('en', 'US')
           ? 0
           : 1,
       totalSwitches: 2,
@@ -122,18 +121,13 @@ class _LanguageSwitcher extends StatelessWidget {
       ],
       radiusStyle: true,
       animate: true,
-      onToggle: (index) => onLanguageChange(context, index!),
+      onToggle: (index) {
+        if (index == 0) {
+          onLanguageChange(context, const Locale('en', 'US'));
+        } else {
+          onLanguageChange(context, const Locale('fa', 'IR'));
+        }
+      },
     );
-  }
-
-  void onLanguageChange(BuildContext context, int index) async {
-    final prefs = await SharedPreferences.getInstance();
-    if (index == 0) {
-      await context.setLocale(const Locale('en', 'US'));
-      prefs.setString('appLang', const Locale('en', 'US').languageCode);
-    } else {
-      await context.setLocale(const Locale('fa', 'IR'));
-      prefs.setString('appLang', const Locale('fa', 'IR').languageCode);
-    }
   }
 }
