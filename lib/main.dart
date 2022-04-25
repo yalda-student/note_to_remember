@@ -39,10 +39,8 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-    var brightness = SchedulerBinding.instance!.window.platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
 
-    var darkModeOn = prefs.getBool('darkMode') ?? isDarkMode;
+    var darkModeOn = prefs.getBool('darkMode') ?? false;
 
     runApp(
       EasyLocalization(
@@ -63,7 +61,7 @@ void main() async {
                     context.read<AppDatabase>(), const CategoryCompanion())),
             BlocProvider<NoteListBloc>(
                 create: (context) => NoteListBloc(context.read<AppDatabase>())),
-            BlocProvider(create: (context) => LanguageBloc()),
+            BlocProvider<LanguageBloc>(create: (context) => LanguageBloc()),
             BlocProvider<CategoryNotesBloc>(
               create: (context) =>
                   CategoryNotesBloc(appDatabase: context.read<AppDatabase>()),

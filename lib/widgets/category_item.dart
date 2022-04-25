@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/screen/category_notes/category_notes.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 
 class CategoryItem extends StatelessWidget {
   final Color color;
@@ -29,8 +31,8 @@ class CategoryItem extends StatelessWidget {
           context.read<CategoryBloc>().add(CategoryDelete(categoryData.id));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("You can't delete None Category."),
+             SnackBar(
+              content: Text(LocaleKeys.delete_none_category.tr()),
             ),
           );
         }
@@ -49,7 +51,7 @@ class CategoryItem extends StatelessWidget {
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             Text(
-              '${categoryData.numberOfNotes} Notes',
+              '${categoryData.numberOfNotes} ${LocaleKeys.note.tr()}',
               style:
                   const TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
             ),

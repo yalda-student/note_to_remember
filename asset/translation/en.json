@@ -26,5 +26,16 @@
   "Manage_Notes": "Manage Notes",
   "categorize_notes": "Make as many categories as you want and categorize your notes.\n\nYou can delete any category by long pressing on it.",
   "select_language": "Select your preferred language.",
-  "done": "Done"
+  "done": "Done",
+  "save": "Save",
+  "move": "Move",
+  "delete": "Delete",
+  "select_category": "Select category",
+  "category_count_1": "You have",
+  "category_count_2": "categories.",
+  "cancel": "Cancel",
+  "create": "Create",
+  "update": "Update",
+  "note": "Note",
+  "delete_none_category": "You can't delete None Category."
 }

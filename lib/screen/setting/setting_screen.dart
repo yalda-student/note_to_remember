@@ -8,7 +8,9 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:yalda_students_notes/common/lang.dart';
 import 'package:yalda_students_notes/screen/about/about_screen.dart';
 import 'package:yalda_students_notes/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/util/icon_util.dart';
 import 'package:yalda_students_notes/util/theme_util.dart';
+import 'package:yalda_students_notes/common/const.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -46,12 +48,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: DayNightSwitcher(
                   isDarkModeEnabled: _enableDarkTheme,
                   sunColor: Colors.amber,
-                  onStateChanged: (val) {
-                    setState(() {
-                      _enableDarkTheme = val;
-                    });
-                    onThemeChanged(val, themeNotifier);
-                  },
+                  onStateChanged: (val) => onThemeChanged(val, themeNotifier),
                 ),
               ),
             ),
@@ -71,7 +68,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       builder: (context) => const AboutScreen(),
                     ));
                   }),
-                  icon: Icon(Iconsax.arrow_circle_right,
+                  icon: Icon(
+                      EasyLocalization.of(context)!.currentLocale ==
+                              const Locale('en', 'US')
+                          ? Iconsax.arrow_circle_right
+                          : Iconsax.arrow_circle_left,
                       color: theme.colorScheme.secondary)),
             )
           ],
@@ -85,7 +86,7 @@ class _SettingScreenState extends State<SettingScreen> {
         ? themeNotifier.setTheme(darkTheme)
         : themeNotifier.setTheme(lightTheme);
     var prefs = await SharedPreferences.getInstance();
-    prefs.setBool('darkMode', value);
+    prefs.setBool(AppConstants.darkMode, value);
   }
 }
 
@@ -107,7 +108,7 @@ class _LanguageSwitcher extends StatelessWidget with AppLanguage {
       inactiveBgColor: theme.colorScheme.surface,
       inactiveFgColor: theme.colorScheme.onPrimary,
       initialLabelIndex: EasyLocalization.of(context)!.currentLocale ==
-          const Locale('en', 'US')
+              const Locale('en', 'US')
           ? 0
           : 1,
       totalSwitches: 2,

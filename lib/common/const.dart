@@ -10,6 +10,8 @@ class AppConstants {
 
   //shared prefs
   static const String isFirstRun = 'first_time';
+  static const String darkMode = 'darkMode';
+  static const String appLanguage = 'appLang';
 
   //URLs
   static const String githubUrl =

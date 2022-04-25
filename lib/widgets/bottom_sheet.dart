@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
+import 'package:yalda_students_notes/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/widgets/loading_state.dart';
 
 class CategoryBottomSheet extends StatelessWidget {
@@ -21,12 +23,12 @@ class CategoryBottomSheet extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return const Padding(
-                    padding: EdgeInsets.all(12.0),
+                  return  Padding(
+                    padding: const EdgeInsets.all(12.0),
                     child: Align(
                         alignment: Alignment.center,
-                        child: Text('Select category',
-                            style: TextStyle(
+                        child: Text(LocaleKeys.select_category.tr(),
+                            style: const TextStyle(
                                 fontSize: 19, fontWeight: FontWeight.bold))),
                   );
                 } else {

@@ -38,15 +38,15 @@ class _NoteCategoryItemState extends State<NoteCategoryItem> {
         header: Text(
           widget.note.title ?? '',
           style: TextStyle(
-          overflow: TextOverflow.ellipsis,
+              overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w800,
               fontSize: 19,
               color: theme.colorScheme.secondary),
         ),
         collapsed: Text(
           widget.note.content,
-          overflow: TextOverflow.ellipsis,
           maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontWeight: FontWeight.normal,
               fontSize: 15,

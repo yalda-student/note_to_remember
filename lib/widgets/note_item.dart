@@ -57,11 +57,11 @@ class _NoteItemState extends State<NoteItem> {
                       child: Text(
                         widget.data.title ?? '',
                         maxLines: 1,
-                        style: TextStyle(
+                        style: const TextStyle(
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w800,
                             fontSize: 18,
-                            color: theme.colorScheme.secondary),
+                            color: Color(0xff010101)),
                       ),
                     ),
                     widget.data.isFavorite

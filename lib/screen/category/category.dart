@@ -115,7 +115,7 @@ class _AppBar extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: Text(
-                'Cancel',
+                LocaleKeys.cancel.tr(),
                 style: TextStyle(
                     color: theme.colorScheme.secondary.withOpacity(0.7)),
               ),
@@ -123,7 +123,7 @@ class _AppBar extends StatelessWidget {
             ),
             TextButton(
               child: Text(
-                'Create',
+                LocaleKeys.create.tr(),
                 style: TextStyle(color: theme.colorScheme.secondary),
               ),
               onPressed: () {
@@ -173,7 +173,8 @@ class _CategoryData extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text('You have ${data.length} categories.'),
+                  Text(
+                      '${LocaleKeys.category_count_1.tr()} ${data.length} ${LocaleKeys.category_count_2.tr()}'),
                 ]),
           );
         } else {

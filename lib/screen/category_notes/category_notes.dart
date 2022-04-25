@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
@@ -41,8 +42,12 @@ class CategoryNotesScreen extends StatelessWidget {
                       style: TextStyle(color: theme.colorScheme.secondary)),
                   centerTitle: true,
                   leading: IconButton(
-                    icon:  Icon(Iconsax.arrow_circle_left,
-                        color:theme.colorScheme.secondary),
+                    icon: Icon(
+                        EasyLocalization.of(context)!.currentLocale ==
+                                const Locale('en', 'US')
+                            ? Iconsax.arrow_circle_left
+                            : Iconsax.arrow_circle_right,
+                        color: theme.colorScheme.secondary),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   actions: [

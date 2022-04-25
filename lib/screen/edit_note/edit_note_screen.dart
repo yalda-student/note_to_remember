@@ -117,9 +117,9 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                           onPressed: () => _updateNote(context),
                           icon:
                               const Icon(Iconsax.note_add, color: Colors.black),
-                          label: const Text(
-                            'Update',
-                            style: TextStyle(color: Colors.black),
+                          label:  Text(
+                            LocaleKeys.update.tr(),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ),
                       ),
@@ -128,9 +128,9 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                           onPressed: () => _openCategoryList(context),
                           icon: const Icon(Iconsax.category_2,
                               color: Colors.black),
-                          label: const Text(
-                            'Move',
-                            style: TextStyle(color: Colors.black),
+                          label:  Text(
+                           LocaleKeys.move.tr(),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ),
                       ),
@@ -139,9 +139,9 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                           onPressed: () => _deleteNote(context),
                           icon: const Icon(Iconsax.note_remove,
                               color: Colors.black),
-                          label: const Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.black),
+                          label:  Text(
+                            LocaleKeys.delete.tr(),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ),
                       ),

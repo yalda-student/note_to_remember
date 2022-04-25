@@ -29,5 +29,16 @@ abstract class  LocaleKeys {
   static const categorize_notes = 'categorize_notes';
   static const select_language = 'select_language';
   static const done = 'done';
+  static const save = 'save';
+  static const move = 'move';
+  static const delete = 'delete';
+  static const select_category = 'select_category';
+  static const category_count_1 = 'category_count_1';
+  static const category_count_2 = 'category_count_2';
+  static const cancel = 'cancel';
+  static const create = 'create';
+  static const update = 'update';
+  static const note = 'note';
+  static const delete_none_category = 'delete_none_category';
 
 }

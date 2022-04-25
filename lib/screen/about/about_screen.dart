@@ -21,7 +21,11 @@ class AboutScreen extends StatelessWidget {
         title: const Text(LocaleKeys.about).tr(),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Iconsax.arrow_circle_left,
+          icon: Icon(
+              EasyLocalization.of(context)!.currentLocale ==
+                      const Locale('en', 'US')
+                  ? Iconsax.arrow_circle_left
+                  : Iconsax.arrow_circle_right,
               color: theme.colorScheme.secondary),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -32,8 +36,8 @@ class AboutScreen extends StatelessWidget {
             leading:
                 Icon(FeatherIcons.user, color: theme.colorScheme.secondary),
             title: Text('Yalda Student',
-                style: TextStyle(color: theme.colorScheme.secondary,
-                    fontSize: 16)),
+                style: TextStyle(
+                    color: theme.colorScheme.secondary, fontSize: 16)),
           ),
           ListTile(
             leading:
@@ -41,10 +45,11 @@ class AboutScreen extends StatelessWidget {
             title: TextButton(
                 onPressed: () => _launchGithub(),
                 child: Container(
-                    alignment: isLTR ? Alignment.centerLeft : Alignment.centerRight,
+                  alignment:
+                      isLTR ? Alignment.centerLeft : Alignment.centerRight,
                   child: Text('Github',
-                      style: TextStyle(color: theme.colorScheme.secondary,
-                          fontSize: 16)),
+                      style: TextStyle(
+                          color: theme.colorScheme.secondary, fontSize: 16)),
                 )),
           ),
           ListTile(
@@ -54,8 +59,8 @@ class AboutScreen extends StatelessWidget {
               child: TextButton(
                   onPressed: () => _launchLinkedIn(),
                   child: Text('Linkedin',
-                      style: TextStyle(color: theme.colorScheme.secondary,
-                      fontSize: 16))),
+                      style: TextStyle(
+                          color: theme.colorScheme.secondary, fontSize: 16))),
             ),
           ),
         ],

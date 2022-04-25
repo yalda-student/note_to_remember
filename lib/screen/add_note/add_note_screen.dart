@@ -19,7 +19,8 @@ class AddNoteScreen extends StatefulWidget {
   State<AddNoteScreen> createState() => _AddNoteScreenState();
 }
 
-class _AddNoteScreenState extends State<AddNoteScreen> with ExtractCategoryData{
+class _AddNoteScreenState extends State<AddNoteScreen>
+    with ExtractCategoryData {
   int colorIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
@@ -71,20 +72,22 @@ class _AddNoteScreenState extends State<AddNoteScreen> with ExtractCategoryData{
                         PopupMenuItem(
                           child: TextButton.icon(
                             onPressed: () => saveNote(context),
-                            icon: const Icon(Iconsax.note_add, color: Colors.black),
-                            label: const Text(
-                              'Save',
-                              style: TextStyle(color: Colors.black),
+                            icon: const Icon(Iconsax.note_add,
+                                color: Colors.black),
+                            label: Text(
+                              LocaleKeys.save.tr(),
+                              style: const TextStyle(color: Colors.black),
                             ),
                           ),
                         ),
                         PopupMenuItem(
                           child: TextButton.icon(
                             onPressed: () => _openCategoryList(context),
-                            icon: const Icon(Iconsax.category_2, color: Colors.black),
-                            label: const Text(
-                              'Move',
-                              style: TextStyle(color: Colors.black),
+                            icon: const Icon(Iconsax.category_2,
+                                color: Colors.black),
+                            label: Text(
+                              LocaleKeys.move.tr(),
+                              style: const TextStyle(color: Colors.black),
                             ),
                           ),
                         ),
@@ -153,7 +156,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> with ExtractCategoryData{
 
     context.read<AddNoteBloc>().add(AddNoteCategoryChange(categoryModel));
   }
-
 }
 
 class _TitleTextField extends StatelessWidget {

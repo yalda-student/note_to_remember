@@ -42,7 +42,18 @@ class CodegenLoader extends AssetLoader{
   "Manage_Notes": "Manage Notes",
   "categorize_notes": "Make as many categories as you want and categorize your notes.\n\nYou can delete any category by long pressing on it.",
   "select_language": "Select your preferred language.",
-  "done": "Done"
+  "done": "Done",
+  "save": "Save",
+  "move": "Move",
+  "delete": "Delete",
+  "select_category": "Select category",
+  "category_count_1": "You have",
+  "category_count_2": "categories.",
+  "cancel": "Cancel",
+  "create": "Create",
+  "update": "Update",
+  "note": "Note",
+  "delete_none_category": "You can't delete None Category."
 };
 static const Map<String,dynamic> fa = {
   "profileTitle": "یادداشت های من",
@@ -72,7 +83,18 @@ static const Map<String,dynamic> fa = {
   "Manage_Notes": "مدیریت یادداشت ها",
   "categorize_notes": "هر تعداد که میخوای دسته بساز و یادداشت هات رو دسته بندی کن.\n\nبا دوبار ضربه روی اون میتونی حذفشون کنی.",
   "select_language": "زبان مورد نظر خود را انتخاب کنید.",
-  "done": "تمام"
+  "done": "تمام",
+  "save": "ذخیره",
+  "move": "انتقال",
+  "delete": "حذف",
+  "select_category": "دسته مورد نظر خود را انتخاب کنید.",
+  "category_count_1": "شما",
+  "category_count_2": "دسته دارید.",
+  "cancel": "لغو",
+  "create": "ایجاد",
+  "update": "ذخیره",
+  "note": "یادداشت",
+  "delete_none_category": "شما نمی توانید دسته None را پاک کنید. "
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "fa": fa};
 }

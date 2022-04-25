@@ -33,6 +33,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     const bodyStyle = TextStyle(fontSize: 19.0);
 
     const pageDecoration = PageDecoration(
@@ -130,21 +132,11 @@ class _LanguageDropDown extends StatelessWidget with AppLanguage {
 
   @override
   Widget build(BuildContext context) {
-    // final locale = EasyLocalization.of(context)!.currentLocale;
-
     return DropdownButtonFormField2<Locale>(
       value: EasyLocalization.of(context)!.currentLocale,
       icon: const Icon(Iconsax.arrow_circle_down),
       onChanged: (Locale? newLocale) {
-        print('newLocale: $newLocale');
-        // print('currentLocale: ${EasyLocalization.of(context)!.currentLocale}');
         onLanguageChange(context, newLocale ?? const Locale('en', 'US'));
-        print(LocaleKeys.about.tr());
-
-        // context
-        //     .read<LocaleNotifier>()
-        //     .setLocale(newLocale ?? const Locale('en', 'US'));
-
         context.read<LanguageBloc>().add(LanguageChangeEvent());
       },
       items: countries
