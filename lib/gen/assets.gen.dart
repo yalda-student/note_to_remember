@@ -21,18 +21,17 @@ class $AssetImageGen {
 class $AssetTranslationGen {
   const $AssetTranslationGen();
 
-  /// File path: asset/translation/en.json
-  String get en => 'asset/translation/en.json';
+  /// File path: asset/gen.translation/en.json
+  String get en => 'asset/gen.translation/en.json';
 
-  /// File path: asset/translation/fa.json
-  String get fa => 'asset/translation/fa.json';
+  /// File path: asset/gen.translation/fa.json
+  String get fa => 'asset/gen.translation/fa.json';
 }
 
 class Assets {
   Assets._();
 
   static const $AssetImageGen image = $AssetImageGen();
-  static const $AssetTranslationGen translation = $AssetTranslationGen();
 }
 
 class AssetGenImage extends AssetImage {

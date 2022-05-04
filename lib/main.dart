@@ -2,31 +2,31 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:drift/drift.dart' as drift;
-import 'package:yalda_students_notes/common/app.dart';
-import 'package:yalda_students_notes/common/const.dart';
-import 'package:yalda_students_notes/common/lang.dart';
+import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/core/common/const.dart';
+import 'package:yalda_students_notes/core/common/lang.dart';
+import 'package:yalda_students_notes/data/datasource/drift/database.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
-import 'package:yalda_students_notes/data/source/database.dart';
-import 'package:yalda_students_notes/route_generator.dart';
-import 'package:yalda_students_notes/screen/category/bloc/category_bloc.dart';
-import 'package:yalda_students_notes/screen/category/category.dart';
-import 'package:yalda_students_notes/screen/onboarding/onboard_screen.dart';
-import 'package:yalda_students_notes/screen/category_notes/bloc/category_notes_bloc.dart';
-import 'package:yalda_students_notes/screen/home/home_screen.dart';
-import 'package:yalda_students_notes/screen/note/bloc/notelist_bloc.dart';
-import 'package:yalda_students_notes/screen/search/search_screen.dart';
-import 'package:yalda_students_notes/screen/setting/setting_screen.dart';
-import 'package:yalda_students_notes/translation/codegen_loader.g.dart';
-import 'package:yalda_students_notes/util/theme_util.dart';
-import 'package:yalda_students_notes/widgets/bottom_navigation.dart';
-import 'package:yalda_students_notes/widgets/loading_state.dart';
-
-import 'screen/onboarding/bloc/language_bloc.dart';
+import 'package:yalda_students_notes/data/model/category_model.dart';
+import 'package:yalda_students_notes/data/repository/category_repository.dart';
+import 'package:yalda_students_notes/data/repository/note_repository.dart';
+import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
+import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
+import 'package:yalda_students_notes/presentation/screen/category/category.dart';
+import 'package:yalda_students_notes/presentation/screen/category_notes/bloc/category_notes_bloc.dart';
+import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
+import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';
+import 'package:yalda_students_notes/presentation/screen/onboarding/bloc/language_bloc.dart';
+import 'package:yalda_students_notes/presentation/screen/onboarding/onboard_screen.dart';
+import 'package:yalda_students_notes/presentation/screen/search/search_screen.dart';
+import 'package:yalda_students_notes/presentation/screen/setting/setting_screen.dart';
+import 'package:yalda_students_notes/presentation/util/theme_util.dart';
+import 'package:yalda_students_notes/presentation/widgets/bottom_navigation.dart';
+import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
 
 const int homeIndex = 0;
 const int searchIndex = 1;
@@ -39,12 +39,11 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-
     var darkModeOn = prefs.getBool('darkMode') ?? false;
 
     runApp(
       EasyLocalization(
-        path: 'asset/translation',
+        path: 'asset/gen.translation',
         supportedLocales: languagesMap.keys.toList(),
         fallbackLocale: const Locale('fa'),
         useOnlyLangCode: true,
@@ -58,13 +57,19 @@ void main() async {
                 create: (context) => AppDatabase()),
             BlocProvider<CategoryBloc>(
                 create: (context) => CategoryBloc(
-                    context.read<AppDatabase>(), const CategoryCompanion())),
+                    CategoryRepository(context.read<AppDatabase>()),
+                    CategoryModel(title: ''))),
             BlocProvider<NoteListBloc>(
-                create: (context) => NoteListBloc(context.read<AppDatabase>())),
-            BlocProvider<LanguageBloc>(create: (context) => LanguageBloc()),
+                create: (context) =>
+                    NoteListBloc(NoteRepository(context.read<AppDatabase>()))),
+            BlocProvider<OnBoardingBloc>(
+                create: (context) => OnBoardingBloc(
+                    CategoryRepository(context.read<AppDatabase>()))),
             BlocProvider<CategoryNotesBloc>(
-              create: (context) =>
-                  CategoryNotesBloc(appDatabase: context.read<AppDatabase>()),
+              create: (context) => CategoryNotesBloc(
+                  categoryRepository:
+                      CategoryRepository(context.read<AppDatabase>()),
+                  noteRepository: NoteRepository(context.read<AppDatabase>())),
             )
           ],
           child: const MyApp(),
@@ -99,8 +104,6 @@ class MyApp extends StatelessWidget {
               return const MainScreen();
             }
           }),
-      initialRoute: AppConstants.homeRoute,
-      onGenerateRoute: RouteGenerator.generateRoute,
       locale: Locale(languageCode),
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
@@ -154,7 +157,7 @@ class _MainScreenState extends State<MainScreen> {
     Timer(const Duration(seconds: 1), () {
       isFirstTime().then((isFirstTime) {
         if (isFirstTime) {
-          createNoneCategory();
+          // createNoneCategory();
         }
       });
     });
@@ -219,10 +222,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void createNoneCategory() async {
-    await context.read<AppDatabase>().addCategory(
-          CategoryCompanion(
-              title: const drift.Value('None'),
-              createdAt: drift.Value(DateTime.now())),
-        );
+    await context.read<AppDatabase>().addCategory(CategoryModel(title: 'None'));
   }
 }
