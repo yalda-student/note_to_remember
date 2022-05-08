@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:yalda_students_notes/data/datasource/drift/table/category_data.dart';
+import 'package:yalda_students_notes/data/datasource/table/category_data.dart';
 
 class Note extends Table {
   IntColumn get id => integer().autoIncrement()();

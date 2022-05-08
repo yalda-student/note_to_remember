@@ -4,7 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
-import 'package:yalda_students_notes/data/datasource/drift/database.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 
@@ -12,7 +12,7 @@ Future<bool> isFirstTime() async {
   final pref = await SharedPreferences.getInstance();
   var isFirstTime = pref.getBool(AppConstants.isFirstRun);
   if (isFirstTime != null && !isFirstTime) {
-    pref.setBool('first_time', false);
+    pref.setBool(AppConstants.isFirstRun, false);
     return false;
   } else {
     pref.setBool(AppConstants.isFirstRun, false);

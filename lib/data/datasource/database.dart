@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:drift/web.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:yalda_students_notes/core/common/app.dart';
-import 'package:yalda_students_notes/data/datasource/drift/table/category_data.dart';
-import 'package:yalda_students_notes/data/datasource/drift/table/note_data.dart';
+import 'package:yalda_students_notes/data/datasource/table/category_data.dart';
+import 'package:yalda_students_notes/data/datasource/table/note_data.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 
@@ -20,6 +21,8 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
   factory AppDatabase() => _instance;
 
   AppDatabase._internal() : super(_openConnection());
+
+  // AppDatabase(QueryExecutor e) : super(e);
 
   @override
   int get schemaVersion => 1;
@@ -137,8 +140,32 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase(file);
+    if (Platform.isAndroid) {
+      final dbFolder = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dbFolder.path, 'db.sqlite'));
+      return NativeDatabase(file);
+    } else {
+      return WebDatabase('db.sqlite');
+    }
   });
 }
+
+// AppDatabase constructDb({bool logStatements = false}) {
+//   if (Platform.isIOS || Platform.isAndroid) {
+//     final executor = LazyDatabase(() async {
+//       final dataDir = await getApplicationDocumentsDirectory();
+//       final dbFile = File(p.join(dataDir.path, 'db.sqlite'));
+//       return VmDatabase(dbFile, logStatements: logStatements);
+//     });
+//     return AppDatabase(executor);
+//   }
+//   if (Platform.isMacOS || Platform.isLinux) {
+//     final file = File('db.sqlite');
+//     return AppDatabase(VmDatabase(file, logStatements: logStatements));
+//   }
+//   // if (Platform.isWindows) {
+//   //   final file = File('db.sqlite');
+//   //   return Database(VMDatabase(file, logStatements: logStatements));
+//   // }
+//   return AppDatabase(VmDatabase.memory(logStatements: logStatements));
+// }

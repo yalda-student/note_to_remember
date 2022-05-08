@@ -1,6 +1,4 @@
-import 'package:yalda_students_notes/core/common/const.dart';
-import 'package:yalda_students_notes/core/common/exception.dart';
-import 'package:yalda_students_notes/data/datasource/drift/database.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 
 abstract class ICategoryRepository {

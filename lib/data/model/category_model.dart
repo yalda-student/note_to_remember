@@ -1,14 +1,17 @@
 import 'package:drift/drift.dart';
-import 'package:yalda_students_notes/data/datasource/drift/database.dart';
+import 'package:flutter/material.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
 
 class CategoryModel {
   final int id;
   final String title;
+  // final Color color;
   int numberOfNotes;
 
   CategoryModel({
     this.id = -1,
     required this.title,
+    // required this.color,
     this.numberOfNotes = 0,
   });
 

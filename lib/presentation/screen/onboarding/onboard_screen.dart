@@ -6,8 +6,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
-import 'package:yalda_students_notes/data/datasource/drift/database.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/country.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/main.dart';

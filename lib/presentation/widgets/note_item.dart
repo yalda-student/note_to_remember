@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:yalda_students_notes/data/datasource/drift/database.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/presentation/screen/edit_note/bloc/editnote_bloc.dart';
