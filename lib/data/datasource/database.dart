@@ -12,9 +12,10 @@ import 'package:yalda_students_notes/data/datasource/table/note_data.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 
+import 'connection/connection.dart' as impl;
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Note, Category])
+@DriftDatabase(tables: [Note, Category], include: {'sql.drift'})
 class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
   static final AppDatabase _instance = AppDatabase._internal();
 
