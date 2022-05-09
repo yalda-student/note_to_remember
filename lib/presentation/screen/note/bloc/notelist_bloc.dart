@@ -32,7 +32,8 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
         emit(NoteListSuccess(data));
       }
     } catch (e) {
-      emit(NoteListError('Error'));
+      debugPrint('$e');
+      emit(NoteListError(e.toString()));
     }
   }
 }

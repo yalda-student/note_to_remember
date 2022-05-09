@@ -11,8 +11,12 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
   final int id;
   final String title;
   final DateTime createdAt;
+  final int color;
   CategoryData(
-      {required this.id, required this.title, required this.createdAt});
+      {required this.id,
+      required this.title,
+      required this.createdAt,
+      required this.color});
   factory CategoryData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return CategoryData(
@@ -22,6 +26,8 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
       createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      color: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
     );
   }
   @override
@@ -30,6 +36,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
     map['created_at'] = Variable<DateTime>(createdAt);
+    map['color'] = Variable<int>(color);
     return map;
   }
 
@@ -38,6 +45,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       id: Value(id),
       title: Value(title),
       createdAt: Value(createdAt),
+      color: Value(color),
     );
   }
 
@@ -48,6 +56,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      color: serializer.fromJson<int>(json['color']),
     );
   }
   @override
@@ -57,69 +66,84 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'color': serializer.toJson<int>(color),
     };
   }
 
-  CategoryData copyWith({int? id, String? title, DateTime? createdAt}) =>
+  CategoryData copyWith(
+          {int? id, String? title, DateTime? createdAt, int? color}) =>
       CategoryData(
         id: id ?? this.id,
         title: title ?? this.title,
         createdAt: createdAt ?? this.createdAt,
+        color: color ?? this.color,
       );
   @override
   String toString() {
     return (StringBuffer('CategoryData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('color: $color')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, createdAt);
+  int get hashCode => Object.hash(id, title, createdAt, color);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CategoryData &&
           other.id == this.id &&
           other.title == this.title &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.color == this.color);
 }
 
 class CategoryCompanion extends UpdateCompanion<CategoryData> {
   final Value<int> id;
   final Value<String> title;
   final Value<DateTime> createdAt;
+  final Value<int> color;
   const CategoryCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.color = const Value.absent(),
   });
   CategoryCompanion.insert({
     this.id = const Value.absent(),
     required String title,
     required DateTime createdAt,
+    required int color,
   })  : title = Value(title),
-        createdAt = Value(createdAt);
+        createdAt = Value(createdAt),
+        color = Value(color);
   static Insertable<CategoryData> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<DateTime>? createdAt,
+    Expression<int>? color,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (createdAt != null) 'created_at': createdAt,
+      if (color != null) 'color': color,
     });
   }
 
   CategoryCompanion copyWith(
-      {Value<int>? id, Value<String>? title, Value<DateTime>? createdAt}) {
+      {Value<int>? id,
+      Value<String>? title,
+      Value<DateTime>? createdAt,
+      Value<int>? color}) {
     return CategoryCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       createdAt: createdAt ?? this.createdAt,
+      color: color ?? this.color,
     );
   }
 
@@ -135,6 +159,9 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
+    if (color.present) {
+      map['color'] = Variable<int>(color.value);
+    }
     return map;
   }
 
@@ -143,7 +170,8 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
     return (StringBuffer('CategoryCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('color: $color')
           ..write(')'))
         .toString();
   }
@@ -166,14 +194,21 @@ class $CategoryTable extends Category
   @override
   late final GeneratedColumn<String?> title = GeneratedColumn<String?>(
       'title', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 255),
+      type: const StringType(),
+      requiredDuringInsert: true);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
   late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
       'created_at', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
-  List<GeneratedColumn> get $columns => [id, title, createdAt];
+  late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
+      'color', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, title, createdAt, color];
   @override
   String get aliasedName => _alias ?? 'category';
   @override
@@ -197,6 +232,12 @@ class $CategoryTable extends Category
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
     } else if (isInserting) {
       context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('color')) {
+      context.handle(
+          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+    } else if (isInserting) {
+      context.missing(_colorMeta);
     }
     return context;
   }
@@ -222,7 +263,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   final DateTime createdAt;
   final int color;
   final bool isFavorite;
-  final int? categoryId;
+  final int categoryId;
   NoteData(
       {required this.id,
       this.title,
@@ -230,7 +271,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       required this.createdAt,
       required this.color,
       required this.isFavorite,
-      this.categoryId});
+      required this.categoryId});
   factory NoteData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return NoteData(
@@ -247,7 +288,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       isFavorite: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_favorite'])!,
       categoryId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}category_id']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}category_id'])!,
     );
   }
   @override
@@ -261,9 +302,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
     map['created_at'] = Variable<DateTime>(createdAt);
     map['color'] = Variable<int>(color);
     map['is_favorite'] = Variable<bool>(isFavorite);
-    if (!nullToAbsent || categoryId != null) {
-      map['category_id'] = Variable<int?>(categoryId);
-    }
+    map['category_id'] = Variable<int>(categoryId);
     return map;
   }
 
@@ -276,9 +315,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       createdAt: Value(createdAt),
       color: Value(color),
       isFavorite: Value(isFavorite),
-      categoryId: categoryId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(categoryId),
+      categoryId: Value(categoryId),
     );
   }
 
@@ -292,7 +329,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       color: serializer.fromJson<int>(json['color']),
       isFavorite: serializer.fromJson<bool>(json['isFavorite']),
-      categoryId: serializer.fromJson<int?>(json['categoryId']),
+      categoryId: serializer.fromJson<int>(json['categoryId']),
     );
   }
   @override
@@ -305,7 +342,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'color': serializer.toJson<int>(color),
       'isFavorite': serializer.toJson<bool>(isFavorite),
-      'categoryId': serializer.toJson<int?>(categoryId),
+      'categoryId': serializer.toJson<int>(categoryId),
     };
   }
 
@@ -363,7 +400,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
   final Value<DateTime> createdAt;
   final Value<int> color;
   final Value<bool> isFavorite;
-  final Value<int?> categoryId;
+  final Value<int> categoryId;
   const NoteCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -391,7 +428,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
     Expression<DateTime>? createdAt,
     Expression<int>? color,
     Expression<bool>? isFavorite,
-    Expression<int?>? categoryId,
+    Expression<int>? categoryId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -411,7 +448,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
       Value<DateTime>? createdAt,
       Value<int>? color,
       Value<bool>? isFavorite,
-      Value<int?>? categoryId}) {
+      Value<int>? categoryId}) {
     return NoteCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -445,7 +482,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
       map['is_favorite'] = Variable<bool>(isFavorite.value);
     }
     if (categoryId.present) {
-      map['category_id'] = Variable<int?>(categoryId.value);
+      map['category_id'] = Variable<int>(categoryId.value);
     }
     return map;
   }
@@ -510,7 +547,7 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   final VerificationMeta _categoryIdMeta = const VerificationMeta('categoryId');
   @override
   late final GeneratedColumn<int?> categoryId = GeneratedColumn<int?>(
-      'category_id', aliasedName, true,
+      'category_id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints:

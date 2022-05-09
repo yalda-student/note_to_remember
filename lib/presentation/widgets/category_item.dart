@@ -8,12 +8,9 @@ import 'package:yalda_students_notes/presentation/screen/category/bloc/category_
 import 'package:yalda_students_notes/presentation/screen/category_notes/category_notes.dart';
 
 class CategoryItem extends StatelessWidget {
-  final Color color;
   final CategoryModel categoryData;
 
-  const CategoryItem(
-      {Key? key, required this.color, required this.categoryData})
-      : super(key: key);
+  const CategoryItem({Key? key, required this.categoryData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,7 @@ class CategoryItem extends StatelessWidget {
           context.read<CategoryBloc>().add(CategoryDelete(categoryData.id));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
+            SnackBar(
               content: Text(LocaleKeys.delete_none_category.tr()),
             ),
           );
@@ -41,12 +38,12 @@ class CategoryItem extends StatelessWidget {
         height: 200,
         width: 200,
         decoration: BoxDecoration(
-            color: color.withOpacity(0.25),
+            color: Color(categoryData.color).withOpacity(0.25),
             borderRadius: BorderRadius.circular(15)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(Iconsax.folder_25, color: color, size: 80),
+            Icon(Iconsax.folder_25, color: Color(categoryData.color), size: 80),
             Text(categoryData.title,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),

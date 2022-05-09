@@ -57,7 +57,7 @@ void main() async {
             BlocProvider<CategoryBloc>(
                 create: (context) => CategoryBloc(
                     CategoryRepository(context.read<AppDatabase>()),
-                    CategoryModel(title: ''))),
+                    CategoryModel(title: '', color: generateColor()))),
             BlocProvider<NoteListBloc>(
                 create: (context) =>
                     NoteListBloc(NoteRepository(context.read<AppDatabase>()))),
@@ -150,19 +150,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    Timer(const Duration(seconds: 1), () {
-      isFirstTime().then((isFirstTime) {
-        if (isFirstTime) {
-          // createNoneCategory();
-        }
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: WillPopScope(
@@ -218,9 +205,5 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           );
-  }
-
-  void createNoneCategory() async {
-    await context.read<AppDatabase>().addCategory(CategoryModel(title: 'None'));
   }
 }

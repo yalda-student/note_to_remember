@@ -22,7 +22,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       if (event is CategoryDelete) {
         await repository.deleteCategory(event.categoryId);
       } else if (event is CategoryTextFieldChange) {
-        _category = CategoryModel(title: event.categoryName);
+        _category =
+            CategoryModel(title: event.categoryName, color: _category.color);
       }
     });
   }

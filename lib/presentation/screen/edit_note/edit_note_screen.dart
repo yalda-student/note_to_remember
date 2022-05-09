@@ -191,7 +191,8 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
       builder: (context) => BlocProvider(
         create: (context) => CategoryBloc(
             CategoryRepository(context.read<AppDatabase>()),
-            CategoryModel(title: '')),
+            CategoryModel(title: ''
+            , color: generateColor())),
         child: const CategoryBottomSheet(),
       ),
     );

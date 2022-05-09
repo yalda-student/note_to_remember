@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:drift/web.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -123,7 +122,7 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
       ..groupBy([category.id, category.title]);
 
     final data = await query.watch().first;
-    final categoryList = fetchData(this, data, note.id.count());
+    final categoryList = fetchCategoryData(this, data, note.id.count());
 
     return categoryList;
   }
@@ -140,13 +139,9 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    if (Platform.isAndroid) {
-      final dbFolder = await getApplicationDocumentsDirectory();
-      final file = File(p.join(dbFolder.path, 'db.sqlite'));
-      return NativeDatabase(file);
-    } else {
-      return WebDatabase('db.sqlite');
-    }
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    return NativeDatabase(file);
   });
 }
 
