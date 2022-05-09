@@ -43,14 +43,15 @@ mixin FetchData {
     return categories;
   }
 
-  List<CategoryModel> fetchData(AppDatabase database, List<TypedResult> result,
-      Expression<int> numberOfNotes) {
+  List<CategoryModel> fetchCategoryData(AppDatabase database,
+      List<TypedResult> result, Expression<int> numberOfNotes) {
     final categories = <CategoryModel>[];
     for (final row in result) {
       var categoryData = row.readTable(database.category);
       final model = CategoryModel(
           id: categoryData.id,
           title: categoryData.title,
+          color: categoryData.color,
           numberOfNotes: row.read(numberOfNotes));
       categories.add(model);
     }
@@ -61,6 +62,7 @@ mixin FetchData {
 
 mixin ExtractCategoryData {
   CategoryModel extractCategoryData(String data) {
+    debugPrint(data);
     final split = data.split(',');
     List values = [];
     for (int i = 0; i < split.length; i++) {
@@ -68,18 +70,22 @@ mixin ExtractCategoryData {
     }
 
     int id = int.parse(values[0]!);
-    values.removeAt(0);
+    int color = int.parse(values[1]!);
+    values.removeRange(0,2);
     String title = values.join();
 
-    return CategoryModel(id: id, title: title);
+    return CategoryModel(
+        id: id,
+        title: title,
+        color: color);
   }
 }
 
-Color generateColor() {
+int generateColor() {
   return Color.fromRGBO(
     Random().nextInt(255),
     Random().nextInt(255),
     Random().nextInt(255),
     1,
-  );
+  ).value;
 }

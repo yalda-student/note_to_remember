@@ -11,11 +11,12 @@ part 'category_notes_state.dart';
 
 class CategoryNotesBloc extends Bloc<CategoryNotesEvent, CategoryNotesState> {
   late int categoryId;
-  late CategoryModel data;
+  late CategoryModel categoryData;
   final NoteRepository noteRepository;
   final CategoryRepository categoryRepository;
 
-  CategoryNotesBloc({required this.categoryRepository, required this.noteRepository})
+  CategoryNotesBloc(
+      {required this.categoryRepository, required this.noteRepository})
       : super(CategoryNotesInitial()) {
     on<CategoryNotesEvent>((event, emit) async {
       if (event is CategoryNoteStart) {
@@ -30,9 +31,12 @@ class CategoryNotesBloc extends Bloc<CategoryNotesEvent, CategoryNotesState> {
           emit(CategoryNotesEmptyState());
         }
       } else if (event is CategoryNoteTextFieldChange) {
-        data = CategoryModel(id: categoryId, title: event.categoryTitle);
+        categoryData = CategoryModel(
+            id: categoryId,
+            title: event.categoryTitle,
+            color: categoryData.color);
       } else if (event is CategoryNoteRename) {
-        await categoryRepository.updateCategory(data);
+        await categoryRepository.updateCategory(categoryData);
       }
     });
   }

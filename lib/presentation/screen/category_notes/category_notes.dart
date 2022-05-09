@@ -33,7 +33,7 @@ class CategoryNotesScreen extends StatelessWidget {
               buildWhen: (previous, current) {
                 if (current is CategoryNotesName) {
                   title = current.title;
-                  category = CategoryModel(id: category.id, title: title);
+                  category = CategoryModel(id: category.id, title: title, color: category.color);
                 }
                 return current is CategoryNotesName;
               },

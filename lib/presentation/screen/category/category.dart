@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
@@ -158,29 +157,43 @@ class _CategoryData extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 430,
-                    child: GridView.builder(
-                      itemCount: data.length,
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 15.0,
-                              mainAxisSpacing: 15.0),
-                      itemBuilder: (context, index) => CategoryItem(
-                        color: generateColor(),
-                        categoryData: data[index],
-                      ),
-                    ),
+                    child: _CategoryList(data: data),
                   ),
                   Text(
-                      '${LocaleKeys.category_count_1.tr()} ${data.length} ${LocaleKeys.category_count_2.tr()}'),
+                      '${LocaleKeys.category_count_1.tr()} ${data.length} ${LocaleKeys.category_count_2.tr()}',),
                 ]),
           );
         } else {
           return const InvalidState();
         }
       },
+    );
+  }
+}
+
+class _CategoryList extends StatelessWidget {
+  const _CategoryList({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+
+  final List<CategoryModel> data;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      itemCount: data.length,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      gridDelegate:
+          const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15.0,
+              mainAxisSpacing: 15.0),
+      itemBuilder: (context, index) => CategoryItem(
+
+        categoryData: data[index],
+      ),
     );
   }
 }

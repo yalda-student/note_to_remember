@@ -29,7 +29,7 @@ class NoteModel {
         color = noteData.color,
         isFavorite = noteData.isFavorite,
         category = '',
-        categoryId = noteData.categoryId ?? 1;
+        categoryId = noteData.categoryId;
 
   NoteData toNoteDate() {
     return NoteData(

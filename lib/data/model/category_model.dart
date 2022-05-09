@@ -1,17 +1,16 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 
 class CategoryModel {
   final int id;
   final String title;
-  // final Color color;
+  final int color;
   int numberOfNotes;
 
   CategoryModel({
     this.id = -1,
     required this.title,
-    // required this.color,
+    required this.color,
     this.numberOfNotes = 0,
   });
 
@@ -20,6 +19,7 @@ class CategoryModel {
       id: const Value.absent(),
       title: Value(title),
       createdAt: Value(DateTime.now()),
+      color: Value(color)
     );
   }
 
@@ -28,11 +28,12 @@ class CategoryModel {
       id: id,
       title: title,
       createdAt: DateTime.now(),
+      color: color
     );
   }
 
   @override
   String toString() {
-    return 'CategoryModel{id: $id, title: $title, numberOfNotes: $numberOfNotes}';
+    return 'CategoryModel{id: $id, title: $title, color: $color, numberOfNotes: $numberOfNotes}';
   }
 }

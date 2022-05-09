@@ -23,7 +23,7 @@ class CategoryBottomSheet extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return  Padding(
+                  return Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Align(
                         alignment: Alignment.center,
@@ -36,8 +36,8 @@ class CategoryBottomSheet extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       //send category back to EditNoteBloc
-                      Navigator.pop(
-                          context, '${category.id},${category.title}');
+                      Navigator.pop(context,
+                          '${category.id},${category.color},${category.title}');
                     },
                     child: Container(
                       margin: const EdgeInsets.only(top: 12, left: 12),
