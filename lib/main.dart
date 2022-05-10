@@ -26,6 +26,7 @@ import 'package:yalda_students_notes/presentation/screen/setting/setting_screen.
 import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_navigation.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
+import 'core/app_model.dart';
 
 const int homeIndex = 0;
 const int searchIndex = 1;
@@ -49,6 +50,7 @@ void main() async {
         assetLoader: const CodegenLoader(),
         child: MultiProvider(
           providers: [
+            ChangeNotifierProvider<AppModel>(create: (_) => AppModel()),
             ChangeNotifierProvider<ThemeNotifier>(
                 create: (_) =>
                     ThemeNotifier(darkModeOn ? darkTheme : lightTheme)),
@@ -87,10 +89,15 @@ class MyApp extends StatelessWidget {
     final languageCode =
         EasyLocalization.of(context)!.currentLocale!.languageCode;
 
+    bool touchMode = context.select((AppModel m) => m.touchMode);
+    double densityAmt = touchMode ? 0.0 : -1.0;
+    VisualDensity density =
+        VisualDensity(horizontal: densityAmt, vertical: densityAmt);
+
     return MaterialApp(
       title: 'My Notes',
       debugShowCheckedModeBanner: false,
-      theme: themeNotifier.getTheme(),
+      theme: themeNotifier.getTheme().copyWith(visualDensity: density),
       home: FutureBuilder<bool>(
           future: isFirstTime(),
           builder: (context, snapshot) {
@@ -151,6 +158,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final largeScreen = isLargeScreen(context);
+
     return Scaffold(
       body: WillPopScope(
         onWillPop: _onWillPop,
@@ -171,21 +180,22 @@ class _MainScreenState extends State<MainScreen> {
                   ],
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: CustomBottomNavigation(
-                  selectedIndex: selectedScreenIndex,
-                  onTap: (index) {
-                    setState(() {
-                      _history.remove(selectedScreenIndex);
-                      _history.add(selectedScreenIndex);
-                      selectedScreenIndex = index;
-                    });
-                  },
-                ),
-              )
+              if (!largeScreen)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: CustomBottomNavigation(
+                    selectedIndex: selectedScreenIndex,
+                    onTap: (index) {
+                      setState(() {
+                        _history.remove(selectedScreenIndex);
+                        _history.add(selectedScreenIndex);
+                        selectedScreenIndex = index;
+                      });
+                    },
+                  ),
+                )
             ],
           ),
         ),

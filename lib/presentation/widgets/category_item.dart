@@ -36,7 +36,7 @@ class CategoryItem extends StatelessWidget {
       },
       child: Container(
         height: 200,
-        width: 200,
+               width: double.infinity,
         decoration: BoxDecoration(
             color: Color(categoryData.color).withOpacity(0.25),
             borderRadius: BorderRadius.circular(15)),

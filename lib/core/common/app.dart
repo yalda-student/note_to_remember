@@ -4,21 +4,10 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
+import 'package:yalda_students_notes/core/global/device_size.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
-
-Future<bool> isFirstTime() async {
-  final pref = await SharedPreferences.getInstance();
-  var isFirstTime = pref.getBool(AppConstants.isFirstRun);
-  if (isFirstTime != null && !isFirstTime) {
-    pref.setBool(AppConstants.isFirstRun, false);
-    return false;
-  } else {
-    pref.setBool(AppConstants.isFirstRun, false);
-    return true;
-  }
-}
 
 mixin FetchData {
   List<NoteModel> fetchNoteData(
@@ -71,14 +60,15 @@ mixin ExtractCategoryData {
 
     int id = int.parse(values[0]!);
     int color = int.parse(values[1]!);
-    values.removeRange(0,2);
+    values.removeRange(0, 2);
     String title = values.join();
 
-    return CategoryModel(
-        id: id,
-        title: title,
-        color: color);
+    return CategoryModel(id: id, title: title, color: color);
   }
+}
+
+bool isLargeScreen(BuildContext context) {
+  return MediaQuery.of(context).size.width > FormFactor.tablet;
 }
 
 int generateColor() {
@@ -88,4 +78,16 @@ int generateColor() {
     Random().nextInt(255),
     1,
   ).value;
+}
+
+Future<bool> isFirstTime() async {
+  final pref = await SharedPreferences.getInstance();
+  var isFirstTime = pref.getBool(AppConstants.isFirstRun);
+  if (isFirstTime != null && !isFirstTime) {
+    pref.setBool(AppConstants.isFirstRun, false);
+    return false;
+  } else {
+    pref.setBool(AppConstants.isFirstRun, false);
+    return true;
+  }
 }

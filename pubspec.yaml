@@ -49,6 +49,9 @@ dependencies:
   dropdown_button2: ^1.4.0
   flag: ^6.0.0
 
+  universal_platform: ^1.0.0-nullsafety
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
