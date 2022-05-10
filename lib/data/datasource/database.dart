@@ -20,9 +20,8 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
 
   factory AppDatabase() => _instance;
 
-  AppDatabase._internal() : super(_openConnection());
+  AppDatabase._internal() : super(impl.connect().executor);
 
-  // AppDatabase(QueryExecutor e) : super(e);
 
   @override
   int get schemaVersion => 1;
