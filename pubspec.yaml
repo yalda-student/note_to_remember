@@ -39,7 +39,7 @@ dependencies:
   shared_preferences: ^2.0.12
   equatable: ^2.0.3
   easy_localization: ^3.0.0
-  toggle_switch: ^1.4.0
+  toggle_switch: ^2.0.1
   expandable: ^5.0.1
   modal_bottom_sheet: ^2.0.1
   contained_tab_bar_view: ^0.8.0
@@ -57,6 +57,7 @@ dev_dependencies:
   build_runner: ^2.1.10
   flutter_launcher_icons: "^0.9.2"
   build_web_compilers: ^3.2.1
+  flutter_lints: ^1.0.4
 
 dependency_overrides:
   js: ^0.6.4 # temporarily added because sqlite3 depends on this, and flutter hasn't caught up yet.

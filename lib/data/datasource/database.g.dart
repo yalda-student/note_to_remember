@@ -621,7 +621,6 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  _$AppDatabase.connect(DatabaseConnection c) : super.connect(c);
   late final $CategoryTable category = $CategoryTable(this);
   late final $NoteTable note = $NoteTable(this);
   @override

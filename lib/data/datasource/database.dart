@@ -10,8 +10,10 @@ import 'package:yalda_students_notes/data/datasource/table/category_data.dart';
 import 'package:yalda_students_notes/data/datasource/table/note_data.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/presentation/widgets/note_category_item.dart';
 
 import 'connection/connection.dart' as impl;
+
 part 'database.g.dart';
 
 @DriftDatabase(tables: [Note, Category], include: {'sql.drift'})
@@ -37,6 +39,11 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
   //-------------Note
 
   Future<int> addNote(NoteModel noteData) async {
+    // return note.insertOne(NoteCompanion.insert(
+    //     content: noteData.content,
+    //     title: Value(noteData.title ?? ''),
+    //     createdAt: noteData.createdAt,
+    //     color: noteData.color));
     return await into(note).insert(noteData.toNoteCompanion());
   }
 

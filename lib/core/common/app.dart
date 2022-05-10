@@ -30,7 +30,7 @@ mixin FetchData {
 
       final model = NoteModel(
         id: noteData.id,
-        title: noteData.title,
+        title: noteData.title ?? '',
         content: noteData.content,
         createdAt: noteData.createdAt,
         color: noteData.color,

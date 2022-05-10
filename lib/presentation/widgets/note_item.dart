@@ -54,7 +54,7 @@ class _NoteItemState extends State<NoteItem> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.data.title ?? '',
+                        widget.data.title,
                         maxLines: 1,
                         style: const TextStyle(
                             overflow: TextOverflow.ellipsis,

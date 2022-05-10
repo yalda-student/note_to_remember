@@ -86,7 +86,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   void _initialFields() {
     final note = context.read<EditNoteBloc>().state.noteData;
-    _titleController.text = note.title ?? '';
+    _titleController.text = note.title;
     _contentController.text = note.content;
     colorIndex = colors.indexOf(Color(note.color));
   }

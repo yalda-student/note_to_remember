@@ -3,7 +3,7 @@ import 'package:yalda_students_notes/data/datasource/database.dart';
 
 class NoteModel {
   final int id;
-  final String? title;
+  final String title;
   final String content;
   final DateTime createdAt;
   final int color;
@@ -23,7 +23,7 @@ class NoteModel {
 
   NoteModel.fromNoteData(NoteData noteData)
       : id = noteData.id,
-        title = noteData.title,
+        title = noteData.title ?? '',
         content = noteData.content,
         createdAt = noteData.createdAt,
         color = noteData.color,

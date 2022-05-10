@@ -36,7 +36,7 @@ class _NoteCategoryItemState extends State<NoteCategoryItem> {
       ),
       child: ExpandablePanel(
         header: Text(
-          widget.note.title ?? '',
+          widget.note.title,
           style: TextStyle(
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w800,
