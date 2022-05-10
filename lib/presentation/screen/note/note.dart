@@ -69,7 +69,6 @@ class NoteScreen extends StatelessWidget {
     } else if (state is NoteListLoading || state is NoteListInitial) {
       return const LoadingState();
     } else if (state is NoteListError) {
-      debugPrint('$state');
       return Center(child: Text(state.errorMessage));
     } else {
       throw Exception('Invalid State');

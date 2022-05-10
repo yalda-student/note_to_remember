@@ -27,6 +27,37 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
             isFavorite: _noteData.isFavorite);
 
         emit(AddNoteInitial(_noteData));
+      } else if (event is AddNoteTitleChange) {
+        _noteData = NoteModel(
+            title: event.title,
+            content: _noteData.content,
+            createdAt: _noteData.createdAt,
+            color: _noteData.color,
+            categoryId: _noteData.categoryId,
+            isFavorite: _noteData.isFavorite);
+
+        emit(AddNoteInitial(_noteData));
+      } else if (event is AddNoteCategoryChange) {
+        _noteData = NoteModel(
+            title: _noteData.title,
+            content: _noteData.content,
+            createdAt: _noteData.createdAt,
+            color: _noteData.color,
+            categoryId: event.category.id,
+            category: event.category.title,
+            isFavorite: _noteData.isFavorite);
+
+        emit(AddNoteInitial(_noteData));
+      } else if (event is AddNoteContentChange) {
+        _noteData = NoteModel(
+            title: _noteData.title,
+            content: event.content,
+            createdAt: _noteData.createdAt,
+            color: _noteData.color,
+            categoryId: _noteData.categoryId,
+            isFavorite: _noteData.isFavorite);
+
+        emit(AddNoteInitial(_noteData));
       }
     });
   }
