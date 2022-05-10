@@ -33,9 +33,10 @@ const int categoryIndex = 2;
 const int settingIndex = 3;
 
 void main() async {
-  DriftConfig.init();
+
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  DriftConfig.init();
 
   SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? false;
