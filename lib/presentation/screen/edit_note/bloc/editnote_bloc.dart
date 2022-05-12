@@ -16,9 +16,9 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
       : super(EditNoteInitial(_noteData)) {
     on<EditNoteEvent>((event, emit) async {
       if (event is EditNoteUpdate) {
-        repository.updateNote(_noteData);
+        await repository.updateNote(_noteData);
       } else if (event is EditNoteDelete) {
-        repository.deleteNote(_noteData.id);
+        await repository.deleteNote(_noteData.id);
       } else if (event is EditNoteCategoryChange) {
         _noteData = NoteModel(
             id: _noteData.id,
@@ -31,7 +31,8 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             category: event.category.title);
 
         emit(EditNoteInitial(_noteData));
-      } else if (event is EditNoteColorChange) {
+      }
+      else if (event is EditNoteColorChange) {
         _noteData = NoteModel(
             id: _noteData.id,
             title: _noteData.title,
@@ -43,7 +44,8 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             category: _noteData.category);
 
         emit(EditNoteInitial(_noteData));
-      } else if (event is EditNoteTitleChange) {
+      }
+      else if (event is EditNoteTitleChange) {
         _noteData = NoteModel(
             id: _noteData.id,
             title: event.title,
@@ -55,7 +57,8 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             category: _noteData.category);
 
         emit(EditNoteInitial(_noteData));
-      } else if (event is EditNoteContentChange) {
+      }
+      else if (event is EditNoteContentChange) {
         _noteData = NoteModel(
             id: _noteData.id,
             title: _noteData.title,

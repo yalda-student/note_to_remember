@@ -83,7 +83,7 @@ class NoteScreen extends StatelessWidget {
       color: Colors.white.value,
       createdAt: DateTime.now(),
     );
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => BlocProvider<AddNoteBloc>(
           create: (context) =>

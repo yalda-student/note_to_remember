@@ -2,6 +2,7 @@ class AppConstants {
 
   //app
   static const double bottomNavigationHeight = 65;
+  static const int openAnimationDuration = 1000;
 
   //routes
   static const String homeRoute = '/';

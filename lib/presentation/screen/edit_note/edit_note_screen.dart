@@ -11,7 +11,6 @@ import 'package:yalda_students_notes/data/repository/category_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/edit_note/bloc/editnote_bloc.dart';
-import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/presentation/widgets/color_picker.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
@@ -114,41 +113,8 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                         const Icon(Iconsax.close_circle, color: Colors.black)),
                 actions: [
                   PopupMenuButton(
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                      PopupMenuItem(
-                        child: TextButton.icon(
-                          onPressed: () => _updateNote(context),
-                          icon:
-                              const Icon(Iconsax.note_add, color: Colors.black),
-                          label: Text(
-                            LocaleKeys.update.tr(),
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        child: TextButton.icon(
-                          onPressed: () => _openCategoryList(context),
-                          icon: const Icon(Iconsax.category_2,
-                              color: Colors.black),
-                          label: Text(
-                            LocaleKeys.move.tr(),
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        child: TextButton.icon(
-                          onPressed: () => _deleteNote(context),
-                          icon: const Icon(Iconsax.note_remove,
-                              color: Colors.black),
-                          label: Text(
-                            LocaleKeys.delete.tr(),
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ],
+                    itemBuilder: (BuildContext ctx) => popupMenuItems,
+                    onSelected: (value) => _handleMenuItemSelect(context, value),
                   ),
                 ],
               )
@@ -157,10 +123,26 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
     );
   }
 
+  void _handleMenuItemSelect(BuildContext context, value) {
+    switch (value) {
+      case 0:
+        _updateNote(context);
+        break;
+      case 1:
+        _openCategoryList(context);
+        break;
+      case 2:
+        _deleteNote(context);
+        break;
+      default:
+    }
+  }
+
   void _updateNote(BuildContext context) {
     var validate = _formKey.currentState!.validate();
 
     if (validate) {
+      debugPrint('_updateNote');
       context.read<EditNoteBloc>().add(EditNoteUpdate());
       _closePage(context);
     }
@@ -171,14 +153,7 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
     _closePage(context);
   }
 
-  void _closePage(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
-      ),
-    );
-  }
+  void _closePage(BuildContext context) => Navigator.of(context).pop();
 
   void _openCategoryList(BuildContext context) async {
     final result = await showCupertinoModalBottomSheet(
@@ -191,8 +166,7 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
       builder: (context) => BlocProvider(
         create: (context) => CategoryBloc(
             CategoryRepository(context.read<AppDatabase>()),
-            CategoryModel(title: ''
-            , color: generateColor())),
+            CategoryModel(title: '', color: generateColor())),
         child: const CategoryBottomSheet(),
       ),
     );
@@ -266,3 +240,41 @@ class _ContentTextField extends StatelessWidget {
     );
   }
 }
+
+final popupMenuItems = <PopupMenuEntry>[
+  PopupMenuItem(
+    value: 0,
+    child: Row(
+      children: [
+        const SizedBox(width: 6),
+        const Icon(Iconsax.note_add, color: Colors.black),
+        const SizedBox(width: 6),
+        Text(LocaleKeys.update.tr(),
+            style: const TextStyle(color: Colors.black)),
+      ],
+    ),
+  ),
+  PopupMenuItem(
+    value: 1,
+    child: Row(
+      children: [
+        const SizedBox(width: 6),
+        const Icon(Iconsax.category_2, color: Colors.black),
+        const SizedBox(width: 6),
+        Text(LocaleKeys.move.tr(), style: const TextStyle(color: Colors.black)),
+      ],
+    ),
+  ),
+  PopupMenuItem(
+    value: 2,
+    child: Row(
+      children: [
+        const SizedBox(width: 6),
+        const Icon(Iconsax.note_remove, color: Colors.black),
+        const SizedBox(width: 6),
+        Text(LocaleKeys.delete.tr(),
+            style: const TextStyle(color: Colors.black)),
+      ],
+    ),
+  ),
+];

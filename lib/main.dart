@@ -2,24 +2,17 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/core/common/app_providers.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
-import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/repository/category_repository.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
-import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/category.dart';
-import 'package:yalda_students_notes/presentation/screen/category_notes/bloc/category_notes_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
-import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';
-import 'package:yalda_students_notes/presentation/screen/onboarding/bloc/language_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/onboarding/onboard_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/setting/setting_screen.dart';
@@ -34,13 +27,12 @@ const int categoryIndex = 2;
 const int settingIndex = 3;
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   DriftConfig.init();
 
   SharedPreferences.getInstance().then((prefs) {
-    var darkModeOn = prefs.getBool('darkMode') ?? false;
+    final darkModeOn = prefs.getBool('darkMode') ?? false;
 
     runApp(
       EasyLocalization(
@@ -50,30 +42,12 @@ void main() async {
         useOnlyLangCode: true,
         assetLoader: const CodegenLoader(),
         child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider<AppModel>(create: (_) => AppModel()),
-            ChangeNotifierProvider<ThemeNotifier>(
-                create: (_) =>
-                    ThemeNotifier(darkModeOn ? darkTheme : lightTheme)),
-            ChangeNotifierProvider<AppDatabase>(
-                create: (context) => AppDatabase()),
-            BlocProvider<CategoryBloc>(
-                create: (context) => CategoryBloc(
-                    CategoryRepository(context.read<AppDatabase>()),
-                    CategoryModel(title: '', color: generateColor()))),
-            BlocProvider<NoteListBloc>(
-                create: (context) =>
-                    NoteListBloc(NoteRepository(context.read<AppDatabase>()))),
-            BlocProvider<OnBoardingBloc>(
-                create: (context) => OnBoardingBloc(
-                    CategoryRepository(context.read<AppDatabase>()))),
-            BlocProvider<CategoryNotesBloc>(
-              create: (context) => CategoryNotesBloc(
-                  categoryRepository:
-                      CategoryRepository(context.read<AppDatabase>()),
-                  noteRepository: NoteRepository(context.read<AppDatabase>())),
-            )
-          ],
+          providers: providerList
+            ..add(
+              ChangeNotifierProvider<ThemeNotifier>(
+                  create: (_) =>
+                      ThemeNotifier(darkModeOn ? darkTheme : lightTheme)),
+            ),
           child: const MyApp(),
         ),
       ),
@@ -97,6 +71,19 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'My Notes',
+      builder: (context, widget) => ResponsiveWrapper.builder(
+          BouncingScrollWrapper.builder(context, widget!),
+          maxWidth: 1200,
+          minWidth: 450,
+          defaultScale: true,
+          breakpoints: [
+            const ResponsiveBreakpoint.resize(450, name: MOBILE),
+            const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
+            const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+            const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+          ],
+          background: Container(color: const Color(0xFFF5F5F5))),
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.getTheme().copyWith(visualDensity: density),
       home: FutureBuilder<bool>(

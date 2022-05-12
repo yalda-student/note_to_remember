@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/repository/category_repository.dart';
 
@@ -17,6 +18,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         final data = await repository.getAllCategories();
         emit(CategorySuccess(data));
       } else if (event is CategoryInsert) {
+        _category.color = generateColor();
         repository.insertCategory(_category);
       }
       if (event is CategoryDelete) {

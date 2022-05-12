@@ -23,7 +23,7 @@ class CategoryScreen extends StatelessWidget {
     final largeScreen = isLargeScreen(context);
     return SingleChildScrollView(
         child: SizedBox(
-      height: MediaQuery.of(context).size.height - 50,
+      height: MediaQuery.of(context).size.height - 100,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,7 +32,7 @@ class CategoryScreen extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 8, top: 16),
+              padding: const EdgeInsets.only(left: 16, top: 16),
               child: Text(LocaleKeys.listCategories.tr(),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 18)),
@@ -154,16 +154,15 @@ class _CategoryData extends StatelessWidget {
         } else if (state is CategorySuccess) {
           List<CategoryModel> data = state.data;
           return Expanded(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(height: 10),
-                  Expanded(child: _CategoryList(data: data)),
-                  Text(
-                      '${LocaleKeys.category_count_1.tr()} ${data.length} ${LocaleKeys.category_count_2.tr()}'),
-                  const SizedBox(height: 10),
-                ]),
-          );
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: _CategoryList(data: data)),
+              Text(
+                  '${LocaleKeys.category_count_1.tr()} ${data.length} ${LocaleKeys.category_count_2.tr()}'),
+              const SizedBox(height: 10),
+            ],
+          ));
         } else {
           return const InvalidState();
         }
@@ -184,18 +183,21 @@ class _CategoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        int colCount = max(1, (constraints.maxWidth / 250).floor());
-        return GridView.builder(
-          itemCount: data.length,
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: colCount,
-              crossAxisSpacing: 30.0,
-              childAspectRatio: 1,
-              mainAxisSpacing: 15.0),
-          itemBuilder: (context, index) => CategoryItem(
-            categoryData: data[index],
+        int colCount = max(2, (constraints.maxWidth / 250).floor());
+        return Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: GridView.builder(
+            itemCount: data.length,
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: colCount,
+                crossAxisSpacing: 20.0,
+                childAspectRatio: 1,
+                mainAxisSpacing: 15.0),
+            itemBuilder: (context, index) => CategoryItem(
+              categoryData: data[index],
+            ),
           ),
         );
       },

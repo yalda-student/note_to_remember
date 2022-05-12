@@ -45,11 +45,11 @@ class HomeScreen extends StatelessWidget {
                   tabBarViewProperties: const TabBarViewProperties(
                       physics: BouncingScrollPhysics()),
                   tabBarProperties: TabBarProperties(
-                      height: 44,
+                      height: 49,
                       width: MediaQuery.of(context).size.width * 0.8,
                       background: Container(
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.surface,
+                          color: theme.colorScheme.surface.withOpacity(0.3),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(12.0)),
                         ),

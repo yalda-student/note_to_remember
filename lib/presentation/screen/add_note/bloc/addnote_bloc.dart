@@ -16,7 +16,8 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
       : super(AddNoteInitial(_noteData)) {
     on<AddNoteEvent>((event, emit) async {
       if (event is AddNoteSave) {
-        repository.insertNote(_noteData);
+        int id = await repository.insertNote(_noteData);
+        debugPrint('$id');
       } else if (event is AddNoteColorChange) {
         _noteData = NoteModel(
             title: _noteData.title,

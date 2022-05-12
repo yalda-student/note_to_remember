@@ -50,6 +50,8 @@ dependencies:
   flag: ^6.0.0
 
   universal_platform: ^1.0.0-nullsafety
+  responsive_framework: ^0.1.7
+  animations: ^2.0.2
 
 
 dev_dependencies:

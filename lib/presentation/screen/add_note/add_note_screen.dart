@@ -57,44 +57,20 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                 AppBar(
                   backgroundColor: colors[colorIndex],
                   title: Text(
-                    LocaleKeys.add_note,
-                    style: TextStyle(
-                        color: theme.colorScheme.secondary,
-                        fontWeight: FontWeight.bold),
-                  ).tr(),
+                    LocaleKeys.add_note.tr(),
+                    style: const TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
                   centerTitle: true,
                   leading: IconButton(
-                      onPressed: () {
-                        closePage();
-                      },
-                      icon: Icon(Iconsax.close_circle,
-                          color: theme.colorScheme.secondary)),
+                      onPressed: () => closePage(),
+                      icon: const Icon(Iconsax.close_circle,
+                          color: Colors.black)),
                   actions: [
                     PopupMenuButton(
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                        PopupMenuItem(
-                          child: TextButton.icon(
-                            onPressed: () => saveNote(context),
-                            icon: const Icon(Iconsax.note_add,
-                                color: Colors.black),
-                            label: Text(
-                              LocaleKeys.save.tr(),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          child: TextButton.icon(
-                            onPressed: () => _openCategoryList(context),
-                            icon: const Icon(Iconsax.category_2,
-                                color: Colors.black),
-                            label: Text(
-                              LocaleKeys.move.tr(),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
+                      itemBuilder: (BuildContext context1) => popupMenuItems,
+                      onSelected: (value) =>
+                          _handleMenuItemSelect(context, value),
                     ),
                   ],
                 ),
@@ -112,7 +88,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                 _TitleTextField(
                     titleController: _titleController, theme: theme),
                 const SizedBox(height: 4),
-                _ContextTextField(
+                _ContentTextField(
                     contentController: _contentController, theme: theme)
               ],
             ),
@@ -122,7 +98,19 @@ class _AddNoteScreenState extends State<AddNoteScreen>
     );
   }
 
-  void saveNote(BuildContext context) {
+  void _handleMenuItemSelect(BuildContext context, value) {
+    switch (value) {
+      case 0:
+        _saveNote(context);
+        break;
+      case 1:
+        _openCategoryList(context);
+        break;
+      default:
+    }
+  }
+
+  void _saveNote(BuildContext context) {
     var validate = _formKey.currentState!.validate();
 
     if (validate) {
@@ -185,6 +173,8 @@ class _TitleTextField extends StatelessWidget {
       ),
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
+      style: theme.textTheme.headline5!.copyWith(
+          color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w600),
       onChanged: (value) {
         context.read<AddNoteBloc>().add(AddNoteTitleChange(value));
       },
@@ -192,8 +182,8 @@ class _TitleTextField extends StatelessWidget {
   }
 }
 
-class _ContextTextField extends StatelessWidget {
-  const _ContextTextField({
+class _ContentTextField extends StatelessWidget {
+  const _ContentTextField({
     Key? key,
     required TextEditingController contentController,
     required this.theme,
@@ -210,9 +200,13 @@ class _ContextTextField extends StatelessWidget {
         controller: _contentController,
         decoration: InputDecoration(
           hintText: LocaleKeys.startTyping.tr(),
+          hintStyle: theme.textTheme.headline5!
+              .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
         ),
-        maxLines: 12,
-        cursorColor: theme.colorScheme.secondary,
+        maxLines: 100,
+        keyboardType: TextInputType.multiline,
+        style: const TextStyle(color: Colors.black),
+        cursorColor: Colors.black,
         validator: (value) {
           if (value!.isEmpty) {
             return LocaleKeys.content_Cannot_Be_Empty.tr();
@@ -226,3 +220,28 @@ class _ContextTextField extends StatelessWidget {
     );
   }
 }
+
+final popupMenuItems = <PopupMenuEntry>[
+  PopupMenuItem(
+    value: 0,
+    child: Row(
+      children: [
+        const SizedBox(width: 6),
+        const Icon(Iconsax.note_add, color: Colors.black),
+        const SizedBox(width: 6),
+        Text(LocaleKeys.save.tr(), style: const TextStyle(color: Colors.black)),
+      ],
+    ),
+  ),
+  PopupMenuItem(
+    value: 1,
+    child: Row(
+      children: [
+        const SizedBox(width: 6),
+        const Icon(Iconsax.category_2, color: Colors.black),
+        const SizedBox(width: 6),
+        Text(LocaleKeys.move.tr(), style: const TextStyle(color: Colors.black)),
+      ],
+    ),
+  ),
+];
