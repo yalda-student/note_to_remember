@@ -4,7 +4,6 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
-import 'package:yalda_students_notes/core/global/device_size.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
@@ -65,10 +64,6 @@ mixin ExtractCategoryData {
 
     return CategoryModel(id: id, title: title, color: color);
   }
-}
-
-bool isLargeScreen(BuildContext context) {
-  return MediaQuery.of(context).size.width > FormFactor.tablet;
 }
 
 int generateColor() {

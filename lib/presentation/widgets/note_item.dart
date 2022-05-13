@@ -91,8 +91,8 @@ class _NoteItemState extends State<NoteItem> {
                         ),
                       ),
                       widget.data.isFavorite
-                          ? const Icon(Iconsax.star1,
-                          color: Colors.amber, size: 20)
+                          ? const Icon(Iconsax.heart5,
+                          color: Colors.red, size: 20)
                           : const SizedBox()
                     ],
                   ),

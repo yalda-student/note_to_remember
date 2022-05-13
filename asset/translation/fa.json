@@ -37,5 +37,7 @@
   "create": "ایجاد",
   "update": "ذخیره",
   "note": "یادداشت",
-  "delete_none_category": "شما نمی توانید دسته None را پاک کنید. "
+  "delete_none_category": "شما نمی توانید دسته None را پاک کنید. ",
+  "home": "خانه",
+  "note_to_remember": "یادداشتی برای یادآوری"
 }

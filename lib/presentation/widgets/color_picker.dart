@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/common/color.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 
 class ColorPicker extends StatelessWidget {
   final int selectedIndex;
@@ -16,7 +16,7 @@ class ColorPicker extends StatelessWidget {
       padding: const EdgeInsets.only(left: 6),
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: colors.length,
+        itemCount: ColorManager.colors.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -33,7 +33,7 @@ class ColorPicker extends StatelessWidget {
                   margin: const EdgeInsets.fromLTRB(6, 4, 0, 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: colors[index],
+                    color: ColorManager.colors[index],
                     border: Border.all(
                         color: Colors.black.withOpacity(0.5), width: 1),
                   ),

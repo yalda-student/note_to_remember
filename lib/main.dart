@@ -7,24 +7,25 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/core/common/app_providers.dart';
-import 'package:yalda_students_notes/core/common/const.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
 import 'package:yalda_students_notes/presentation/screen/category/category.dart';
+import 'package:yalda_students_notes/presentation/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/onboarding/onboard_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/setting/setting_screen.dart';
 import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_navigation.dart';
+import 'package:yalda_students_notes/presentation/widgets/drawer.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
-import 'core/app_model.dart';
 
 const int homeIndex = 0;
 const int searchIndex = 1;
 const int categoryIndex = 2;
 const int settingIndex = 3;
+const int favoriteIndex = 4;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,28 +65,19 @@ class MyApp extends StatelessWidget {
     final languageCode =
         EasyLocalization.of(context)!.currentLocale!.languageCode;
 
-    bool touchMode = context.select((AppModel m) => m.touchMode);
-    double densityAmt = touchMode ? 0.0 : -1.0;
-    VisualDensity density =
-        VisualDensity(horizontal: densityAmt, vertical: densityAmt);
-
     return MaterialApp(
       title: 'My Notes',
       builder: (context, widget) => ResponsiveWrapper.builder(
-          BouncingScrollWrapper.builder(context, widget!),
-          maxWidth: 1200,
-          minWidth: 450,
-          defaultScale: true,
-          breakpoints: [
-            const ResponsiveBreakpoint.resize(450, name: MOBILE),
-            const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-            const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
-            const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-            const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+          ClampingScrollWrapper.builder(context, widget!),
+          breakpoints: const [
+            ResponsiveBreakpoint.resize(350, name: MOBILE),
+            ResponsiveBreakpoint.autoScale(700, name: TABLET),
+            ResponsiveBreakpoint.resize(900, name: DESKTOP),
+            ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
           ],
           background: Container(color: const Color(0xFFF5F5F5))),
       debugShowCheckedModeBanner: false,
-      theme: themeNotifier.getTheme().copyWith(visualDensity: density),
+      theme: themeNotifier.getTheme(),
       home: FutureBuilder<bool>(
           future: isFirstTime(),
           builder: (context, snapshot) {
@@ -121,12 +113,14 @@ class _MainScreenState extends State<MainScreen> {
     searchIndex: _searchKey,
     categoryIndex: _categoryKey,
     settingIndex: _settingKey,
+    favoriteIndex: _favoriteKey,
   };
 
   final GlobalKey<NavigatorState> _homeKey = GlobalKey();
   final GlobalKey<NavigatorState> _searchKey = GlobalKey();
   final GlobalKey<NavigatorState> _categoryKey = GlobalKey();
   final GlobalKey<NavigatorState> _settingKey = GlobalKey();
+  final GlobalKey<NavigatorState> _favoriteKey = GlobalKey();
 
   Future<bool> _onWillPop() async {
     final NavigatorState currentSelectedTabNavigatorState =
@@ -146,33 +140,48 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final largeScreen = isLargeScreen(context);
-
     return Scaffold(
       body: WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
-          child: Stack(
+          child: ResponsiveRowColumn(
+            rowMainAxisAlignment: MainAxisAlignment.center,
+            layout: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
+                ? ResponsiveRowColumnType.COLUMN
+                : ResponsiveRowColumnType.ROW,
             children: [
-              Positioned.fill(
-                bottom: AppConstants.bottomNavigationHeight,
-                child: IndexedStack(
-                  index: selectedScreenIndex,
-                  children: [
-                    _navigator(_homeKey, homeIndex, const HomeScreen()),
-                    _navigator(_searchKey, searchIndex, const SearchScreen()),
-                    _navigator(
-                        _categoryKey, categoryIndex, const CategoryScreen()),
-                    _navigator(
-                        _settingKey, settingIndex, const SettingScreen()),
-                  ],
+              ResponsiveRowColumnItem(
+                columnOrder: 1,
+                child: Expanded(
+                  child: IndexedStack(
+                    index: selectedScreenIndex,
+                    children: [
+                      _navigator(_homeKey, homeIndex, const HomeScreen()),
+                      _navigator(_searchKey, searchIndex, const SearchScreen()),
+                      _navigator(
+                          _categoryKey, categoryIndex, const CategoryScreen()),
+                      _navigator(
+                          _settingKey, settingIndex, const SettingScreen()),
+                      _navigator(
+                          _favoriteKey, favoriteIndex, const FavoriteScreen()),
+                    ],
+                  ),
                 ),
               ),
-              if (!largeScreen)
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
+              ResponsiveRowColumnItem(
+                rowOrder: 0,
+                child: ResponsiveVisibility(
+                  hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+                  replacement: AppDrawer(
+                    selectedIndex: selectedScreenIndex,
+                    onTap: (index) {
+                      setState(() {
+                        _history.remove(selectedScreenIndex);
+                        _history.add(selectedScreenIndex);
+                        selectedScreenIndex = index;
+                      });
+                    },
+                  ),
                   child: CustomBottomNavigation(
                     selectedIndex: selectedScreenIndex,
                     onTap: (index) {
@@ -183,7 +192,24 @@ class _MainScreenState extends State<MainScreen> {
                       });
                     },
                   ),
-                )
+                ),
+              ),
+              // ResponsiveRowColumnItem(
+              //   rowOrder: 0,
+              //   child: ResponsiveVisibility(
+              //     visible: false,
+              //     visibleWhen: const [Condition.largerThan(name: TABLET)],
+              //     child: AppDrawer(
+              //       onTap: (index) {
+              //         setState(() {
+              //           _history.remove(selectedScreenIndex);
+              //           _history.add(selectedScreenIndex);
+              //           selectedScreenIndex = index;
+              //         });
+              //       },
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),
@@ -203,5 +229,16 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           );
+  }
+}
+
+class X extends StatelessWidget {
+  const X({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [],
+    );
   }
 }

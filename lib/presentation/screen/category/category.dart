@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
@@ -20,7 +21,6 @@ class CategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final largeScreen = isLargeScreen(context);
     return SingleChildScrollView(
         child: SizedBox(
       height: MediaQuery.of(context).size.height - 100,
@@ -28,7 +28,8 @@ class CategoryScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (!largeScreen) ...[_AppBar(theme: theme), const Divider()],
+          _AppBar(theme: theme),
+          const Divider(),
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -183,17 +184,17 @@ class _CategoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        int colCount = max(2, (constraints.maxWidth / 250).floor());
-        return Padding(
+        return Container(
+          height: 500,
           padding: const EdgeInsets.only(top: 16),
-          child: GridView.builder(
+          child:
+        ResponsiveGridView.builder(
             itemCount: data.length,
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: colCount,
+            gridDelegate:const ResponsiveGridDelegate(
                 crossAxisSpacing: 20.0,
-                childAspectRatio: 1,
+                maxCrossAxisExtent: 200,
                 mainAxisSpacing: 15.0),
             itemBuilder: (context, index) => CategoryItem(
               categoryData: data[index],

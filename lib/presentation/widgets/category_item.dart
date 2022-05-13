@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
@@ -17,7 +16,6 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final largeScreen = isLargeScreen(context);
     return OpenContainer(
       tappable: true,
       closedColor: Theme.of(context).scaffoldBackgroundColor,
@@ -46,8 +44,8 @@ class CategoryItem extends StatelessWidget {
             }
           },
           child: Container(
-            height: 200,
-            width: largeScreen ? double.infinity : 50,
+            height: 40,
+            width:  40,
             decoration: BoxDecoration(
                 color: Color(categoryData.color).withOpacity(0.25),
                 borderRadius: BorderRadius.circular(15)),
@@ -55,14 +53,14 @@ class CategoryItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Icon(Iconsax.folder_25,
-                    color: Color(categoryData.color), size: 80),
+                    color: Color(categoryData.color), size: 65),
                 Text(categoryData.title,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18)),
                 Text(
                   '${categoryData.numberOfNotes} ${LocaleKeys.note.tr()}',
                   style: const TextStyle(
-                      fontWeight: FontWeight.normal, fontSize: 15),
+                      fontWeight: FontWeight.w300, fontSize: 13),
                 ),
               ],
             ),

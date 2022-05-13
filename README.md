@@ -12,13 +12,11 @@ This Note app is implemented with bloc and provider. It supports dark mode and u
 
 
 ## Packages:
- - iconsax
- - drift 
- - flutter_svg
- - flutter_gen
+ - drift
  - provider
  - bloc
  - easy localization
+ -  responsive framework
 
 
  ## Features:
@@ -28,7 +26,6 @@ This Note app is implemented with bloc and provider. It supports dark mode and u
  - multi language
  - categorize notes
  - add, rename and delete(by long pressing on each category) a category
-
 
 
  ----> If you enjoy this project, STAR it ;)

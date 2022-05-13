@@ -34,30 +34,22 @@ class CustomBottomNavigation extends StatelessWidget {
           BottomNavigationItem(
             icon: Iconsax.home,
             isActive: selectedIndex == homeIndex,
-            onTap: () {
-              onTap(homeIndex);
-            },
+            onTap: () => onTap(homeIndex),
           ),
           BottomNavigationItem(
             icon: Iconsax.search_status,
             isActive: selectedIndex == searchIndex,
-            onTap: () {
-              onTap(searchIndex);
-            },
+            onTap: () => onTap(searchIndex),
           ),
           BottomNavigationItem(
             icon: Iconsax.category_2,
             isActive: selectedIndex == categoryIndex,
-            onTap: () {
-              onTap(categoryIndex);
-            },
+            onTap: () => onTap(categoryIndex),
           ),
           BottomNavigationItem(
             icon: Iconsax.setting_2,
             isActive: selectedIndex == settingIndex,
-            onTap: () {
-              onTap(settingIndex);
-            },
+            onTap: () => onTap(settingIndex),
           ),
         ],
       ),

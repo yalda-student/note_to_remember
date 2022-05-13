@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:yalda_students_notes/common/color.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/repository/category_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/presentation/widgets/color_picker.dart';
+import 'package:yalda_students_notes/presentation/widgets/pop_menu_item.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({Key? key}) : super(key: key);
@@ -48,14 +50,14 @@ class _AddNoteScreenState extends State<AddNoteScreen>
     return BlocBuilder<AddNoteBloc, AddNoteState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: colors[colorIndex],
+          backgroundColor: ColorManager.colors[colorIndex],
           body: SafeArea(
               child: Form(
             key: _formKey,
             child: Column(
               children: [
                 AppBar(
-                  backgroundColor: colors[colorIndex],
+                  backgroundColor: ColorManager.colors[colorIndex],
                   title: Text(
                     LocaleKeys.add_note.tr(),
                     style: const TextStyle(
@@ -67,11 +69,32 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                       icon: const Icon(Iconsax.close_circle,
                           color: Colors.black)),
                   actions: [
-                    PopupMenuButton(
-                      itemBuilder: (BuildContext context1) => popupMenuItems,
-                      onSelected: (value) =>
-                          _handleMenuItemSelect(context, value),
+                    ResponsiveVisibility(
+                      hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+                      child: PopupMenuButton(
+                        itemBuilder: (BuildContext context1) => popupMenuItems,
+                        onSelected: (value) =>
+                            _handleMenuItemSelect(context, value),
+                      ),
                     ),
+                    ResponsiveVisibility(
+                      visible: false,
+                      visibleWhen: const [Condition.largerThan(name: MOBILE)],
+                      child: TextButton(
+                        onPressed: () => _openCategoryList(context),
+                        child: Text(LocaleKeys.move.tr(),
+                            style: const TextStyle(color: Colors.black)),
+                      ),
+                    ),
+                    ResponsiveVisibility(
+                      visible: false,
+                      visibleWhen: const [Condition.largerThan(name: MOBILE)],
+                      child: TextButton(
+                        onPressed: () => _saveNote(context),
+                        child: Text(LocaleKeys.save.tr(),
+                            style: const TextStyle(color: Colors.black)),
+                      ),
+                    )
                   ],
                 ),
                 const Divider(),
@@ -82,7 +105,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                       colorIndex = index;
                       context
                           .read<AddNoteBloc>()
-                          .add(AddNoteColorChange(colors[index]));
+                          .add(AddNoteColorChange(ColorManager.colors[index]));
                     }),
                 const SizedBox(height: 8),
                 _TitleTextField(
@@ -223,25 +246,11 @@ class _ContentTextField extends StatelessWidget {
 
 final popupMenuItems = <PopupMenuEntry>[
   PopupMenuItem(
-    value: 0,
-    child: Row(
-      children: [
-        const SizedBox(width: 6),
-        const Icon(Iconsax.note_add, color: Colors.black),
-        const SizedBox(width: 6),
-        Text(LocaleKeys.save.tr(), style: const TextStyle(color: Colors.black)),
-      ],
-    ),
-  ),
+      value: 0,
+      child: AppPopupMenuItem(
+          title: LocaleKeys.save.tr(), icon: Iconsax.note_add)),
   PopupMenuItem(
-    value: 1,
-    child: Row(
-      children: [
-        const SizedBox(width: 6),
-        const Icon(Iconsax.category_2, color: Colors.black),
-        const SizedBox(width: 6),
-        Text(LocaleKeys.move.tr(), style: const TextStyle(color: Colors.black)),
-      ],
-    ),
-  ),
+      value: 1,
+      child: AppPopupMenuItem(
+          title: LocaleKeys.move.tr(), icon: Iconsax.category_2)),
 ];

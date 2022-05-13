@@ -1,5 +1,3 @@
-
-import 'package:yalda_students_notes/core/app_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
@@ -13,7 +11,6 @@ import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc
 import 'package:yalda_students_notes/presentation/screen/onboarding/bloc/language_bloc.dart';
 
 final providerList = [
-  ChangeNotifierProvider<AppModel>(create: (_) => AppModel()),
   ChangeNotifierProvider<AppDatabase>(create: (context) => AppDatabase()),
   BlocProvider<CategoryBloc>(
       create: (context) => CategoryBloc(

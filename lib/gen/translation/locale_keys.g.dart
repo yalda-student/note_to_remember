@@ -40,5 +40,7 @@ abstract class  LocaleKeys {
   static const update = 'update';
   static const note = 'note';
   static const delete_none_category = 'delete_none_category';
+  static const home = 'home';
+  static const note_to_remember = 'note_to_remember';
 
 }
