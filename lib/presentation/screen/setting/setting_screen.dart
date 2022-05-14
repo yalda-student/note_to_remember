@@ -3,13 +3,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
+import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/screen/about/about_screen.dart';
-import 'package:yalda_students_notes/presentation/util/theme_util.dart';
+
+import '../../../core/common/util/theme_util.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -84,8 +85,7 @@ class _SettingScreenState extends State<SettingScreen> {
     (value)
         ? themeNotifier.setTheme(darkTheme)
         : themeNotifier.setTheme(lightTheme);
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setBool(AppConstants.darkMode, value);
+    SharedPref.pref.setBool(AppConstants.darkMode, value);
   }
 }
 

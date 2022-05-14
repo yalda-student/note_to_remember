@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/core/common/app_providers.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
+import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
 import 'package:yalda_students_notes/presentation/screen/category/category.dart';
@@ -16,10 +17,11 @@ import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/onboarding/onboard_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/setting/setting_screen.dart';
-import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_navigation.dart';
 import 'package:yalda_students_notes/presentation/widgets/drawer.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
+
+import 'core/common/util/theme_util.dart';
 
 const int homeIndex = 0;
 const int searchIndex = 1;
@@ -31,6 +33,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   DriftConfig.init();
+  await SharedPref.initSharedPref();
 
   SharedPreferences.getInstance().then((prefs) {
     final darkModeOn = prefs.getBool('darkMode') ?? false;

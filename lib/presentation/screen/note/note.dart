@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
+import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
@@ -47,16 +49,19 @@ class NoteScreen extends StatelessWidget {
             )
           ],
         ),
-        Positioned(
-          bottom: 16,
-          right: 8,
-          child: FloatingActionButton(
-            onPressed: () {
-              _openAddNotePage(context);
-            },
-            child: Icon(Iconsax.add, color: theme.colorScheme.primary),
+        Align(
+          alignment: SharedPref.getLanguage().isLanguageRtl() ? Alignment.bottomLeft : Alignment.bottomRight,
+          child: Positioned(
+            bottom: 16,
+            right: 8,
+            child: FloatingActionButton(
+              onPressed: () {
+                _openAddNotePage(context);
+              },
+              child: Icon(Iconsax.add, color: theme.colorScheme.primary),
+            ),
           ),
-        ),
+        )
       ],
     );
   }
