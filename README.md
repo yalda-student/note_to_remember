@@ -1,12 +1,12 @@
-# yalda_student_notes
-
-Note App.
+# Note to Keep Application.
 
 ## Description
 
-Note app; User can categorize their notes; star notes
+- Note app; User can categorize their notes; star notes
 
-This Note app is implemented with bloc and provider. It supports dark mode and user can switch between English or Persian language.
+- This Note app is implemented with bloc and provider. It supports dark mode and user can switch between English or Persian language.
+
+- Run it on Mobile, Tablet, Desktop and your browser.
 
 - [UI design](https://dribbble.com/shots/16811788-Notes-app)
 

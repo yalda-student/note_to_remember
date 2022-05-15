@@ -1,17 +1,21 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category_notes/bloc/category_notes_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/invalid_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/note_category_item.dart';
-
+import 'package:yalda_students_notes/presentation/widgets/note_grid.dart';
 
 class CategoryNotesScreen extends StatelessWidget {
   CategoryModel category;
@@ -33,7 +37,8 @@ class CategoryNotesScreen extends StatelessWidget {
               buildWhen: (previous, current) {
                 if (current is CategoryNotesName) {
                   title = current.title;
-                  category = CategoryModel(id: category.id, title: title, color: category.color);
+                  category = CategoryModel(
+                      id: category.id, title: title, color: category.color);
                 }
                 return current is CategoryNotesName;
               },
@@ -145,7 +150,11 @@ class CategoryNotesScreen extends StatelessWidget {
     } else if (state is CategoryNotesEmptyState) {
       return const EmptyState();
     } else if (state is CategoryNotesSuccess) {
-      return _NoteList(data: state.data);
+      return ResponsiveVisibility(
+        child: _NoteList(data: state.data),
+        replacement: _NoteGrid(data: state.data),
+        hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+      );
     } else {
       return const InvalidState();
     }
@@ -164,9 +173,35 @@ class _NoteList extends StatelessWidget {
         itemCount: data.length,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return NoteCategoryItem(note: data[index]);
+          return Container(
+              margin: const EdgeInsets.fromLTRB(8, 16, 8, 0),
+              child: NoteCategoryItem(note: data[index]));
         },
       ),
     );
+  }
+}
+
+class _NoteGrid extends StatelessWidget {
+  final List<NoteModel> data;
+
+  const _NoteGrid({Key? key, required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      int colCount = max(2, (constraints.maxWidth / 250).floor());
+      return GridView.builder(
+        itemCount: data.length,
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: colCount,
+          crossAxisSpacing: 15.0,
+          mainAxisSpacing: 15.0,
+        ),
+        itemBuilder: (context, index) => NoteCategoryItem(note: data[index]),
+      );
+    });
   }
 }

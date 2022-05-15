@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/presentation/widgets/note_item.dart';
+import 'package:yalda_students_notes/presentation/widgets/note_list_item.dart';
 
 class NoteList extends StatelessWidget {
   final List<NoteModel> data;
@@ -14,6 +15,7 @@ class NoteList extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return NoteItem(
+            noteItem: NoteListItem(data: data[index]),
             data: data[index],
           );
         },

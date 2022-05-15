@@ -19,8 +19,9 @@ class _NoteCategoryItemState extends State<NoteCategoryItem> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
+      width: 170,
+      height: 100,
       padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.fromLTRB(8, 16, 8, 0),
       decoration: BoxDecoration(
         color: Color(widget.note.color).withOpacity(0.85),
         borderRadius: BorderRadius.circular(15),
@@ -54,6 +55,7 @@ class _NoteCategoryItemState extends State<NoteCategoryItem> {
         ),
         expanded: Text(
           widget.note.content,
+          softWrap: true,
           style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 17,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/repository/note_repository.dart';
@@ -12,6 +13,7 @@ import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_b
 import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
+import 'package:yalda_students_notes/presentation/widgets/note_grid.dart';
 import 'package:yalda_students_notes/presentation/widgets/note_list.dart';
 
 class NoteScreen extends StatelessWidget {
@@ -63,7 +65,11 @@ class NoteScreen extends StatelessWidget {
 
   Widget _handleStates(NoteListState state) {
     if (state is NoteListSuccess) {
-      return NoteList(data: state.noteList);
+      return ResponsiveVisibility(
+          hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+          child: NoteList(data: state.noteList),
+        replacement: NoteGrid(data: state.noteList),
+      );
     } else if (state is NoteListEmpty) {
       return const EmptyState();
     } else if (state is NoteListLoading || state is NoteListInitial) {

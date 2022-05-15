@@ -66,6 +66,15 @@ mixin ExtractCategoryData {
   }
 }
 
+bool isMobile(BuildContext context) {
+  double width = MediaQuery.of(context).size.width;
+
+  if (width < 700) {
+    return true;
+  }
+  return false;
+}
+
 int generateColor() {
   return Color.fromRGBO(
     Random().nextInt(255),
