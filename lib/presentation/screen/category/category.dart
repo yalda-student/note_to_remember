@@ -11,6 +11,7 @@ import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
+import 'package:yalda_students_notes/presentation/screen/category/ext.dart';
 import 'package:yalda_students_notes/presentation/widgets/category_item.dart';
 import 'package:yalda_students_notes/presentation/widgets/invalid_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
@@ -23,7 +24,7 @@ class CategoryScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return SingleChildScrollView(
         child: SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
+      height: context.singleChildScrollViewDynamicHeight(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
