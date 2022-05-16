@@ -2,7 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 
-class NoteCategoryItem extends StatefulWidget {
+class NoteCategoryItem extends StatelessWidget {
   final NoteModel note;
 
   const NoteCategoryItem({
@@ -10,34 +10,31 @@ class NoteCategoryItem extends StatefulWidget {
     required this.note,
   }) : super(key: key);
 
-  @override
-  State<NoteCategoryItem> createState() => _NoteCategoryItemState();
-}
 
-class _NoteCategoryItemState extends State<NoteCategoryItem> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    debugPrint(note.toString());
     return Container(
       width: 170,
-      height: 100,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color(widget.note.color).withOpacity(0.85),
+        color: Color(note.color).withOpacity(0.85),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: Colors.grey, width: 0.3),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(widget.note.color),
-            Color(widget.note.color).withOpacity(0.55),
+            Color(note.color),
+            Color(note.color).withOpacity(0.55),
           ],
         ),
       ),
       child: ExpandablePanel(
         header: Text(
-          widget.note.title,
+          note.title,
           style: TextStyle(
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w800,
@@ -45,7 +42,7 @@ class _NoteCategoryItemState extends State<NoteCategoryItem> {
               color: theme.colorScheme.secondary),
         ),
         collapsed: Text(
-          widget.note.content,
+        note.content,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -54,7 +51,7 @@ class _NoteCategoryItemState extends State<NoteCategoryItem> {
               color: theme.colorScheme.secondary),
         ),
         expanded: Text(
-          widget.note.content,
+          note.content,
           softWrap: true,
           style: TextStyle(
               fontWeight: FontWeight.w500,

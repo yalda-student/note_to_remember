@@ -1,12 +1,12 @@
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
+import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
@@ -15,7 +15,6 @@ import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/invalid_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/note_category_item.dart';
-import 'package:yalda_students_notes/presentation/widgets/note_grid.dart';
 
 class CategoryNotesScreen extends StatelessWidget {
   CategoryModel category;
@@ -71,6 +70,7 @@ class CategoryNotesScreen extends StatelessWidget {
             ),
             const Divider(),
             BlocBuilder<CategoryNotesBloc, CategoryNotesState>(
+              buildWhen: (previous, current) => current is! CategoryNotesName,
               builder: (context, state) {
                 return _handleStates(state);
               },
@@ -94,7 +94,7 @@ class CategoryNotesScreen extends StatelessWidget {
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Rename category'),
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            borderRadius: BorderRadius.all(Radius.circular(AppSize.s20))),
         content: SingleChildScrollView(
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
@@ -109,7 +109,7 @@ class CategoryNotesScreen extends StatelessWidget {
                       fillColor: theme.colorScheme.surface.withOpacity(0.5),
                       enabledBorder: outlineInputBorder,
                       focusedBorder: outlineInputBorder,
-                      contentPadding: const EdgeInsets.all(10.0)),
+                      contentPadding: const EdgeInsets.all(AppPadding.p10)),
                   onChanged: (value) {
                     context
                         .read<CategoryNotesBloc>()
@@ -130,10 +130,8 @@ class CategoryNotesScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
           ),
           TextButton(
-            child: Text(
-              'Rename',
-              style: TextStyle(color: theme.colorScheme.secondary),
-            ),
+            child: Text('Rename',
+                style: TextStyle(color: theme.colorScheme.secondary)),
             onPressed: () {
               context.read<CategoryNotesBloc>().add(CategoryNoteRename());
               Navigator.of(context).pop();
@@ -156,6 +154,7 @@ class CategoryNotesScreen extends StatelessWidget {
         hiddenWhen: const [Condition.largerThan(name: MOBILE)],
       );
     } else {
+      debugPrint(state.toString());
       return const InvalidState();
     }
   }
@@ -168,13 +167,15 @@ class _NoteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint('_NoteList');
     return Expanded(
       child: ListView.builder(
         itemCount: data.length,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return Container(
-              margin: const EdgeInsets.fromLTRB(8, 16, 8, 0),
+              margin: const EdgeInsets.fromLTRB(
+                  AppSize.s8, AppSize.s16, AppSize.s8, AppSize.s0),
               child: NoteCategoryItem(note: data[index]));
         },
       ),
@@ -185,23 +186,29 @@ class _NoteList extends StatelessWidget {
 class _NoteGrid extends StatelessWidget {
   final List<NoteModel> data;
 
-  const _NoteGrid({Key? key, required this.data}) : super(key: key);
+  const _NoteGrid({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      int colCount = max(2, (constraints.maxWidth / 250).floor());
-      return GridView.builder(
-        itemCount: data.length,
+    return Align(
+      alignment: SharedPref.getLanguage().isLanguageRtl()
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(AppPadding.p12),
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: colCount,
-          crossAxisSpacing: 15.0,
-          mainAxisSpacing: 15.0,
+        child: Wrap(
+          alignment: WrapAlignment.end,
+          runSpacing: ValueManager.gridSpacing,
+          spacing: ValueManager.gridSpacing,
+          children: List.generate(data.length, (index) {
+            return NoteCategoryItem(note: data[index]);
+          }),
         ),
-        itemBuilder: (context, index) => NoteCategoryItem(note: data[index]),
-      );
-    });
+      ),
+    );
   }
 }

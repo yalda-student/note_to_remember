@@ -53,15 +53,9 @@ class NoteScreen extends StatelessWidget {
         ),
         Align(
           alignment: SharedPref.getLanguage().isLanguageRtl() ? Alignment.bottomLeft : Alignment.bottomRight,
-          child: Positioned(
-            bottom: 16,
-            right: 8,
-            child: FloatingActionButton(
-              onPressed: () {
-                _openAddNotePage(context);
-              },
-              child: Icon(Iconsax.add, color: theme.colorScheme.primary),
-            ),
+          child: FloatingActionButton(
+            onPressed: () => _openAddNotePage(context),
+            child: Icon(Iconsax.add, color: theme.colorScheme.primary),
           ),
         )
       ],
