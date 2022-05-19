@@ -11,6 +11,7 @@ import 'package:yalda_students_notes/core/common/lang.dart';
 import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
+import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/category/category.dart';
 import 'package:yalda_students_notes/presentation/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
@@ -28,6 +29,7 @@ const int searchIndex = 1;
 const int categoryIndex = 2;
 const int settingIndex = 3;
 const int favoriteIndex = 4;
+const int newNoteIndex = 5;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,7 +76,7 @@ class MyApp extends StatelessWidget {
           ClampingScrollWrapper.builder(context, widget!),
           breakpoints: const [
             ResponsiveBreakpoint.resize(300, name: MOBILE),
-            ResponsiveBreakpoint.autoScale(700, name: TABLET),
+            ResponsiveBreakpoint.autoScale(650, name: TABLET),
             ResponsiveBreakpoint.resize(850, name: DESKTOP),
             ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
           ],
@@ -117,6 +119,7 @@ class _MainScreenState extends State<MainScreen> {
     categoryIndex: _categoryKey,
     settingIndex: _settingKey,
     favoriteIndex: _favoriteKey,
+    newNoteIndex: _newNoteKey,
   };
 
   final GlobalKey<NavigatorState> _homeKey = GlobalKey();
@@ -124,6 +127,7 @@ class _MainScreenState extends State<MainScreen> {
   final GlobalKey<NavigatorState> _categoryKey = GlobalKey();
   final GlobalKey<NavigatorState> _settingKey = GlobalKey();
   final GlobalKey<NavigatorState> _favoriteKey = GlobalKey();
+  final GlobalKey<NavigatorState> _newNoteKey = GlobalKey();
 
   Future<bool> _onWillPop() async {
     final NavigatorState currentSelectedTabNavigatorState =
@@ -167,6 +171,8 @@ class _MainScreenState extends State<MainScreen> {
                           _settingKey, settingIndex, const SettingScreen()),
                       _navigator(
                           _favoriteKey, favoriteIndex, const FavoriteScreen()),
+                      _navigator(
+                          _newNoteKey, newNoteIndex, const AddNoteScreen()),
                     ],
                   ),
                 ),
@@ -197,22 +203,6 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
               ),
-              // ResponsiveRowColumnItem(
-              //   rowOrder: 0,
-              //   child: ResponsiveVisibility(
-              //     visible: false,
-              //     visibleWhen: const [Condition.largerThan(name: TABLET)],
-              //     child: AppDrawer(
-              //       onTap: (index) {
-              //         setState(() {
-              //           _history.remove(selectedScreenIndex);
-              //           _history.add(selectedScreenIndex);
-              //           selectedScreenIndex = index;
-              //         });
-              //       },
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),
@@ -232,16 +222,5 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           );
-  }
-}
-
-class X extends StatelessWidget {
-  const X({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [],
-    );
   }
 }

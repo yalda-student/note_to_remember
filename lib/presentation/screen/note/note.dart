@@ -10,6 +10,7 @@ import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';
@@ -24,49 +25,59 @@ class NoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Stack(
-      children: [
-        Column(
-          children: [
-            ListTile(
-              title: Text(
-                LocaleKeys.notesList.tr(),
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+    return Padding(
+      padding: const EdgeInsets.only(top: AppPadding.p12),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              ListTile(
+                title: Text(
+                  LocaleKeys.notesList.tr(),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 17),
+                ),
+                leading:
+                    Icon(Iconsax.note_21, color: theme.colorScheme.secondary),
               ),
-              leading: Icon(
-                Iconsax.note_21,
-                color: theme.colorScheme.secondary,
+              Consumer<AppDatabase>(
+                builder: (context, value, child) {
+                  context.read<NoteListBloc>().add(NoteListStart());
+                  return BlocBuilder<NoteListBloc, NoteListState>(
+                    builder: (context, state) {
+                      return _handleStates(state);
+                    },
+                  );
+                },
+              )
+            ],
+          ),
+          Align(
+            alignment: SharedPref.getLanguage().isLanguageRtl()
+                ? Alignment.bottomLeft
+                : Alignment.bottomRight,
+            child: ResponsiveVisibility(
+              hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+              child: Padding(
+                padding: const EdgeInsets.all(AppPadding.p6),
+                child: FloatingActionButton(
+                  backgroundColor: theme.colorScheme.onSurface,
+                  onPressed: () => _openAddNotePage(context),
+                  child: Icon(Iconsax.add, color: theme.colorScheme.primary),
+                ),
               ),
             ),
-            Consumer<AppDatabase>(
-              builder: (context, value, child) {
-                context.read<NoteListBloc>().add(NoteListStart());
-                return BlocBuilder<NoteListBloc, NoteListState>(
-                  builder: (context, state) {
-                    return _handleStates(state);
-                  },
-                );
-              },
-            )
-          ],
-        ),
-        Align(
-          alignment: SharedPref.getLanguage().isLanguageRtl() ? Alignment.bottomLeft : Alignment.bottomRight,
-          child: FloatingActionButton(
-            onPressed: () => _openAddNotePage(context),
-            child: Icon(Iconsax.add, color: theme.colorScheme.primary),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
   Widget _handleStates(NoteListState state) {
     if (state is NoteListSuccess) {
       return ResponsiveVisibility(
-          hiddenWhen: const [Condition.largerThan(name: MOBILE)],
-          child: NoteList(data: state.noteList),
+        hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+        child: NoteList(data: state.noteList),
         replacement: NoteGrid(data: state.noteList),
       );
     } else if (state is NoteListEmpty) {
@@ -90,11 +101,7 @@ class NoteScreen extends StatelessWidget {
     );
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => BlocProvider<AddNoteBloc>(
-          create: (context) =>
-              AddNoteBloc(NoteRepository(context.read<AppDatabase>()), _note),
-          child: const AddNoteScreen(),
-        ),
+        builder: (context) => const AddNoteScreen(),
       ),
     );
   }

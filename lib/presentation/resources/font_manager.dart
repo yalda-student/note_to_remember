@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 
 class FontManager {
   static TextStyle drawerTextStyle(BuildContext context) {
@@ -15,18 +15,27 @@ class FontManager {
     );
   }
 
-  static TextStyle noteTitleTextStyle() {
-    return const TextStyle(
+  static TextStyle noteTitleTextStyle(ThemeData theme) {
+    return TextStyle(
         overflow: TextOverflow.ellipsis,
         fontWeight: FontWeight.w800,
         fontSize: 18,
-        color: ColorManager.primaryDark);
+        color: theme.colorScheme.onSurface);
   }
-  static TextStyle noteContentTextStyle() {
-    return const TextStyle(
+
+  static TextStyle noteContentTextStyle(ThemeData theme) {
+    return TextStyle(
         overflow: TextOverflow.ellipsis,
         fontWeight: FontWeight.w700,
         fontSize: 16,
-        color: ColorManager.primaryDark);
+        color: theme.colorScheme.onSurface);
+  }
+
+  static TextStyle noteCategoryTextStyle(ThemeData theme) {
+    return TextStyle(
+        overflow: TextOverflow.ellipsis,
+        fontWeight: FontWeight.w400,
+        fontSize: 10,
+        color: theme.colorScheme.onSurface);
   }
 }

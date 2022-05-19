@@ -4,11 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
+import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/ext.dart';
+import 'package:yalda_students_notes/presentation/widgets/category_dialog.dart';
 import 'package:yalda_students_notes/presentation/widgets/category_item.dart';
 import 'package:yalda_students_notes/presentation/widgets/invalid_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
@@ -29,9 +33,14 @@ class CategoryScreen extends StatelessWidget {
           _AppBar(theme: theme),
           const Divider(),
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: SharedPref.getLanguage().isLanguageRtl()
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 16, top: 16),
+              padding: const EdgeInsets.only(
+                  left: AppPadding.p16,
+                  top: AppPadding.p16,
+                  right: AppPadding.p16),
               child: Text(LocaleKeys.listCategories.tr(),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 18)),
@@ -57,10 +66,7 @@ class _AppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        LocaleKeys.categories.tr(),
-        style: TextStyle(color: theme.colorScheme.secondary),
-      ),
+      title: Text(LocaleKeys.categories.tr()),
       centerTitle: true,
       actions: [
         IconButton(
@@ -77,7 +83,7 @@ class _AppBar extends StatelessWidget {
   Future<void> _showDialog(BuildContext context, ThemeData theme) async {
     final outlineInputBorder = OutlineInputBorder(
       borderSide: BorderSide(
-          color: theme.colorScheme.onPrimary.withOpacity(0.5), width: 2.0),
+          color: theme.colorScheme.onPrimary.withOpacity(0.15), width: 1.0),
       borderRadius: BorderRadius.circular(12.0),
     );
 
@@ -86,33 +92,12 @@ class _AppBar extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('New Category'),
+          backgroundColor: theme.colorScheme.onSecondary,
+          title: Text(LocaleKeys.new_category.tr()),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))),
           content: SingleChildScrollView(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: ListBody(
-                children: <Widget>[
-                  TextFormField(
-                    maxLength: 255,
-                    decoration: InputDecoration(
-                        hintText: 'Category',
-                        filled: true,
-                        fillColor: theme.colorScheme.surface.withOpacity(0.5),
-                        enabledBorder: outlineInputBorder,
-                        focusedBorder: outlineInputBorder,
-                        contentPadding: const EdgeInsets.all(10.0)),
-                    onChanged: (value) {
-                      context
-                          .read<CategoryBloc>()
-                          .add(CategoryTextFieldChange(value));
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+              child: CategoryDialog(outlineInputBorder: outlineInputBorder)),
           actions: <Widget>[
             TextButton(
               child: Text(
@@ -159,7 +144,7 @@ class _CategoryData extends StatelessWidget {
               Expanded(child: _CategoryList(data: data)),
               Text(
                   '${LocaleKeys.category_count_1.tr()} ${data.length} ${LocaleKeys.category_count_2.tr()}'),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
             ],
           ));
         } else {
@@ -182,21 +167,18 @@ class _CategoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Container(
-          height: 500,
+        return Padding(
           padding: const EdgeInsets.only(top: 16),
-          child:
-        ResponsiveGridView.builder(
+          child: ResponsiveGridView.builder(
             itemCount: data.length,
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            gridDelegate:const ResponsiveGridDelegate(
+            gridDelegate: const ResponsiveGridDelegate(
                 crossAxisSpacing: 20.0,
-                maxCrossAxisExtent: 200,
-                mainAxisSpacing: 15.0),
-            itemBuilder: (context, index) => CategoryItem(
-              categoryData: data[index],
-            ),
+                maxCrossAxisExtent: 160,
+                mainAxisSpacing: 20.0),
+            itemBuilder: (context, index) =>
+                CategoryItem(categoryData: data[index]),
           ),
         );
       },

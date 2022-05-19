@@ -2,11 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yalda_students_notes/core/common/util/global_exts.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
+import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/assets.gen.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
+import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 
 class AppDrawer extends StatelessWidget {
   final int selectedIndex;
@@ -22,68 +29,67 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    double width = min(MediaQuery.of(context).size.width * 0.3, 250);
+    double width = min(context.screenWidth * 0.3, 250);
     return Container(
       width: width,
-      height: MediaQuery.of(context).size.height * 0.85,
-      color: theme.colorScheme.primary.withOpacity(0.9),
-      child: ListView(
-        padding: EdgeInsets.zero,
+      color: theme.colorScheme.onSecondary.withOpacity(0.9),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 200,
+            height: context.screenHeight * 0.3,
             child: DrawerHeader(
               child: Center(
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Assets.icon.icon
-                      .image(width: 100, color: theme.colorScheme.secondary),
+                      .image(width: 100, color: theme.colorScheme.onSurface),
                   Text(LocaleKeys.note_to_remember.tr()),
+                  SizedBox(height: context.screenHeight * 0.02),
                 ],
               )),
             ),
           ),
-          ListTile(
-            title: Text(
-              LocaleKeys.home.tr(),
-              style: FontManager.drawerTextStyle(context),
-            ),
-            leading: const Icon(Iconsax.home, size: 20),
-            onTap: () => onTap(homeIndex),
+          _DrawerItem(
+            title: LocaleKeys.new_note.tr(),
+            activeIconData: Iconsax.note_add5,
+            inactiveIconData: Iconsax.note_add,
+            isActive: selectedIndex == newNoteIndex,
+            onTap: () => onTap(newNoteIndex),
+            // onTap: () => _openAddNotePage(context),
           ),
-          ListTile(
-            title: Text(
-              LocaleKeys.favorite_Notes.tr(),
-              style: FontManager.drawerTextStyle(context),
-            ),
-            leading: const Icon(Iconsax.heart, size: 20),
-            onTap: () => onTap(favoriteIndex),
-          ),
-          ListTile(
-            title: Text(
-              LocaleKeys.search.tr(),
-              style: FontManager.drawerTextStyle(context),
-            ),
-            leading: const Icon(Iconsax.search_normal, size: 20),
-            onTap: () => onTap(searchIndex),
-          ),
-          ListTile(
-            title: Text(
-              LocaleKeys.categories.tr(),
-              style: FontManager.drawerTextStyle(context),
-            ),
-            leading: const Icon(Iconsax.category_2, size: 20),
-            onTap: () => onTap(categoryIndex),
-          ),
-          ListTile(
-            title: Text(
-              LocaleKeys.setting.tr(),
-              style: FontManager.drawerTextStyle(context),
-            ),
-            leading: const Icon(Iconsax.setting_2, size: 20),
-            onTap: () => onTap(settingIndex),
-          ),
+          _DrawerItem(
+              title: LocaleKeys.notes.tr(),
+              activeIconData: Iconsax.note_15,
+              inactiveIconData: Iconsax.note_1,
+              isActive: selectedIndex == homeIndex,
+              onTap: () => onTap(homeIndex)),
+          _DrawerItem(
+              title: LocaleKeys.favorite_Notes.tr(),
+              activeIconData: Iconsax.heart5,
+              inactiveIconData: Iconsax.heart,
+              isActive: selectedIndex == favoriteIndex,
+              onTap: () => onTap(favoriteIndex)),
+          _DrawerItem(
+              title: LocaleKeys.search.tr(),
+              activeIconData: Iconsax.search_normal_15,
+              inactiveIconData: Iconsax.search_normal_1,
+              isActive: selectedIndex == searchIndex,
+              onTap: () => onTap(searchIndex)),
+          _DrawerItem(
+              title: LocaleKeys.categories.tr(),
+              activeIconData: Iconsax.category_25,
+              inactiveIconData: Iconsax.category_2,
+              isActive: selectedIndex == categoryIndex,
+              onTap: () => onTap(categoryIndex)),
+          _DrawerItem(
+              title: LocaleKeys.setting.tr(),
+              activeIconData: Iconsax.setting_25,
+              inactiveIconData: Iconsax.setting_2,
+              isActive: selectedIndex == settingIndex,
+              onTap: () => onTap(settingIndex)),
+          SizedBox(height: context.screenHeight * 0.15)
         ],
       ),
     );
@@ -92,29 +98,27 @@ class AppDrawer extends StatelessWidget {
 
 class _DrawerItem extends StatelessWidget {
   final String title;
-  final IconData iconData;
+  final IconData activeIconData;
+  final IconData inactiveIconData;
   final bool isActive;
   final Function() onTap;
 
   const _DrawerItem(
       {Key? key,
       required this.title,
-      required this.iconData,
+      required this.activeIconData,
+      required this.inactiveIconData,
       required this.isActive,
       required this.onTap})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return ListTile(
-      title: Text(title),
-      leading: Icon(
-        iconData,
-        color:
-            isActive ? theme.colorScheme.primary : theme.colorScheme.onPrimary,
-      ),
-      onTap: () => onTap,
+      tileColor: isActive ? Theme.of(context).colorScheme.secondary : null,
+      onTap: () => onTap(),
+      title: Text(title, style: FontManager.drawerTextStyle(context)),
+      leading: Icon(isActive ? activeIconData : inactiveIconData, size: 20),
     );
   }
 }

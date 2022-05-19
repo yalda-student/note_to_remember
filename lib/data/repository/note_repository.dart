@@ -24,7 +24,7 @@ class NoteRepository implements INoteRepository {
 
   @override
   Future insertNote(NoteModel note) {
-    return datasource.addNote(note);
+    return datasource.insertNote(note);
   }
 
   @override

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class NoteListItem extends StatefulWidget {
   const NoteListItem({Key? key, required this.data}) : super(key: key);
@@ -17,24 +19,19 @@ class NoteListItem extends StatefulWidget {
 class _NoteListItemState extends State<NoteListItem> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       height: 100,
-      width: isMobile(context) ? MediaQuery.of(context).size.width : 50,
       margin: const EdgeInsets.fromLTRB(2, 12, 2, 0),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppPadding.p12),
       decoration: BoxDecoration(
-          color: Color(widget.data.color).withOpacity(0.85),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.grey, width: 0.3),
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(widget.data.color),
-                Color(widget.data.color).withOpacity(0.55),
-              ])),
+        color: Color(widget.data.color).withOpacity(0.3),
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
+        padding:
+            const EdgeInsets.only(left: AppPadding.p8, right: AppPadding.p8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,10 +42,11 @@ class _NoteListItemState extends State<NoteListItem> {
               children: [
                 Expanded(
                   child: Text(widget.data.title,
-                      maxLines: 1, style: FontManager.noteTitleTextStyle()),
+                      maxLines: 1,
+                      style: FontManager.noteTitleTextStyle(theme)),
                 ),
                 if (widget.data.isFavorite)
-                  const Icon(Iconsax.heart5, color: Colors.red, size: 20)
+                  Icon(Iconsax.heart5, color: theme.errorColor, size: 20)
               ],
             ),
             Row(
@@ -56,18 +54,18 @@ class _NoteListItemState extends State<NoteListItem> {
               children: [
                 Text(
                   widget.data.category,
-                  style: const TextStyle(
+                  style:  TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 13,
-                      color: Colors.black54),
+                      color: theme.colorScheme.onSurface),
                 ),
                 Text(
                   DateFormat('dd/MM/yyyy').format(widget.data.createdAt),
                   textAlign: TextAlign.start,
-                  style: const TextStyle(
+                  style:  TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 13,
-                      color: Colors.black54),
+                      color: theme.colorScheme.onSurface),
                 ),
               ],
             )

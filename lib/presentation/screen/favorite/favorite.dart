@@ -7,6 +7,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/favorite/bloc/starrednotes_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
@@ -23,29 +24,32 @@ class FavoriteScreen extends StatelessWidget {
     return BlocProvider<StarredNotesBloc>(
       create: (context) =>
           StarredNotesBloc(NoteRepository(context.read<AppDatabase>())),
-      child: Column(
-        children: [
-          ListTile(
-            title: const Text(
-              LocaleKeys.favorite_Notes,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            ).tr(),
-            leading: Icon(
-              Iconsax.note_favorite,
-              color: theme.colorScheme.secondary,
+      child: Padding(
+        padding: const EdgeInsets.only(top: AppPadding.p12),
+        child: Column(
+          children: [
+            ListTile(
+              title: const Text(
+                LocaleKeys.favorite_Notes,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              ).tr(),
+              leading: Icon(
+                Iconsax.note_favorite,
+                color: theme.colorScheme.secondary,
+              ),
             ),
-          ),
-          Consumer<AppDatabase>(
-            builder: (context, value, child) {
-              context.read<StarredNotesBloc>().add(StarredNotesStart());
-              return BlocBuilder<StarredNotesBloc, StarredNotesState>(
-                builder: (context, state) {
-                  return _handleStates(state);
-                },
-              );
-            },
-          ),
-        ],
+            Consumer<AppDatabase>(
+              builder: (context, value, child) {
+                context.read<StarredNotesBloc>().add(StarredNotesStart());
+                return BlocBuilder<StarredNotesBloc, StarredNotesState>(
+                  builder: (context, state) {
+                    return _handleStates(state);
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

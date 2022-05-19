@@ -154,7 +154,6 @@ class CategoryNotesScreen extends StatelessWidget {
         hiddenWhen: const [Condition.largerThan(name: MOBILE)],
       );
     } else {
-      debugPrint(state.toString());
       return const InvalidState();
     }
   }
@@ -167,7 +166,7 @@ class _NoteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('_NoteList');
+    debugPrint('_NoteList');
     return Expanded(
       child: ListView.builder(
         itemCount: data.length,

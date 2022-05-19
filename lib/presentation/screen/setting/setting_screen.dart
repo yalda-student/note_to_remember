@@ -33,10 +33,7 @@ class _SettingScreenState extends State<SettingScreen> {
         child: Column(
           children: [
             AppBar(
-              title: Text(
-                LocaleKeys.setting.tr(),
-                style: TextStyle(color: theme.colorScheme.secondary),
-              ),
+              title: Text(LocaleKeys.setting.tr()),
               leading: const Icon(Iconsax.setting),
             ),
             const Divider(),

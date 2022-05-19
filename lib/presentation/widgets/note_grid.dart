@@ -18,7 +18,7 @@ class NoteGrid extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       gridDelegate:  const ResponsiveGridDelegate(
-          maxCrossAxisExtent: 200,
+          maxCrossAxisExtent: 160,
           crossAxisSpacing: ValueManager.gridSpacing,
           mainAxisSpacing: ValueManager.gridSpacing),
       itemBuilder: (context, index) => NoteItem(

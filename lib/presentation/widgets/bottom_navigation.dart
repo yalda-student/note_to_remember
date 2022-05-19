@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
 import 'package:yalda_students_notes/main.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int selectedIndex;
@@ -21,7 +22,7 @@ class CustomBottomNavigation extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: AppConstants.bottomNavigationHeight,
       decoration: BoxDecoration(
-        color: theme.colorScheme.secondary,
+        color: theme.colorScheme.onBackground,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(18),
           topLeft: Radius.circular(18),
@@ -77,7 +78,7 @@ class BottomNavigationItem extends StatelessWidget {
       child: Icon(
         icon,
         color:
-            isActive ? theme.colorScheme.primary : theme.colorScheme.onPrimary,
+            isActive ? ColorManager.activeColor : theme.dividerColor,
       ),
     );
   }

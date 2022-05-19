@@ -17,11 +17,13 @@ class ThemeNotifier with ChangeNotifier {
 final lightTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'ic_font',
+  dividerColor: Colors.grey,
+  errorColor:const Color(0xffE01921),
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
     elevation: 0,
     color: Colors.white,
-    iconTheme: IconThemeData(color:  ColorManager.primaryDark),
+    iconTheme: IconThemeData(color: ColorManager.primaryDark),
     titleTextStyle: TextStyle(
         color: Color(0xff293241),
         fontWeight: FontWeight.bold,
@@ -29,12 +31,14 @@ final lightTheme = ThemeData(
         fontFamily: 'ic_font'),
   ),
   colorScheme: ColorScheme.light(
-    primary: Colors.white,
-    primaryContainer: ColorManager.lightGray,
-    onPrimary: Colors.grey.shade800,
-    surface: Colors.grey.shade400,
-    secondary:  ColorManager.primaryDark,
-  ),
+      primary: Colors.white,
+      surface: Colors.grey.shade400,
+      primaryContainer: ColorManager.lightGray,
+      onPrimary: Colors.grey.shade800,
+      secondary: ColorManager.unselectedTabLabelDarkColor,
+      onSecondary: Colors.white,
+      onSurface: ColorManager.primaryDark,
+      onBackground: ColorManager.primaryDark),
   textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
       selectionColor: Color(0xffc6c8ce),
@@ -46,12 +50,13 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-  dividerColor: Colors.grey.shade400,
   fontFamily: 'ic_font',
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  dividerColor: Colors.grey,
+  errorColor: const Color(0xffFF4545),
   scaffoldBackgroundColor: ColorManager.primaryDark,
   appBarTheme: const AppBarTheme(
-    color:  ColorManager.primaryDark,
+    color: ColorManager.primaryDark,
     elevation: 0,
     titleTextStyle: TextStyle(
         color: Colors.white,
@@ -59,13 +64,15 @@ final darkTheme = ThemeData(
         fontSize: 20,
         fontFamily: 'ic_font'),
   ),
-  colorScheme: ColorScheme.dark(
-    primary:  ColorManager.primaryDark,
-    secondary: Colors.white,
-    onPrimary: Colors.black54,
-    surface: Colors.grey.shade400,
-    primaryContainer: ColorManager.lightGray,
-  ),
+  colorScheme: const ColorScheme.dark(
+      primary: ColorManager.primaryDark,
+      secondary: Colors.white,
+      onSurface: Colors.white,
+      onPrimary: ColorManager.unselectedTabLabelDarkColor,
+      surface: ColorManager.tabBarDarkColor,
+      primaryContainer: ColorManager.lightGray,
+      onSecondary: ColorManager.bottomNavigationDarkColor,
+      onBackground: ColorManager.bottomNavigationDarkColor),
   textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
       selectionColor: Color(0xffc6c8ce),

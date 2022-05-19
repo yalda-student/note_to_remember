@@ -10,7 +10,7 @@ import 'connection/connection.dart' as impl;
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Note, Category], include: {'sql.drift'})
+@DriftDatabase(tables: [Note, Category])
 class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
   static final AppDatabase _instance = AppDatabase._internal();
 
@@ -18,20 +18,21 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
 
   AppDatabase._internal() : super(impl.connect().executor);
 
-
   @override
   int get schemaVersion => 1;
 
   @override
   MigrationStrategy get migration {
-    return MigrationStrategy(beforeOpen: (details) async {
-      await customStatement('PRAGMA foreign_keys = ON');
-    });
+    return MigrationStrategy(
+      beforeOpen: (details) async {
+        await customStatement('PRAGMA foreign_keys = ON');
+      },
+    );
   }
 
   //-------------Note
 
-  Future<int> addNote(NoteModel noteData) async {
+  Future<int> insertNote(NoteModel noteData) async {
     // return note.insertOne(NoteCompanion.insert(
     //     content: noteData.content,
     //     title: Value(noteData.title ?? ''),

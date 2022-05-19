@@ -39,5 +39,7 @@
   "note": "یادداشت",
   "delete_none_category": "شما نمی توانید دسته None را پاک کنید. ",
   "home": "خانه",
-  "note_to_remember": "یادداشتی برای یادآوری"
+  "note_to_remember": "یادداشتی برای یادآوری",
+  "new_category": "دسته جدید",
+  "new_note": "یادداشت جدید"
 }

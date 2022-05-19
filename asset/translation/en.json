@@ -39,5 +39,7 @@
   "note": "Note",
   "delete_none_category": "You can't delete None Category.",
   "home": "Home",
-  "note_to_remember": "Note to Remember"
+  "note_to_remember": "Note to Remember",
+  "new_category": "New Category",
+  "new_note": "New Note"
 }
