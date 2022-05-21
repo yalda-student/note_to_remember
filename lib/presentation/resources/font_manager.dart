@@ -1,8 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class FontManager {
+
+  static const String iranMarkerFont = 'IRANMarker';
+  static const String icFont = 'ic_font';
+
   static TextStyle drawerTextStyle(BuildContext context) {
     return TextStyle(
       fontSize: ResponsiveValue(

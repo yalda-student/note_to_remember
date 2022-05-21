@@ -98,3 +98,6 @@ flutter:
     - family: ic_font
       fonts:
           - asset: asset/fonts/ic_font.ttf
+    - family: IRANMarker
+      fonts:
+          - asset: asset/fonts/IRANMarker.ttf

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
@@ -16,9 +19,11 @@ class ThemeNotifier with ChangeNotifier {
 
 final lightTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  fontFamily: 'ic_font',
+  fontFamily: isPersianLanguage() ?  FontManager.iranMarkerFont : FontManager.icFont,
+  radioTheme:
+      RadioThemeData(fillColor: MaterialStateProperty.all(Colors.purple)),
   dividerColor: Colors.grey,
-  errorColor:const Color(0xffE01921),
+  errorColor: const Color(0xffE01921),
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
     elevation: 0,
@@ -27,8 +32,7 @@ final lightTheme = ThemeData(
     titleTextStyle: TextStyle(
         color: Color(0xff293241),
         fontWeight: FontWeight.bold,
-        fontSize: 20,
-        fontFamily: 'ic_font'),
+        fontSize: 20),
   ),
   colorScheme: ColorScheme.light(
       primary: Colors.white,
@@ -47,10 +51,15 @@ final lightTheme = ThemeData(
     border: InputBorder.none,
     contentPadding: EdgeInsets.all(8.0),
   ),
+  dialogTheme: const DialogTheme(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
+  ),
 );
 
 final darkTheme = ThemeData(
-  fontFamily: 'ic_font',
+  fontFamily: isPersianLanguage() ? FontManager.iranMarkerFont : FontManager.icFont,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   dividerColor: Colors.grey,
   errorColor: const Color(0xffFF4545),
@@ -61,8 +70,7 @@ final darkTheme = ThemeData(
     titleTextStyle: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold,
-        fontSize: 20,
-        fontFamily: 'ic_font'),
+        fontSize: 20),
   ),
   colorScheme: const ColorScheme.dark(
       primary: ColorManager.primaryDark,
@@ -80,5 +88,10 @@ final darkTheme = ThemeData(
   inputDecorationTheme: const InputDecorationTheme(
     border: InputBorder.none,
     contentPadding: EdgeInsets.all(8.0),
+  ),
+  dialogTheme: const DialogTheme(
+    backgroundColor: ColorManager.bottomNavigationDarkColor,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
   ),
 );

@@ -1,19 +1,14 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/core/common/util/global_exts.dart';
-import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/assets.gen.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
-import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
-import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
+import 'package:yalda_students_notes/presentation/screen/setting/setting_dialog.dart';
 
 class AppDrawer extends StatelessWidget {
   final int selectedIndex;
@@ -88,10 +83,17 @@ class AppDrawer extends StatelessWidget {
               activeIconData: Iconsax.setting_25,
               inactiveIconData: Iconsax.setting_2,
               isActive: selectedIndex == settingIndex,
-              onTap: () => onTap(settingIndex)),
+              onTap: () => _showDialog(context, theme)),
           SizedBox(height: context.screenHeight * 0.15)
         ],
       ),
+    );
+  }
+
+  Future<void> _showDialog(BuildContext context, ThemeData theme) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => settingDialog(context, theme),
     );
   }
 }

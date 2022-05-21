@@ -92,10 +92,7 @@ class _AppBar extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: theme.colorScheme.onSecondary,
           title: Text(LocaleKeys.new_category.tr()),
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           content: SingleChildScrollView(
               child: CategoryDialog(outlineInputBorder: outlineInputBorder)),
           actions: <Widget>[

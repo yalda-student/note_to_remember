@@ -66,15 +66,6 @@ mixin ExtractCategoryData {
   }
 }
 
-bool isMobile(BuildContext context) {
-  double width = MediaQuery.of(context).size.width;
-
-  if (width < 700) {
-    return true;
-  }
-  return false;
-}
-
 int generateColor() {
   return Color.fromRGBO(
     Random().nextInt(255),
@@ -83,6 +74,9 @@ int generateColor() {
     1,
   ).value;
 }
+
+bool isPersianLanguage() =>
+    SharedPref.getLanguage() == const Locale('fa', 'IR').languageCode;
 
 Future<bool> isFirstTime() async {
   var isFirstTime = SharedPref.pref.getBool(AppConstants.isFirstRun);

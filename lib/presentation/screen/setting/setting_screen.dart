@@ -5,8 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
-import 'package:yalda_students_notes/core/common/const.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
+import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/screen/about/about_screen.dart';
 
@@ -45,7 +44,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: DayNightSwitcher(
                   isDarkModeEnabled: _enableDarkTheme,
                   sunColor: Colors.amber,
-                  onStateChanged: (val) => onThemeChanged(val, themeNotifier),
+                  onStateChanged: (val) =>
+                      context.changeTheme(val, themeNotifier),
                 ),
               ),
             ),
@@ -76,13 +76,6 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
       ),
     );
-  }
-
-  void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-    (value)
-        ? themeNotifier.setTheme(darkTheme)
-        : themeNotifier.setTheme(lightTheme);
-    SharedPref.pref.setBool(AppConstants.darkMode, value);
   }
 }
 
