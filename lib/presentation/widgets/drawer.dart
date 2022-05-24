@@ -3,11 +3,13 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/gen/assets.gen.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/main.dart';
-import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/setting/setting_dialog.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -28,64 +30,63 @@ class AppDrawer extends StatelessWidget {
     return Container(
       width: width,
       color: theme.colorScheme.onSecondary.withOpacity(0.9),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: context.screenHeight * 0.3,
-            child: DrawerHeader(
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Assets.icon.icon
-                      .image(width: 100, color: theme.colorScheme.onSurface),
-                  Text(LocaleKeys.note_to_remember.tr()),
-                  SizedBox(height: context.screenHeight * 0.02),
-                ],
-              )),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Assets.icon.icon.image(
+                width: ResponsiveValue<double>(context,
+                    defaultValue: 105,
+                    valueWhen: [
+                      const Condition.equals(name: TABLET, value: 75)
+                    ]).value,
+                color: theme.colorScheme.onSurface),
+            SizedBox(height: context.screenWidth * 0.02),
+            Text(LocaleKeys.note_to_remember.tr()),
+            SizedBox(height: context.screenWidth * 0.02),
+            const Divider(),
+            SizedBox(height: context.screenWidth * 0.02),
+            _DrawerItem(
+              title: LocaleKeys.new_note.tr(),
+              activeIconData: Iconsax.note_add5,
+              inactiveIconData: Iconsax.note_add,
+              isActive: selectedIndex == newNoteIndex,
+              onTap: () => onTap(newNoteIndex),
             ),
-          ),
-          _DrawerItem(
-            title: LocaleKeys.new_note.tr(),
-            activeIconData: Iconsax.note_add5,
-            inactiveIconData: Iconsax.note_add,
-            isActive: selectedIndex == newNoteIndex,
-            onTap: () => onTap(newNoteIndex),
-            // onTap: () => _openAddNotePage(context),
-          ),
-          _DrawerItem(
-              title: LocaleKeys.notes.tr(),
-              activeIconData: Iconsax.note_15,
-              inactiveIconData: Iconsax.note_1,
-              isActive: selectedIndex == homeIndex,
-              onTap: () => onTap(homeIndex)),
-          _DrawerItem(
-              title: LocaleKeys.favorite_Notes.tr(),
-              activeIconData: Iconsax.heart5,
-              inactiveIconData: Iconsax.heart,
-              isActive: selectedIndex == favoriteIndex,
-              onTap: () => onTap(favoriteIndex)),
-          _DrawerItem(
-              title: LocaleKeys.search.tr(),
-              activeIconData: Iconsax.search_normal_15,
-              inactiveIconData: Iconsax.search_normal_1,
-              isActive: selectedIndex == searchIndex,
-              onTap: () => onTap(searchIndex)),
-          _DrawerItem(
-              title: LocaleKeys.categories.tr(),
-              activeIconData: Iconsax.category_25,
-              inactiveIconData: Iconsax.category_2,
-              isActive: selectedIndex == categoryIndex,
-              onTap: () => onTap(categoryIndex)),
-          _DrawerItem(
-              title: LocaleKeys.setting.tr(),
-              activeIconData: Iconsax.setting_25,
-              inactiveIconData: Iconsax.setting_2,
-              isActive: selectedIndex == settingIndex,
-              onTap: () => _showDialog(context, theme)),
-          SizedBox(height: context.screenHeight * 0.15)
-        ],
+            _DrawerItem(
+                title: LocaleKeys.notes.tr(),
+                activeIconData: Iconsax.note_15,
+                inactiveIconData: Iconsax.note_1,
+                isActive: selectedIndex == homeIndex,
+                onTap: () => onTap(homeIndex)),
+            _DrawerItem(
+                title: LocaleKeys.favorite_Notes.tr(),
+                activeIconData: Iconsax.heart5,
+                inactiveIconData: Iconsax.heart,
+                isActive: selectedIndex == favoriteIndex,
+                onTap: () => onTap(favoriteIndex)),
+            _DrawerItem(
+                title: LocaleKeys.search.tr(),
+                activeIconData: Iconsax.search_normal_15,
+                inactiveIconData: Iconsax.search_normal_1,
+                isActive: selectedIndex == searchIndex,
+                onTap: () => onTap(searchIndex)),
+            _DrawerItem(
+                title: LocaleKeys.categories.tr(),
+                activeIconData: Iconsax.category_25,
+                inactiveIconData: Iconsax.category_2,
+                isActive: selectedIndex == categoryIndex,
+                onTap: () => onTap(categoryIndex)),
+            _DrawerItem(
+                title: LocaleKeys.setting.tr(),
+                activeIconData: Iconsax.setting_25,
+                inactiveIconData: Iconsax.setting_2,
+                isActive: selectedIndex == settingIndex,
+                onTap: () => _showDialog(context, theme)),
+            SizedBox(height: context.screenHeight * 0.15)
+          ],
+        ),
       ),
     );
   }
@@ -116,11 +117,18 @@ class _DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
-      tileColor: isActive ? Theme.of(context).colorScheme.secondary : null,
+      tileColor: isActive ? ColorManager.radioButtonColor : null,
       onTap: () => onTap(),
-      title: Text(title, style: FontManager.drawerTextStyle(context)),
-      leading: Icon(isActive ? activeIconData : inactiveIconData, size: 20),
+      title: Text(title, style: StyleManager.drawerTextStyle(context)),
+      leading: Icon(isActive ? activeIconData : inactiveIconData,
+          size: ResponsiveValue<double>(context, defaultValue: 20, valueWhen: [
+            const Condition.equals(name: TABLET, value: 18)
+          ]).value,
+          color: isActive
+              ? ColorManager.radioButtonColor
+              : theme.colorScheme.onSurface),
     );
   }
 }

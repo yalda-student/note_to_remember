@@ -40,4 +40,4 @@
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_favorite.jpg?raw=true" width="200" alt="favorite in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_search.jpg?raw=true" width="200" alt="search in dark">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_categories.jpg?raw=true" width="200" alt="light categories">
-<img src="https://github.com/yalda-student/student_note/blob/main/pictures/desktop.jpg?raw=true" width="400" alt="desktop-windows">
+<img src="https://github.com/yalda-student/student_note/blob/temp/pictures/desktop.jpg?raw=true" width="350" alt="desktop-windows">

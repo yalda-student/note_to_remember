@@ -1,44 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class FontManager {
-
-  static const String iranMarkerFont = 'IRANMarker';
+class FontConstants {
   static const String icFont = 'ic_font';
+  static const String iranMarkerFont = 'IRANMarker';
+}
 
-  static TextStyle drawerTextStyle(BuildContext context) {
-    return TextStyle(
-      fontSize: ResponsiveValue(
-        context,
-        defaultValue: 15.0,
-        valueWhen: const [
-          Condition.largerThan(name: MOBILE, value: 15.0),
-        ],
-      ).value,
-    );
-  }
+class FontSize {
+  static const double s12 = 12.0;
+  static const double s14 = 14.0;
+  static const double s15 = 15.0;
+  static const double s16 = 16.0;
+  static const double s17 = 17.0;
+  static const double s18 = 18.0;
+  static const double s19 = 19.0;
+  static const double s20 = 20.0;
 
-  static TextStyle noteTitleTextStyle(ThemeData theme) {
-    return TextStyle(
-        overflow: TextOverflow.ellipsis,
-        fontWeight: FontWeight.w800,
-        fontSize: 18,
-        color: theme.colorScheme.onSurface);
-  }
+  static double alertDialogTitle(BuildContext context) =>
+      ResponsiveValue<double>(context, defaultValue: s19, valueWhen: [
+        const Condition.equals(name: TABLET, value: s17),
+      ]).value!;
 
-  static TextStyle noteContentTextStyle(ThemeData theme) {
-    return TextStyle(
-        overflow: TextOverflow.ellipsis,
-        fontWeight: FontWeight.w700,
-        fontSize: 16,
-        color: theme.colorScheme.onSurface);
-  }
-
-  static TextStyle noteCategoryTextStyle(ThemeData theme) {
-    return TextStyle(
-        overflow: TextOverflow.ellipsis,
-        fontWeight: FontWeight.w400,
-        fontSize: 10,
-        color: theme.colorScheme.onSurface);
-  }
+  static double alertDialogContent(BuildContext context) =>
+      ResponsiveValue<double>(context, defaultValue: s16, valueWhen: [
+        const Condition.equals(name: TABLET, value: s15),
+      ]).value!;
 }

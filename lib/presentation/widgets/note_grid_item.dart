@@ -3,7 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class NoteGridItem extends StatelessWidget {
@@ -28,13 +28,13 @@ class NoteGridItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(data.title,
-                style: FontManager.noteTitleTextStyle(theme),
+                style: StyleManager.noteTitleTextStyle(theme),
                 textAlign: TextAlign.start),
             const SizedBox(height: AppSize.s12),
             Expanded(
               child: Text(
                 data.content,
-                maxLines: 4,
+                maxLines: 3,
                 overflow: TextOverflow.fade,
                 textAlign: TextAlign.start,
               ),
@@ -43,7 +43,7 @@ class NoteGridItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(data.category,
-                    style: FontManager.noteCategoryTextStyle(theme)),
+                    style: StyleManager.noteCategoryTextStyle(theme)),
                 if (data.isFavorite)
                   Align(
                     alignment: Alignment.bottomRight,

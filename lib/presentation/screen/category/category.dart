@@ -4,12 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
-import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/ext.dart';
 import 'package:yalda_students_notes/presentation/widgets/category_dialog.dart';
@@ -31,21 +28,6 @@ class CategoryScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _AppBar(theme: theme),
-          const Divider(),
-          Align(
-            alignment: SharedPref.getLanguage().isLanguageRtl()
-                ? Alignment.centerRight
-                : Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: AppPadding.p16,
-                  top: AppPadding.p16,
-                  right: AppPadding.p16),
-              child: Text(LocaleKeys.listCategories.tr(),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 18)),
-            ),
-          ),
           Consumer<AppDatabase>(
             builder: (context, value, child) {
               context.read<CategoryBloc>().add(CategoryStart());
@@ -65,18 +47,16 @@ class _AppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(LocaleKeys.categories.tr()),
-      centerTitle: true,
-      actions: [
-        IconButton(
-          onPressed: () => _showDialog(context, theme),
-          icon: Icon(
-            Iconsax.add_circle,
-            color: theme.colorScheme.secondary,
-          ),
-        )
-      ],
+    return ListTile(
+      title: Text(
+        LocaleKeys.listCategories.tr(),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+      ),
+      leading: Icon(Iconsax.note_2, color: theme.colorScheme.secondary),
+      trailing: IconButton(
+        onPressed: () => _showDialog(context, theme),
+        icon: Icon(Iconsax.add_circle, color: theme.colorScheme.secondary),
+      ),
     );
   }
 

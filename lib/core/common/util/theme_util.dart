@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
@@ -19,9 +20,10 @@ class ThemeNotifier with ChangeNotifier {
 
 final lightTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  fontFamily: isPersianLanguage() ?  FontManager.iranMarkerFont : FontManager.icFont,
-  radioTheme:
-      RadioThemeData(fillColor: MaterialStateProperty.all(Colors.purple)),
+  fontFamily:
+      isPersianLanguage() ? FontConstants.iranMarkerFont : FontConstants.icFont,
+  radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.all(ColorManager.radioButtonColor)),
   dividerColor: Colors.grey,
   errorColor: const Color(0xffE01921),
   scaffoldBackgroundColor: Colors.white,
@@ -30,18 +32,16 @@ final lightTheme = ThemeData(
     color: Colors.white,
     iconTheme: IconThemeData(color: ColorManager.primaryDark),
     titleTextStyle: TextStyle(
-        color: Color(0xff293241),
-        fontWeight: FontWeight.bold,
-        fontSize: 20),
+        color: Color(0xff293241), fontWeight: FontWeight.bold, fontSize: 20),
   ),
   colorScheme: ColorScheme.light(
       primary: Colors.white,
+      secondary: ColorManager.unselectedTabLabelDarkColor,
+      onSurface: ColorManager.primaryDark,
+      onPrimary: Colors.grey.shade800,
       surface: Colors.grey.shade400,
       primaryContainer: ColorManager.lightGray,
-      onPrimary: Colors.grey.shade800,
-      secondary: ColorManager.unselectedTabLabelDarkColor,
       onSecondary: Colors.white,
-      onSurface: ColorManager.primaryDark,
       onBackground: ColorManager.primaryDark),
   textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
@@ -51,15 +51,19 @@ final lightTheme = ThemeData(
     border: InputBorder.none,
     contentPadding: EdgeInsets.all(8.0),
   ),
-  dialogTheme: const DialogTheme(
+  dialogTheme: DialogTheme(
     backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(
+    titleTextStyle: isPersianLanguage()
+        ? StyleManager.dialogTitlePersianLightTextStyle()
+        : StyleManager.dialogTitleEnglishLightTextStyle(),
+    shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
   ),
 );
 
 final darkTheme = ThemeData(
-  fontFamily: isPersianLanguage() ? FontManager.iranMarkerFont : FontManager.icFont,
+  fontFamily:
+      isPersianLanguage() ? FontConstants.iranMarkerFont : FontConstants.icFont,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   dividerColor: Colors.grey,
   errorColor: const Color(0xffFF4545),
@@ -68,9 +72,7 @@ final darkTheme = ThemeData(
     color: ColorManager.primaryDark,
     elevation: 0,
     titleTextStyle: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 20),
+        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
   ),
   colorScheme: const ColorScheme.dark(
       primary: ColorManager.primaryDark,
@@ -81,6 +83,8 @@ final darkTheme = ThemeData(
       primaryContainer: ColorManager.lightGray,
       onSecondary: ColorManager.bottomNavigationDarkColor,
       onBackground: ColorManager.bottomNavigationDarkColor),
+  radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.all(ColorManager.radioButtonColor)),
   textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
       selectionColor: Color(0xffc6c8ce),
@@ -89,9 +93,12 @@ final darkTheme = ThemeData(
     border: InputBorder.none,
     contentPadding: EdgeInsets.all(8.0),
   ),
-  dialogTheme: const DialogTheme(
+  dialogTheme: DialogTheme(
+    titleTextStyle: isPersianLanguage()
+        ? StyleManager.dialogTitlePersianDarkTextStyle()
+        : StyleManager.dialogTitleEnglishDarkTextStyle(),
     backgroundColor: ColorManager.bottomNavigationDarkColor,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
   ),
 );

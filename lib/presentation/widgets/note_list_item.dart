@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class NoteListItem extends StatefulWidget {
@@ -43,7 +41,7 @@ class _NoteListItemState extends State<NoteListItem> {
                 Expanded(
                   child: Text(widget.data.title,
                       maxLines: 1,
-                      style: FontManager.noteTitleTextStyle(theme)),
+                      style: StyleManager.noteTitleTextStyle(theme)),
                 ),
                 if (widget.data.isFavorite)
                   Icon(Iconsax.heart5, color: theme.errorColor, size: 20)
