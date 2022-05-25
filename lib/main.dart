@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -89,7 +90,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingState();
             }
-            if (snapshot.data!) {
+            if (snapshot.data! && !kIsWeb) {
               return const OnBoardingScreen();
             } else {
               return const MainScreen();
@@ -148,6 +149,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
@@ -211,6 +213,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _navigator(GlobalKey key, int index, Widget child) {
+    // debugPrint('index: $index');
+    // debugPrint('key: $key');
     return key.currentState == null && selectedScreenIndex != index
         ? Container()
         : Navigator(

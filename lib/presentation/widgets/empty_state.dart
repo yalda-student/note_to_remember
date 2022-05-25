@@ -14,7 +14,7 @@ class EmptyState extends StatelessWidget {
       child: Column(
         children: [
            const SizedBox(height: 100),
-          Assets.image.error404.image(width: 180, color: Theme.of(context).colorScheme.secondary),
+          Assets.image.error404.image(width: 180, color: Theme.of(context).colorScheme.onSurface),
            Text(
             LocaleKeys.any_note.tr(),
             style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),

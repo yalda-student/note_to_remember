@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:yalda_students_notes/core/common/const.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
 import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/core/common/util/theme_util.dart';
@@ -42,13 +43,22 @@ AlertDialog settingDialog(BuildContext context, ThemeData theme) {
           ),
           ListTile(
             title: Text(LocaleKeys.theme.tr(),
-                style: TextStyle(fontSize: FontSize.alertDialogContent(context))),
+                style:
+                    TextStyle(fontSize: FontSize.alertDialogContent(context))),
             trailing: Icon(
               _isDark ? Iconsax.moon5 : Iconsax.sun_15,
               color: _isDark ? Colors.white : Colors.amber,
               size: AppSize.iconSize(context),
             ),
             onTap: () => context.changeTheme(!_isDark, themeNotifier),
+          ),
+          SizedBox(height: context.screenHeight * 0.02),
+          const Text(
+            AppConstants.appVersion,
+            style: TextStyle(
+              fontSize: FontSize.s12,
+              color: ColorManager.unselectedTabLabelDarkColor,
+            ),
           ),
         ],
       ),

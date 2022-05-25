@@ -1,5 +1,8 @@
 class AppConstants {
 
+  //config
+  static const String appVersion = 'v1.0.0';
+
   //app
   static const double bottomNavigationHeight = 65;
   static const int openAnimationDuration = 1000;

@@ -15,6 +15,7 @@ class FontSize {
   static const double s18 = 18.0;
   static const double s19 = 19.0;
   static const double s20 = 20.0;
+  static const double s28 = 28.0;
 
   static double alertDialogTitle(BuildContext context) =>
       ResponsiveValue<double>(context, defaultValue: s19, valueWhen: [
@@ -24,5 +25,15 @@ class FontSize {
   static double alertDialogContent(BuildContext context) =>
       ResponsiveValue<double>(context, defaultValue: s16, valueWhen: [
         const Condition.equals(name: TABLET, value: s15),
+      ]).value!;
+
+  static double onBoardTitle(BuildContext context) =>
+      ResponsiveValue<double>(context, defaultValue: s28, valueWhen: [
+        const Condition.equals(name: TABLET, value: s20),
+      ]).value!;
+
+  static double onBoardBody(BuildContext context) =>
+      ResponsiveValue<double>(context, defaultValue: s19, valueWhen: [
+        const Condition.equals(name: TABLET, value: s16),
       ]).value!;
 }

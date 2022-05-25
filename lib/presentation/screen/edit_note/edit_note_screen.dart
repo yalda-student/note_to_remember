@@ -111,8 +111,8 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                 centerTitle: true,
                 leading: IconButton(
                     onPressed: () => _closePage(context),
-                    icon: const Icon(Iconsax.close_circle,
-                        color: Colors.black)),
+                    icon:
+                        const Icon(Iconsax.close_circle, color: Colors.black)),
                 actions: [
                   ResponsiveVisibility(
                     hiddenWhen: const [Condition.largerThan(name: MOBILE)],
@@ -121,7 +121,8 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                       onSelected: (value) =>
                           _handleMenuItemSelect(context, value),
                     ),
-                  ),          ResponsiveVisibility(
+                  ),
+                  ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [Condition.largerThan(name: MOBILE)],
                     child: TextButton(
@@ -135,7 +136,7 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                     visibleWhen: const [Condition.largerThan(name: MOBILE)],
                     child: TextButton(
                       onPressed: () => _updateNote(context),
-                      child: Text(LocaleKeys.save.tr(),
+                      child: Text(LocaleKeys.update.tr(),
                           style: const TextStyle(color: Colors.black)),
                     ),
                   )
@@ -165,7 +166,6 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
     var validate = _formKey.currentState!.validate();
 
     if (validate) {
-      debugPrint('_updateNote');
       context.read<EditNoteBloc>().add(EditNoteUpdate());
       _closePage(context);
     }

@@ -1,6 +1,6 @@
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/util/global_exts.dart';
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                   labelColor: theme.colorScheme.primary,
                   unselectedLabelColor: theme.colorScheme.onPrimary,
                   indicator: ContainerTabIndicator(
-                    color: theme.colorScheme.secondary,
+                    color: theme.colorScheme.onSurface,
                     radius: BorderRadius.circular(AppSize.s12),
                   ),
                 ),

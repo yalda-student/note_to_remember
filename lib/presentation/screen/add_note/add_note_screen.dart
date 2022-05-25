@@ -29,15 +29,11 @@ class AddNoteScreen extends StatefulWidget {
 class _AddNoteScreenState extends State<AddNoteScreen>
     with ExtractCategoryData {
   int colorIndex = 0;
+  late bool? isMobile;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -49,6 +45,11 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    isMobile = ResponsiveValue<bool>(context,
+            defaultValue: true,
+            valueWhen: [const Condition.largerThan(name: MOBILE, value: false)])
+        .value;
+
     return BlocProvider<AddNoteBloc>(
       create: (context) {
         final _note = NoteModel(
@@ -63,6 +64,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
       child: BlocBuilder<AddNoteBloc, AddNoteState>(
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: ColorManager.colors[colorIndex],
             body: SafeArea(
                 child: Form(
@@ -77,10 +79,12 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     centerTitle: true,
-                    leading: IconButton(
-                        onPressed: () => closePage(),
-                        icon: const Icon(Iconsax.close_circle,
-                            color: Colors.black)),
+                    leading: isMobile!
+                        ? IconButton(
+                            onPressed: () => closePage(),
+                            icon: const Icon(Iconsax.close_circle,
+                                color: Colors.black))
+                        : const SizedBox(),
                     actions: [
                       ResponsiveVisibility(
                         hiddenWhen: const [Condition.largerThan(name: MOBILE)],
@@ -148,7 +152,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   }
 
   void _saveNote(BuildContext context) {
-    var validate = _formKey.currentState!.validate();
+    final validate = _formKey.currentState!.validate();
 
     if (validate) {
       context.read<AddNoteBloc>().add(AddNoteSave());
@@ -157,11 +161,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   }
 
   void closePage() {
-    var value = ResponsiveValue(context,
-            defaultValue: false,
-            valueWhen: const [Condition.largerThan(name: MOBILE, value: true)])
-        .value;
-    if (value!) {
+    if (isMobile!) {
       Navigator.pop(context);
     } else {
       Navigator.pushReplacement(

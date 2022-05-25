@@ -29,6 +29,8 @@ class AppDrawer extends StatelessWidget {
     double width = min(context.screenWidth * 0.3, 250);
     return Container(
       width: width,
+      height: context.screenHeight,
+      alignment: Alignment.center,
       color: theme.colorScheme.onSecondary.withOpacity(0.9),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -84,7 +86,6 @@ class AppDrawer extends StatelessWidget {
                 inactiveIconData: Iconsax.setting_2,
                 isActive: selectedIndex == settingIndex,
                 onTap: () => _showDialog(context, theme)),
-            SizedBox(height: context.screenHeight * 0.15)
           ],
         ),
       ),
@@ -123,9 +124,10 @@ class _DrawerItem extends StatelessWidget {
       onTap: () => onTap(),
       title: Text(title, style: StyleManager.drawerTextStyle(context)),
       leading: Icon(isActive ? activeIconData : inactiveIconData,
-          size: ResponsiveValue<double>(context, defaultValue: 20, valueWhen: [
-            const Condition.equals(name: TABLET, value: 18)
-          ]).value,
+          size: ResponsiveValue<double>(context,
+                  defaultValue: 20,
+                  valueWhen: [const Condition.equals(name: TABLET, value: 18)])
+              .value,
           color: isActive
               ? ColorManager.radioButtonColor
               : theme.colorScheme.onSurface),
