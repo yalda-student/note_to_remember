@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
             AppBar(
               title: Text(LocaleKeys.profileTitle.tr(),
                   style: TextStyle(
-                      color: theme.colorScheme.secondary,
+                      color: theme.colorScheme.onSurface,
                       fontSize: 22,
                       fontWeight: FontWeight.w600)),
               leading:

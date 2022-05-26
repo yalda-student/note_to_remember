@@ -12,6 +12,8 @@ import 'package:yalda_students_notes/data/repository/category_repository.dart';
 import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
@@ -56,7 +58,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
           title: '',
           content: '',
           isFavorite: false,
-          color: Colors.white.value,
+          color: ColorManager.colors[0].value,
           createdAt: DateTime.now(),
         );
         return AddNoteBloc(NoteRepository(context.read<AppDatabase>()), _note);
@@ -75,8 +77,10 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                     backgroundColor: ColorManager.colors[colorIndex],
                     title: Text(
                       LocaleKeys.add_note.tr(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: FontSize.onBoardBody(context)),
                     ),
                     centerTitle: true,
                     leading: isMobile!
@@ -98,21 +102,24 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                       ResponsiveVisibility(
                         visible: false,
                         visibleWhen: const [Condition.largerThan(name: MOBILE)],
-                        child: TextButton(
+                        child: IconButton(
+                          tooltip: LocaleKeys.move.tr(),
                           onPressed: () => _openCategoryList(context),
-                          child: Text(LocaleKeys.move.tr(),
-                              style: const TextStyle(color: Colors.black)),
+                          icon: Icon(Iconsax.category_2,
+                              color: Colors.black,
+                              size: AppSize.iconSize(context)),
                         ),
                       ),
                       ResponsiveVisibility(
                         visible: false,
                         visibleWhen: const [Condition.largerThan(name: MOBILE)],
-                        child: TextButton(
-                          onPressed: () => _saveNote(context),
-                          child: Text(LocaleKeys.save.tr(),
-                              style: const TextStyle(color: Colors.black)),
-                        ),
-                      )
+                        child: IconButton(
+                            tooltip: LocaleKeys.save.tr(),
+                            onPressed: () => _saveNote(context),
+                            icon: Icon(Iconsax.note_add,
+                                color: Colors.black,
+                                size: AppSize.iconSize(context))),
+                      ),
                     ],
                   ),
                   const Divider(),
@@ -211,12 +218,12 @@ class _TitleTextField extends StatelessWidget {
       maxLength: 255,
       decoration: InputDecoration(
         hintText: LocaleKeys.title.tr(),
-        hintStyle: theme.textTheme.headline5!
+        hintStyle: theme.textTheme.headline6!
             .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
       ),
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
-      style: theme.textTheme.headline5!.copyWith(
+      style: theme.textTheme.headline6!.copyWith(
           color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w600),
       onChanged: (value) {
         context.read<AddNoteBloc>().add(AddNoteTitleChange(value));
@@ -243,8 +250,7 @@ class _ContentTextField extends StatelessWidget {
         controller: _contentController,
         decoration: InputDecoration(
           hintText: LocaleKeys.startTyping.tr(),
-          hintStyle: theme.textTheme.headline5!
-              .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
+          hintStyle: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w600),
         ),
         maxLines: 100,
         keyboardType: TextInputType.multiline,

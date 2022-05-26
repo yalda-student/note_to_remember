@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class ColorPicker extends StatelessWidget {
   final int selectedIndex;
@@ -19,28 +20,28 @@ class ColorPicker extends StatelessWidget {
         itemCount: ColorManager.colors.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
+          final itemSize = AppSize.colorPickerIconSize(context);
+
           return GestureDetector(
-            onTap: () {
-              onTap(index);
-            },
+            onTap: () => onTap(index),
             child: Stack(
               clipBehavior: Clip.antiAlias,
               alignment: Alignment.center,
               children: [
                 Container(
-                  height: 30,
-                  width: 30,
+                  height: itemSize,
+                  width: itemSize,
                   margin: const EdgeInsets.fromLTRB(6, 4, 0, 4),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(itemSize / 2),
                     color: ColorManager.colors[index],
                     border: Border.all(
                         color: Colors.black.withOpacity(0.5), width: 1),
                   ),
                 ),
                 selectedIndex == index
-                    ? Icon(Icons.colorize_rounded,
-                        size: 18, color: Colors.black.withOpacity(0.8))
+                    ? Icon(Icons.check,
+                        size: AppSize.checkIconSize(context), color: Colors.black.withOpacity(0.8))
                     : const SizedBox()
               ],
             ),

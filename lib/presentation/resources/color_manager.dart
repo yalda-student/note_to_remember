@@ -41,7 +41,7 @@ class ColorManager {
   ];
 
   static const colors = <Color>[
-    Color(0xffffffff),
+    Color(0xfff8f8f8),
     Color(0xffbbdcf8),
     Color(0xffF8CBBB),
     Color(0xfff8f4bb),
@@ -58,7 +58,7 @@ class ColorManager {
 
   List<NoteColor> noteColors = [
     NoteColor(
-        lightColor: const Color(0xffffffff),
+        lightColor: const Color(0xffe5e3e3),
         darkColor: const Color(0xffBFBFBF)),
     NoteColor(
         lightColor: const Color(0xffbbdcf8),

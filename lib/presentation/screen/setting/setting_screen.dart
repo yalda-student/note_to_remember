@@ -7,6 +7,7 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:yalda_students_notes/core/common/lang.dart';
 import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/about/about_screen.dart';
 
 import '../../../core/common/util/theme_util.dart';
@@ -31,10 +32,12 @@ class _SettingScreenState extends State<SettingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBar(
-              title: Text(LocaleKeys.setting.tr()),
-              leading: const Icon(Iconsax.setting),
-            ),
+            ListTile(
+                title: Text(LocaleKeys.setting.tr(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 17)),
+                leading:
+                    Icon(Iconsax.setting, color: theme.colorScheme.secondary)),
             const Divider(),
             ListTile(
               title: const Text(LocaleKeys.theme).tr(),
@@ -90,8 +93,8 @@ class _LanguageSwitcher extends StatelessWidget with AppLanguage {
       minWidth: 75.0,
       cornerRadius: 20.0,
       activeBgColors: [
-        [theme.colorScheme.secondary],
-        [theme.colorScheme.secondary]
+        [theme.colorScheme.onSurface],
+        [theme.colorScheme.onSurface]
       ],
       activeFgColor: theme.colorScheme.surface,
       inactiveBgColor: theme.colorScheme.surface,
@@ -105,9 +108,9 @@ class _LanguageSwitcher extends StatelessWidget with AppLanguage {
       curve: Curves.linear,
       customTextStyles: [
         theme.textTheme.subtitle1!
-            .copyWith(color: const Color(0xff6996ea), fontSize: 13),
+            .copyWith(color: ColorManager.radioButtonColor, fontSize: 13),
         theme.textTheme.subtitle1!
-            .copyWith(color: const Color(0xff6996ea), fontSize: 13)
+            .copyWith(color: ColorManager.radioButtonColor, fontSize: 13)
       ],
       radiusStyle: true,
       animate: true,

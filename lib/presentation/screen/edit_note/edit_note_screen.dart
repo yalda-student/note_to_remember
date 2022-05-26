@@ -10,6 +10,7 @@ import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/repository/category_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/edit_note/bloc/editnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_sheet.dart';
@@ -125,21 +126,32 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                   ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [Condition.largerThan(name: MOBILE)],
-                    child: TextButton(
+                    child: IconButton(
+                      tooltip: LocaleKeys.delete.tr(),
                       onPressed: () => _openCategoryList(context),
-                      child: Text(LocaleKeys.move.tr(),
-                          style: const TextStyle(color: Colors.black)),
+                      icon: Icon(Iconsax.note_remove,
+                          color: Colors.black, size: AppSize.iconSize(context)),
+                    ),
+                  ), ResponsiveVisibility(
+                    visible: false,
+                    visibleWhen: const [Condition.largerThan(name: MOBILE)],
+                    child: IconButton(
+                      tooltip: LocaleKeys.move.tr(),
+                      onPressed: () => _openCategoryList(context),
+                      icon: Icon(Iconsax.category_2,
+                          color: Colors.black, size: AppSize.iconSize(context)),
                     ),
                   ),
                   ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [Condition.largerThan(name: MOBILE)],
-                    child: TextButton(
-                      onPressed: () => _updateNote(context),
-                      child: Text(LocaleKeys.update.tr(),
-                          style: const TextStyle(color: Colors.black)),
-                    ),
-                  )
+                    child: IconButton(
+                        tooltip: LocaleKeys.update.tr(),
+                        onPressed: () => _updateNote(context),
+                        icon: Icon(Iconsax.note_add,
+                            color: Colors.black,
+                            size: AppSize.iconSize(context))),
+                  ),
                 ],
               )
             : const LoadingState();
