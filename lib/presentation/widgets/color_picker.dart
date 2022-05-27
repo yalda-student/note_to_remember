@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yalda_students_notes/core/common/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
@@ -17,10 +19,14 @@ class ColorPicker extends StatelessWidget {
       padding: const EdgeInsets.only(left: 6),
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: ColorManager.colors.length,
+        itemCount: ColorManager.noteColors.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final itemSize = AppSize.colorPickerIconSize(context);
+          final themeNotifier = Provider.of<ThemeNotifier>(context);
+          final _isDark = (themeNotifier.getTheme() == darkTheme);
+
+          final color = ColorManager.noteColors[index];
 
           return GestureDetector(
             onTap: () => onTap(index),
@@ -34,14 +40,15 @@ class ColorPicker extends StatelessWidget {
                   margin: const EdgeInsets.fromLTRB(6, 4, 0, 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(itemSize / 2),
-                    color: ColorManager.colors[index],
+                    color: _isDark ? color.darkColor : color.lightColor,
                     border: Border.all(
-                        color: Colors.black.withOpacity(0.5), width: 1),
+                        color:  Colors.grey.withOpacity(0.8), width: 1),
                   ),
                 ),
                 selectedIndex == index
                     ? Icon(Icons.check,
-                        size: AppSize.checkIconSize(context), color: Colors.black.withOpacity(0.8))
+                        size: AppSize.checkIconSize(context),
+                    color: _isDark? Colors.white.withOpacity(0.8) :Colors.black.withOpacity(0.8) )
                     : const SizedBox()
               ],
             ),

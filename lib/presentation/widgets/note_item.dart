@@ -21,7 +21,7 @@ class NoteItem extends StatelessWidget {
     return OpenContainer(
       tappable: true,
       closedElevation: 0,
-      openElevation: 20,
+      openElevation: 0,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       closedColor: Theme.of(context).scaffoldBackgroundColor,
       transitionType: ContainerTransitionType.fade,
@@ -55,7 +55,7 @@ class NoteItem extends StatelessWidget {
                 title: note.title,
                 content: note.content,
                 createdAt: note.createdAt,
-                color: note.color,
+                colorIndex: note.colorIndex,
                 isFavorite: !note.isFavorite,
                 categoryId: note.categoryId),
           ),

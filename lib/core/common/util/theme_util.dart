@@ -16,6 +16,10 @@ class ThemeNotifier with ChangeNotifier {
     _themeData = themeData;
     notifyListeners();
   }
+
+  bool isDark() {
+    return getTheme() == darkTheme;
+  }
 }
 
 final lightTheme = ThemeData(
@@ -68,11 +72,16 @@ final darkTheme = ThemeData(
   dividerColor: Colors.grey,
   errorColor: const Color(0xffFF4545),
   scaffoldBackgroundColor: ColorManager.primaryDark,
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     color: ColorManager.primaryDark,
     elevation: 0,
     titleTextStyle: TextStyle(
-        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+        fontFamily: isPersianLanguage()
+            ? FontConstants.iranMarkerFont
+            : FontConstants.icFont,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 20),
   ),
   colorScheme: const ColorScheme.dark(
       primary: ColorManager.primaryDark,

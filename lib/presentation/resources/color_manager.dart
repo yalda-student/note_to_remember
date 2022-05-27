@@ -56,46 +56,31 @@ class ColorManager {
     Color(0xfff8bbe2),
   ];
 
-  List<NoteColor> noteColors = [
+ static List<NoteColor> noteColors = [
     NoteColor(
-        lightColor: const Color(0xffe5e3e3),
-        darkColor: const Color(0xffBFBFBF)),
+        lightColor: const Color(0xfff5f6f7),
+        darkColor: const Color(0xff111d29)),
     NoteColor(
-        lightColor: const Color(0xffbbdcf8),
-        darkColor: const Color(0xff718290)),
+        lightColor: const Color(0xffebf8ff),
+        darkColor: const Color(0xff00144a)),
     NoteColor(
-        lightColor: const Color(0xffF8CBBB),
-        darkColor: const Color(0xff718290)),
+        lightColor: const Color(0xffdafdf5),
+        darkColor: const Color(0xff012931)),
     NoteColor(
-        lightColor: const Color(0xfff8f4bb),
-        darkColor: const Color(0xff718290)),
+        lightColor: const Color(0xfff5fae5),
+        darkColor: const Color(0xff0e2b16)),
     NoteColor(
-        lightColor: const Color(0xffbf8c82),
-        darkColor: const Color(0xff718290)),
+        lightColor: const Color(0xfffff8d6),
+        darkColor: const Color(0xff450b00)),
     NoteColor(
-        lightColor: const Color(0xffc2f8bb),
-        darkColor: const Color(0xff718290)),
+        lightColor: const Color(0xffffeaf4),
+        darkColor: const Color(0xff350000)),
     NoteColor(
-        lightColor: const Color(0xffbbcef8),
-        darkColor: const Color(0xff718290)),
+        lightColor: const Color(0xfffff0fa),
+        darkColor: const Color(0xff28004a)),
     NoteColor(
-        lightColor: const Color(0xffe1bbf8),
-        darkColor: const Color(0xff718290)),
-    NoteColor(
-        lightColor: const Color(0xff9dc89f),
-        darkColor: const Color(0xff718290)),
-    NoteColor(
-        lightColor: const Color(0xffff707e),
-        darkColor: const Color(0xff718290)),
-    NoteColor(
-        lightColor: const Color(0xffd3fcff),
-        darkColor: const Color(0xff718290)),
-    NoteColor(
-        lightColor: const Color(0xffc8c09d),
-        darkColor: const Color(0xff718290)),
-    NoteColor(
-        lightColor: const Color(0xfff8bbe2),
-        darkColor: const Color(0xff718290)),
+        lightColor: const Color(0xfff1ecff),
+        darkColor: const Color(0xff1c0c6e)),
   ];
 }
 

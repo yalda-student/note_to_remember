@@ -14,21 +14,10 @@ import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/onboarding/bloc/language_bloc.dart';
 
-class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({Key? key}) : super(key: key);
+class OnBoardingScreen extends StatelessWidget {
+  OnBoardingScreen({Key? key}) : super(key: key);
 
-  @override
-  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
-}
-
-class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
-
-  @override
-  void initState() {
-    super.initState();
-    createNoneCategory();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +115,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       },
     );
   }
-
-  void createNoneCategory() async =>
-      context.read<OnBoardingBloc>().add(OnBoardingCreateCategory());
 
   void _onIntroEnd(context) {
     Navigator.of(context).pushReplacement(

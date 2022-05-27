@@ -6,7 +6,7 @@ class NoteModel {
   final String title;
   final String content;
   final DateTime createdAt;
-  final int color;
+  final int colorIndex;
   final bool isFavorite;
   int categoryId;
   String category;
@@ -16,7 +16,7 @@ class NoteModel {
       required this.title,
       required this.content,
       required this.createdAt,
-      required this.color,
+      required this.colorIndex,
       required this.isFavorite,
       this.categoryId = 1,
       this.category = 'None'});
@@ -26,7 +26,7 @@ class NoteModel {
         title = noteData.title ?? '',
         content = noteData.content,
         createdAt = noteData.createdAt,
-        color = noteData.color,
+        colorIndex = noteData.colorIndex,
         isFavorite = noteData.isFavorite,
         category = '',
         categoryId = noteData.categoryId;
@@ -37,7 +37,7 @@ class NoteModel {
         title: title,
         content: content,
         createdAt: createdAt,
-        color: color,
+        colorIndex: colorIndex,
         categoryId: categoryId,
         isFavorite: isFavorite);
   }
@@ -48,13 +48,13 @@ class NoteModel {
       title: Value(title),
       content: Value(content),
       createdAt: Value(createdAt),
-      color: Value(color),
+      colorIndex: Value(colorIndex),
       isFavorite: Value(isFavorite),
     );
   }
 
   @override
   String toString() {
-    return 'NoteModel{id: $id, title: $title, content: $content, createdAt: $createdAt, color: $color, isFavorite: $isFavorite, categoryId: $categoryId, category: $category}';
+    return 'NoteModel{id: $id, title: $title, content: $content, createdAt: $createdAt, color: $colorIndex, isFavorite: $isFavorite, categoryId: $categoryId, category: $category}';
   }
 }

@@ -25,7 +25,7 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             title: _noteData.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
-            color: _noteData.color,
+            colorIndex: _noteData.colorIndex,
             isFavorite: _noteData.isFavorite,
             categoryId: event.category.id,
             category: event.category.title);
@@ -38,7 +38,7 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             title: _noteData.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
-            color: event.color.value,
+            colorIndex: event.colorIndex,
             isFavorite: _noteData.isFavorite,
             categoryId: _noteData.categoryId,
             category: _noteData.category);
@@ -51,7 +51,7 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             title: event.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
-            color: _noteData.color,
+            colorIndex: _noteData.colorIndex,
             isFavorite: _noteData.isFavorite,
             categoryId: _noteData.categoryId,
             category: _noteData.category);
@@ -64,7 +64,7 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             title: _noteData.title,
             content: event.content,
             createdAt: _noteData.createdAt,
-            color: _noteData.color,
+            colorIndex: _noteData.colorIndex,
             isFavorite: _noteData.isFavorite,
             categoryId: _noteData.categoryId,
             category: _noteData.category);

@@ -6,9 +6,9 @@ abstract class AddNoteEvent {}
 class AddNoteSave extends AddNoteEvent {}
 
 class AddNoteColorChange extends AddNoteEvent {
-  final Color color;
+  final int colorIndex;
 
-  AddNoteColorChange(this.color);
+  AddNoteColorChange(this.colorIndex);
 }
 
 class AddNoteContentChange extends AddNoteEvent {

@@ -1,7 +1,9 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:yalda_students_notes/core/common/util/color_util.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class NoteCategoryItem extends StatelessWidget {
   final NoteModel note;
@@ -15,23 +17,16 @@ class NoteCategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final noteColor = getNoteColor(context, note.colorIndex);
+
     // debugPrint(note.toString());
     return Container(
       width: 170,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppPadding.p16),
       decoration: BoxDecoration(
-        color: Color(note.color).withOpacity(0.85),
-        borderRadius: BorderRadius.circular(15),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(note.color),
-            Color(note.color).withOpacity(0.55),
-          ],
-        ),
-      ),
+          color: noteColor, borderRadius: BorderRadius.circular(15)),
       child: ExpandablePanel(
+        theme: ExpandableThemeData(iconColor: theme.colorScheme.onSurface),
         header: Text(
           note.title,
           style: TextStyle(

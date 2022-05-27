@@ -22,7 +22,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
             title: _noteData.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
-            color: event.color.value,
+            colorIndex: event.colorIndex,
             categoryId: _noteData.categoryId,
             isFavorite: _noteData.isFavorite);
 
@@ -32,7 +32,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
             title: event.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
-            color: _noteData.color,
+            colorIndex: _noteData.colorIndex,
             categoryId: _noteData.categoryId,
             isFavorite: _noteData.isFavorite);
 
@@ -42,7 +42,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
             title: _noteData.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
-            color: _noteData.color,
+            colorIndex: _noteData.colorIndex,
             categoryId: event.category.id,
             category: event.category.title,
             isFavorite: _noteData.isFavorite);
@@ -53,7 +53,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
             title: _noteData.title,
             content: event.content,
             createdAt: _noteData.createdAt,
-            color: _noteData.color,
+            colorIndex: _noteData.colorIndex,
             categoryId: _noteData.categoryId,
             isFavorite: _noteData.isFavorite);
 

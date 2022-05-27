@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
               return const LoadingState();
             }
             if (snapshot.data! && !kIsWeb) {
-              return const OnBoardingScreen();
+              return OnBoardingScreen();
             } else {
               return const MainScreen();
             }

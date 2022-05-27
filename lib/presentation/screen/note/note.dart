@@ -8,11 +8,9 @@ import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
-import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
@@ -92,11 +90,11 @@ class NoteScreen extends StatelessWidget {
   }
 
   void _openAddNotePage(BuildContext context) {
-    final _note = NoteModel(
+    NoteModel(
       title: '',
       content: '',
       isFavorite: false,
-      color: Colors.white.value,
+      colorIndex: Colors.white.value,
       createdAt: DateTime.now(),
     );
     Navigator.of(context).push(

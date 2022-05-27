@@ -15,11 +15,6 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
     on<OnBoardingEvent>((event, emit) {
       if (event is OnBoardingLanguageChangeEvent) {
         emit(OnBoardingInitial());
-      } else if (event is OnBoardingCreateCategory) {
-        repository.insertCategory(CategoryModel(
-          title: 'None',
-          color: generateColor(),
-        ));
       }
     });
   }

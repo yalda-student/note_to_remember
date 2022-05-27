@@ -21,7 +21,7 @@ mixin FetchData {
         title: noteData.title ?? '',
         content: noteData.content,
         createdAt: noteData.createdAt,
-        color: noteData.color,
+        colorIndex: noteData.colorIndex,
         isFavorite: noteData.isFavorite,
         categoryId: categoryData.id,
         category: categoryData.title,

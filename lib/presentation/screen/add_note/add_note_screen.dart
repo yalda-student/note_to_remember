@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/core/common/util/theme_util.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
@@ -31,7 +33,10 @@ class AddNoteScreen extends StatefulWidget {
 class _AddNoteScreenState extends State<AddNoteScreen>
     with ExtractCategoryData {
   int colorIndex = 0;
+  late Color backGroundColor;
   late bool? isMobile;
+  late bool? _isDark;
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();
@@ -47,10 +52,14 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    _isDark = Provider.of<ThemeNotifier>(context, listen: false).isDark();
+
     isMobile = ResponsiveValue<bool>(context,
             defaultValue: true,
             valueWhen: [const Condition.largerThan(name: MOBILE, value: false)])
         .value;
+
+    setBackgroundColor();
 
     return BlocProvider<AddNoteBloc>(
       create: (context) {
@@ -58,7 +67,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
           title: '',
           content: '',
           isFavorite: false,
-          color: ColorManager.colors[0].value,
+          colorIndex: colorIndex,
           createdAt: DateTime.now(),
         );
         return AddNoteBloc(NoteRepository(context.read<AppDatabase>()), _note);
@@ -67,20 +76,18 @@ class _AddNoteScreenState extends State<AddNoteScreen>
         builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: ColorManager.colors[colorIndex],
+            backgroundColor: backGroundColor,
             body: SafeArea(
                 child: Form(
               key: _formKey,
               child: Column(
                 children: [
                   AppBar(
-                    backgroundColor: ColorManager.colors[colorIndex],
+                    backgroundColor: backGroundColor,
                     title: Text(
                       LocaleKeys.add_note.tr(),
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: FontSize.onBoardBody(context)),
+                      style: theme.appBarTheme.titleTextStyle!
+                          .copyWith(fontSize: FontSize.onBoardBody(context)),
                     ),
                     centerTitle: true,
                     leading: isMobile!
@@ -106,7 +113,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                           tooltip: LocaleKeys.move.tr(),
                           onPressed: () => _openCategoryList(context),
                           icon: Icon(Iconsax.category_2,
-                              color: Colors.black,
+                              color: theme.colorScheme.onSurface,
                               size: AppSize.iconSize(context)),
                         ),
                       ),
@@ -117,7 +124,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                             tooltip: LocaleKeys.save.tr(),
                             onPressed: () => _saveNote(context),
                             icon: Icon(Iconsax.note_add,
-                                color: Colors.black,
+                                color: theme.colorScheme.onSurface,
                                 size: AppSize.iconSize(context))),
                       ),
                     ],
@@ -128,8 +135,10 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                       selectedIndex: colorIndex,
                       onTap: (index) {
                         colorIndex = index;
-                        context.read<AddNoteBloc>().add(
-                            AddNoteColorChange(ColorManager.colors[index]));
+                        setBackgroundColor();
+                        context
+                            .read<AddNoteBloc>()
+                            .add(AddNoteColorChange(index));
                       }),
                   const SizedBox(height: 8),
                   _TitleTextField(
@@ -144,6 +153,11 @@ class _AddNoteScreenState extends State<AddNoteScreen>
         },
       ),
     );
+  }
+
+  void setBackgroundColor() {
+    final color = ColorManager.noteColors[colorIndex];
+    backGroundColor = _isDark! ? color.darkColor : color.lightColor;
   }
 
   void _handleMenuItemSelect(BuildContext context, value) {
@@ -218,13 +232,14 @@ class _TitleTextField extends StatelessWidget {
       maxLength: 255,
       decoration: InputDecoration(
         hintText: LocaleKeys.title.tr(),
-        hintStyle: theme.textTheme.headline6!
-            .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
+        hintStyle: theme.textTheme.headline6!.copyWith(
+            color: theme.colorScheme.onSurface.withOpacity(0.5),
+            fontWeight: FontWeight.w600),
       ),
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
       style: theme.textTheme.headline6!.copyWith(
-          color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w600),
+          color: theme.colorScheme.onSurface, fontWeight: FontWeight.w600),
       onChanged: (value) {
         context.read<AddNoteBloc>().add(AddNoteTitleChange(value));
       },
@@ -250,11 +265,13 @@ class _ContentTextField extends StatelessWidget {
         controller: _contentController,
         decoration: InputDecoration(
           hintText: LocaleKeys.startTyping.tr(),
-          hintStyle: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w600),
+          hintStyle: TextStyle(
+              color: theme.colorScheme.onSurface.withOpacity(0.5),
+              fontWeight: FontWeight.w600),
         ),
         maxLines: 100,
         keyboardType: TextInputType.multiline,
-        style: const TextStyle(color: Colors.black),
+        style: TextStyle(color: theme.colorScheme.onSurface),
         cursorColor: Colors.black,
         validator: (value) {
           if (value!.isEmpty) {

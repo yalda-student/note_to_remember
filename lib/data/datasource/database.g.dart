@@ -261,7 +261,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   final String? title;
   final String content;
   final DateTime createdAt;
-  final int color;
+  final int colorIndex;
   final bool isFavorite;
   final int categoryId;
   NoteData(
@@ -269,7 +269,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       this.title,
       required this.content,
       required this.createdAt,
-      required this.color,
+      required this.colorIndex,
       required this.isFavorite,
       required this.categoryId});
   factory NoteData.fromData(Map<String, dynamic> data, {String? prefix}) {
@@ -283,8 +283,8 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}body'])!,
       createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      color: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
+      colorIndex: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}color_index'])!,
       isFavorite: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_favorite'])!,
       categoryId: const IntType()
@@ -300,7 +300,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
     }
     map['body'] = Variable<String>(content);
     map['created_at'] = Variable<DateTime>(createdAt);
-    map['color'] = Variable<int>(color);
+    map['color_index'] = Variable<int>(colorIndex);
     map['is_favorite'] = Variable<bool>(isFavorite);
     map['category_id'] = Variable<int>(categoryId);
     return map;
@@ -313,7 +313,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           title == null && nullToAbsent ? const Value.absent() : Value(title),
       content: Value(content),
       createdAt: Value(createdAt),
-      color: Value(color),
+      colorIndex: Value(colorIndex),
       isFavorite: Value(isFavorite),
       categoryId: Value(categoryId),
     );
@@ -327,7 +327,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       title: serializer.fromJson<String?>(json['title']),
       content: serializer.fromJson<String>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      color: serializer.fromJson<int>(json['color']),
+      colorIndex: serializer.fromJson<int>(json['colorIndex']),
       isFavorite: serializer.fromJson<bool>(json['isFavorite']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
     );
@@ -340,7 +340,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
       'title': serializer.toJson<String?>(title),
       'content': serializer.toJson<String>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
-      'color': serializer.toJson<int>(color),
+      'colorIndex': serializer.toJson<int>(colorIndex),
       'isFavorite': serializer.toJson<bool>(isFavorite),
       'categoryId': serializer.toJson<int>(categoryId),
     };
@@ -351,7 +351,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           String? title,
           String? content,
           DateTime? createdAt,
-          int? color,
+          int? colorIndex,
           bool? isFavorite,
           int? categoryId}) =>
       NoteData(
@@ -359,7 +359,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
         title: title ?? this.title,
         content: content ?? this.content,
         createdAt: createdAt ?? this.createdAt,
-        color: color ?? this.color,
+        colorIndex: colorIndex ?? this.colorIndex,
         isFavorite: isFavorite ?? this.isFavorite,
         categoryId: categoryId ?? this.categoryId,
       );
@@ -370,7 +370,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           ..write('title: $title, ')
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
-          ..write('color: $color, ')
+          ..write('colorIndex: $colorIndex, ')
           ..write('isFavorite: $isFavorite, ')
           ..write('categoryId: $categoryId')
           ..write(')'))
@@ -378,8 +378,8 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, title, content, createdAt, color, isFavorite, categoryId);
+  int get hashCode => Object.hash(
+      id, title, content, createdAt, colorIndex, isFavorite, categoryId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -388,7 +388,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
           other.title == this.title &&
           other.content == this.content &&
           other.createdAt == this.createdAt &&
-          other.color == this.color &&
+          other.colorIndex == this.colorIndex &&
           other.isFavorite == this.isFavorite &&
           other.categoryId == this.categoryId);
 }
@@ -398,7 +398,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
   final Value<String?> title;
   final Value<String> content;
   final Value<DateTime> createdAt;
-  final Value<int> color;
+  final Value<int> colorIndex;
   final Value<bool> isFavorite;
   final Value<int> categoryId;
   const NoteCompanion({
@@ -406,7 +406,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
     this.title = const Value.absent(),
     this.content = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.color = const Value.absent(),
+    this.colorIndex = const Value.absent(),
     this.isFavorite = const Value.absent(),
     this.categoryId = const Value.absent(),
   });
@@ -415,18 +415,18 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
     this.title = const Value.absent(),
     required String content,
     required DateTime createdAt,
-    required int color,
+    required int colorIndex,
     this.isFavorite = const Value.absent(),
     this.categoryId = const Value.absent(),
   })  : content = Value(content),
         createdAt = Value(createdAt),
-        color = Value(color);
+        colorIndex = Value(colorIndex);
   static Insertable<NoteData> custom({
     Expression<int>? id,
     Expression<String?>? title,
     Expression<String>? content,
     Expression<DateTime>? createdAt,
-    Expression<int>? color,
+    Expression<int>? colorIndex,
     Expression<bool>? isFavorite,
     Expression<int>? categoryId,
   }) {
@@ -435,7 +435,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
       if (title != null) 'title': title,
       if (content != null) 'body': content,
       if (createdAt != null) 'created_at': createdAt,
-      if (color != null) 'color': color,
+      if (colorIndex != null) 'color_index': colorIndex,
       if (isFavorite != null) 'is_favorite': isFavorite,
       if (categoryId != null) 'category_id': categoryId,
     });
@@ -446,7 +446,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
       Value<String?>? title,
       Value<String>? content,
       Value<DateTime>? createdAt,
-      Value<int>? color,
+      Value<int>? colorIndex,
       Value<bool>? isFavorite,
       Value<int>? categoryId}) {
     return NoteCompanion(
@@ -454,7 +454,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
       title: title ?? this.title,
       content: content ?? this.content,
       createdAt: createdAt ?? this.createdAt,
-      color: color ?? this.color,
+      colorIndex: colorIndex ?? this.colorIndex,
       isFavorite: isFavorite ?? this.isFavorite,
       categoryId: categoryId ?? this.categoryId,
     );
@@ -475,8 +475,8 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
-    if (color.present) {
-      map['color'] = Variable<int>(color.value);
+    if (colorIndex.present) {
+      map['color_index'] = Variable<int>(colorIndex.value);
     }
     if (isFavorite.present) {
       map['is_favorite'] = Variable<bool>(isFavorite.value);
@@ -494,7 +494,7 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
           ..write('title: $title, ')
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
-          ..write('color: $color, ')
+          ..write('colorIndex: $colorIndex, ')
           ..write('isFavorite: $isFavorite, ')
           ..write('categoryId: $categoryId')
           ..write(')'))
@@ -531,10 +531,10 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
       'created_at', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _colorMeta = const VerificationMeta('color');
+  final VerificationMeta _colorIndexMeta = const VerificationMeta('colorIndex');
   @override
-  late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
-      'color', aliasedName, false,
+  late final GeneratedColumn<int?> colorIndex = GeneratedColumn<int?>(
+      'color_index', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _isFavoriteMeta = const VerificationMeta('isFavorite');
   @override
@@ -555,7 +555,7 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
       defaultValue: const Constant(1));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, content, createdAt, color, isFavorite, categoryId];
+      [id, title, content, createdAt, colorIndex, isFavorite, categoryId];
   @override
   String get aliasedName => _alias ?? 'note';
   @override
@@ -584,11 +584,13 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
-    if (data.containsKey('color')) {
+    if (data.containsKey('color_index')) {
       context.handle(
-          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+          _colorIndexMeta,
+          colorIndex.isAcceptableOrUnknown(
+              data['color_index']!, _colorIndexMeta));
     } else if (isInserting) {
-      context.missing(_colorMeta);
+      context.missing(_colorIndexMeta);
     }
     if (data.containsKey('is_favorite')) {
       context.handle(

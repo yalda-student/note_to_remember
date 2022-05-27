@@ -23,9 +23,9 @@ class EditNoteContentChange extends EditNoteEvent {
 }
 
 class EditNoteColorChange extends EditNoteEvent {
-  final Color color;
+  final int colorIndex;
 
-  EditNoteColorChange(this.color);
+  EditNoteColorChange(this.colorIndex);
 }
 
 class EditNoteCategoryChange extends EditNoteEvent{

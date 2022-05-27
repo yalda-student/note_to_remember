@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:yalda_students_notes/core/common/util/color_util.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
-class NoteListItem extends StatefulWidget {
+class NoteListItem extends StatelessWidget {
   const NoteListItem({Key? key, required this.data}) : super(key: key);
 
   final NoteModel data;
 
-  @override
-  State<NoteListItem> createState() => _NoteListItemState();
-}
-
-class _NoteListItemState extends State<NoteListItem> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -24,7 +20,7 @@ class _NoteListItemState extends State<NoteListItem> {
       margin: const EdgeInsets.fromLTRB(2, 12, 2, 0),
       padding: const EdgeInsets.all(AppPadding.p12),
       decoration: BoxDecoration(
-        color: Color(widget.data.color).withOpacity(0.3),
+        color: getNoteColor(context, data.colorIndex),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
@@ -39,11 +35,11 @@ class _NoteListItemState extends State<NoteListItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Text(widget.data.title,
+                  child: Text(data.title,
                       maxLines: 1,
                       style: StyleManager.noteTitleTextStyle(theme)),
                 ),
-                if (widget.data.isFavorite)
+                if (data.isFavorite)
                   Icon(Iconsax.heart5, color: theme.errorColor, size: 20)
               ],
             ),
@@ -51,16 +47,16 @@ class _NoteListItemState extends State<NoteListItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.data.category,
-                  style:  TextStyle(
+                  data.category,
+                  style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 13,
                       color: theme.colorScheme.onSurface),
                 ),
                 Text(
-                  DateFormat('dd/MM/yyyy').format(widget.data.createdAt),
+                  DateFormat('dd/MM/yyyy').format(data.createdAt),
                   textAlign: TextAlign.start,
-                  style:  TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 13,
                       color: theme.colorScheme.onSurface),

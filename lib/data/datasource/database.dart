@@ -23,11 +23,16 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
 
   @override
   MigrationStrategy get migration {
-    return MigrationStrategy(
-      beforeOpen: (details) async {
-        await customStatement('PRAGMA foreign_keys = ON');
-      },
-    );
+    return MigrationStrategy(beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON');
+    }, onCreate: (m) async {
+      await m.createAll();
+      into(category).insert(CategoryCompanion(
+        title: const Value('None'),
+        color: Value(generateColor()),
+        createdAt: Value(DateTime.now())
+      ));
+    });
   }
 
   //-------------Note

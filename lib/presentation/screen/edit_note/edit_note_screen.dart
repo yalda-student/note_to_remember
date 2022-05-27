@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/core/common/util/theme_util.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/repository/category_repository.dart';
@@ -19,6 +21,7 @@ import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/pop_menu_item.dart';
 
 int colorIndex = 0;
+bool? _isDark;
 final _formKey = GlobalKey<FormState>();
 
 class EditNoteScreen extends StatefulWidget {
@@ -29,6 +32,7 @@ class EditNoteScreen extends StatefulWidget {
 }
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
+  late Color backGroundColor;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
@@ -48,10 +52,14 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    _isDark = Provider.of<ThemeNotifier>(context, listen: false).isDark();
+    setBackgroundColor();
+
     return BlocBuilder<EditNoteBloc, EditNoteState>(
       builder: (ctx, state) {
         return Scaffold(
-          backgroundColor: ColorManager.colors[colorIndex],
+          backgroundColor: backGroundColor,
           body: SafeArea(
               child: state is EditNoteInitial
                   ? Form(
@@ -65,9 +73,10 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                               selectedIndex: colorIndex,
                               onTap: (index) {
                                 colorIndex = index;
-                                context.read<EditNoteBloc>().add(
-                                    EditNoteColorChange(
-                                        ColorManager.colors[index]));
+                                setBackgroundColor();
+                                context
+                                    .read<EditNoteBloc>()
+                                    .add(EditNoteColorChange(colorIndex));
                               }),
                           const SizedBox(height: 8),
                           _TitleTextField(
@@ -86,11 +95,16 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     );
   }
 
+  void setBackgroundColor() {
+    final color = ColorManager.noteColors[colorIndex];
+    backGroundColor = _isDark! ? color.darkColor : color.lightColor;
+  }
+
   void _initialFields() {
     final note = context.read<EditNoteBloc>().state.noteData;
     _titleController.text = note.title;
     _contentController.text = note.content;
-    colorIndex = ColorManager.colors.indexOf(Color(note.color));
+    colorIndex = note.colorIndex;
   }
 }
 
@@ -99,11 +113,16 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocBuilder<EditNoteBloc, EditNoteState>(
+      buildWhen: (previous, current) => current is EditNoteInitial,
       builder: (context, state) {
+        final color = ColorManager.noteColors[colorIndex];
+        Color backGroundColor = _isDark! ? color.darkColor : color.lightColor;
+
         return state is EditNoteInitial
             ? AppBar(
-                backgroundColor: ColorManager.colors[colorIndex],
+                backgroundColor: backGroundColor,
                 title: Text(
                   LocaleKeys.editNote.tr(),
                   style: const TextStyle(
@@ -132,7 +151,8 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                       icon: Icon(Iconsax.note_remove,
                           color: Colors.black, size: AppSize.iconSize(context)),
                     ),
-                  ), ResponsiveVisibility(
+                  ),
+                  ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [Condition.largerThan(name: MOBILE)],
                     child: IconButton(

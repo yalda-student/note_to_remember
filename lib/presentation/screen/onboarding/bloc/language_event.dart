@@ -5,4 +5,3 @@ abstract class OnBoardingEvent {}
 
 class OnBoardingLanguageChangeEvent extends OnBoardingEvent {}
 
-class OnBoardingCreateCategory extends OnBoardingEvent {}
