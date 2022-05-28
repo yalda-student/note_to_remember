@@ -1,6 +1,6 @@
-# Note to Keep Application.
+# 📔 Note to Keep Application.
 
-## Description
+## ℹ️ Description
 
 - Note app; User can categorize their notes; star notes
 
@@ -11,7 +11,15 @@
 - [UI design](https://dribbble.com/shots/16811788-Notes-app)
 
 
-## Packages:
+## ✅ Supported Platforms
+ - Android
+ - iOS
+ - Desktop
+ - Web
+ - Linux
+
+
+## 📦 Packages:
  - drift
  - provider
  - bloc
@@ -19,7 +27,7 @@
  - responsive framework
 
 
- ## Features:
+ ## ⚜️ Features:
  - Adaptive and Responsive (mobile. web, windows)
  - dark mode
  - add, update and delete a note
@@ -29,10 +37,10 @@
  - add, rename and delete(by long pressing on each category) a category
 
 
- ----> If you enjoy this project, STAR it ;)
+ 🔸 If you enjoy this project, ⭐ it ;)
 
 
- ## Screenshots:
+ ## 🖼️ Screenshots:
 
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_persian_note_list.png?raw=true" width="200" alt="note list in dark">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_note_list.png?raw=true" width="200" alt="note list in dark">
@@ -40,4 +48,4 @@
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_favorite.jpg?raw=true" width="200" alt="favorite in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_search.jpg?raw=true" width="200" alt="search in dark">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_categories.jpg?raw=true" width="200" alt="light categories">
-<img src="https://github.com/yalda-student/student_note/blob/temp/pictures/desktop.jpg?raw=true" width="350" alt="desktop-windows">
+<img src="https://github.com/yalda-student/student_note/blob/temp/pictures/desktop.jpg?raw=true" width="450" alt="desktop-windows">
