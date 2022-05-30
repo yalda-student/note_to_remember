@@ -38,6 +38,8 @@ class NoteGridItem extends StatelessWidget {
                 maxLines: 3,
                 overflow: TextOverflow.fade,
                 textAlign: TextAlign.start,
+                style:
+                StyleManager.noteContentTextStyle(theme),
               ),
             ),
             Row(

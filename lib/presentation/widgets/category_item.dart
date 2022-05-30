@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/const.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category_notes/category_notes.dart';
@@ -19,7 +19,6 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('width: ${context.screenWidth}');
     return OpenContainer(
       tappable: true,
       closedColor: Theme.of(context).scaffoldBackgroundColor,
@@ -38,10 +37,10 @@ class CategoryItem extends StatelessWidget {
           onTap: () => openContainer.call(),
           onDoubleTap: () => _deleteCategory(context),
           child: Container(
-            padding: const EdgeInsets.all(AppPadding.p12),
+            padding: const EdgeInsets.all(AppPadding.p10),
             decoration: BoxDecoration(
                 color: Color(categoryData.color).withOpacity(0.075),
-                borderRadius: BorderRadius.circular(15)),
+                borderRadius: BorderRadius.circular(AppSize.s15)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -49,15 +48,15 @@ class CategoryItem extends StatelessWidget {
                     color: Color(categoryData.color), size: 45),
                 Text(categoryData.title,
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15)),
+                        fontWeight: FontWeight.bold, fontSize: FontSize.s15)),
                 Text(
                   '${categoryData.numberOfNotes} ${LocaleKeys.note.tr()}',
                   style: TextStyle(
                       fontWeight: FontWeight.w300,
                       fontSize: ResponsiveValue(context,
-                          defaultValue: 13.0,
+                          defaultValue: FontSize.s13,
                           valueWhen: const [
-                            Condition.largerThan(name: MOBILE, value: 11.0),
+                            Condition.largerThan(name: MOBILE, value: FontSize.s11),
                           ]).value),
                 ),
               ],

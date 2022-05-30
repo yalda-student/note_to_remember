@@ -1,5 +1,7 @@
 # 📔 Note to Keep Application.
 
+
+
 ## ℹ️ Description
 
 - Note app; User can categorize their notes; star notes
@@ -11,6 +13,7 @@
 - [UI design](https://dribbble.com/shots/16811788-Notes-app)
 
 
+
 ## ✅ Supported Platforms
  - Android
  - iOS
@@ -19,12 +22,14 @@
  - Linux
 
 
+
 ## 📦 Packages:
  - drift
  - provider
  - bloc
  - easy localization
  - responsive framework
+
 
 
  ## ⚜️ Features:
@@ -40,12 +45,12 @@
  🔸 If you enjoy this project, ⭐ it ;)
 
 
+
  ## 🖼️ Screenshots:
 
-<img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_persian_note_list.png?raw=true" width="200" alt="note list in dark">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_note_list.png?raw=true" width="200" alt="note list in dark">
-<img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_search_404.jpg?raw=true" width="200" alt="search not found in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_favorite.jpg?raw=true" width="200" alt="favorite in light">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/dark_search.jpg?raw=true" width="200" alt="search in dark">
 <img src="https://github.com/yalda-student/student_note/blob/main/pictures/light_categories.jpg?raw=true" width="200" alt="light categories">
-<img src="https://github.com/yalda-student/student_note/blob/temp/pictures/desktop.jpg?raw=true" width="450" alt="desktop-windows">
+<img src="https://github.com/yalda-student/student_note/blob/temp/pictures/desktop.jpg?raw=true" width="550" alt="desktop-windows">
+<img src="https://github.com/yalda-student/student_note/blob/temp/pictures/desktop_dark.jpg?raw=true" width="550" alt="desktop-dark-windows">

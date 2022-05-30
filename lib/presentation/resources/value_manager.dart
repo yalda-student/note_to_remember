@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class ValueManager {
-  static const double gridSpacing = 20;
+  static const double gridSpacing = 20.0;
 }
 
 class AppPadding {
@@ -17,6 +17,7 @@ class AppPadding {
 
 class AppSize {
   static const double s0 = 0.0;
+  static const double s6 = 6.0;
   static const double s8 = 8.0;
   static const double s10 = 10.0;
   static const double s12 = 12.0;

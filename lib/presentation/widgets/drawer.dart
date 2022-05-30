@@ -16,7 +16,7 @@ class AppDrawer extends StatelessWidget {
   final int selectedIndex;
   final Function(int index) onTap;
 
-  const AppDrawer({
+  AppDrawer({
     Key? key,
     required this.selectedIndex,
     required this.onTap,

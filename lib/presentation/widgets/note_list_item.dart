@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:yalda_students_notes/core/common/util/color_util.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
@@ -40,7 +41,7 @@ class NoteListItem extends StatelessWidget {
                       style: StyleManager.noteTitleTextStyle(theme)),
                 ),
                 if (data.isFavorite)
-                  Icon(Iconsax.heart5, color: theme.errorColor, size: 20)
+                  Icon(Iconsax.heart5, color: theme.errorColor, size: AppSize.s20)
               ],
             ),
             Row(
@@ -50,7 +51,7 @@ class NoteListItem extends StatelessWidget {
                   data.category,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      fontSize: 13,
+                      fontSize: FontSize.s13,
                       color: theme.colorScheme.onSurface),
                 ),
                 Text(
@@ -58,7 +59,7 @@ class NoteListItem extends StatelessWidget {
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      fontSize: 13,
+                      fontSize: FontSize.s13,
                       color: theme.colorScheme.onSurface),
                 ),
               ],

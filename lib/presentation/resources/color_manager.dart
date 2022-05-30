@@ -9,6 +9,10 @@ class ColorManager {
   static const Color radioButtonColor = Color(0xff6996EA);
   static const Color activeColor = Colors.white;
 
+  static getNoteEditorTextColor(ThemeData theme){
+    return theme.colorScheme.onSurface;
+  }
+
   List<CategoryColor> categoryColors = [
     CategoryColor(
         iconColor: const Color(0xffe86aff),

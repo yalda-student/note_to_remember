@@ -43,7 +43,9 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
     //     title: Value(noteData.title ?? ''),
     //     createdAt: noteData.createdAt,
     //     color: noteData.color));
-    return await into(note).insert(noteData.toNoteCompanion());
+     final id = await into(note).insert(noteData.toNoteCompanion());
+     notifyListeners();
+     return id;
   }
 
   Future deleteNote(int id) async {

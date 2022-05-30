@@ -13,18 +13,21 @@ import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/data/repository/category_repository.dart';
 import 'package:yalda_students_notes/data/repository/note_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
-import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/presentation/widgets/color_picker.dart';
 import 'package:yalda_students_notes/presentation/widgets/pop_menu_item.dart';
 
 class AddNoteScreen extends StatefulWidget {
-  const AddNoteScreen({Key? key}) : super(key: key);
+  final Function onClosePage;
+
+  const AddNoteScreen({Key? key, required this.onClosePage}) : super(key: key);
 
   @override
   State<AddNoteScreen> createState() => _AddNoteScreenState();
@@ -93,8 +96,9 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                     leading: isMobile!
                         ? IconButton(
                             onPressed: () => closePage(),
-                            icon: const Icon(Iconsax.close_circle,
-                                color: Colors.black))
+                            icon: Icon(Iconsax.close_circle,
+                                color:
+                                    ColorManager.getNoteEditorTextColor(theme)))
                         : const SizedBox(),
                     actions: [
                       ResponsiveVisibility(
@@ -113,7 +117,7 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                           tooltip: LocaleKeys.move.tr(),
                           onPressed: () => _openCategoryList(context),
                           icon: Icon(Iconsax.category_2,
-                              color: theme.colorScheme.onSurface,
+                              color: ColorManager.getNoteEditorTextColor(theme),
                               size: AppSize.iconSize(context)),
                         ),
                       ),
@@ -124,7 +128,8 @@ class _AddNoteScreenState extends State<AddNoteScreen>
                             tooltip: LocaleKeys.save.tr(),
                             onPressed: () => _saveNote(context),
                             icon: Icon(Iconsax.note_add,
-                                color: theme.colorScheme.onSurface,
+                                color:
+                                    ColorManager.getNoteEditorTextColor(theme),
                                 size: AppSize.iconSize(context))),
                       ),
                     ],
@@ -183,12 +188,13 @@ class _AddNoteScreenState extends State<AddNoteScreen>
 
   void closePage() {
     if (isMobile!) {
-      Navigator.pop(context);
+      Navigator.of(context).pop();
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+      widget.onClosePage(homeIndex);
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const HomeScreen()),
+      // );
     }
   }
 
@@ -233,13 +239,15 @@ class _TitleTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: LocaleKeys.title.tr(),
         hintStyle: theme.textTheme.headline6!.copyWith(
-            color: theme.colorScheme.onSurface.withOpacity(0.5),
+            color: ColorManager.getNoteEditorTextColor(theme).withOpacity(0.5),
             fontWeight: FontWeight.w600),
+        counterStyle: StyleManager.counterTextStyle(theme),
       ),
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
       style: theme.textTheme.headline6!.copyWith(
-          color: theme.colorScheme.onSurface, fontWeight: FontWeight.w600),
+          color: ColorManager.getNoteEditorTextColor(theme).withOpacity(0.8),
+          fontWeight: FontWeight.w600),
       onChanged: (value) {
         context.read<AddNoteBloc>().add(AddNoteTitleChange(value));
       },
@@ -266,12 +274,15 @@ class _ContentTextField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: LocaleKeys.startTyping.tr(),
           hintStyle: TextStyle(
-              color: theme.colorScheme.onSurface.withOpacity(0.5),
+              color:
+                  ColorManager.getNoteEditorTextColor(theme).withOpacity(0.5),
               fontWeight: FontWeight.w600),
         ),
         maxLines: 100,
         keyboardType: TextInputType.multiline,
-        style: TextStyle(color: theme.colorScheme.onSurface),
+        style: TextStyle(
+            color:
+                ColorManager.getNoteEditorTextColor(theme).withOpacity(0.75)),
         cursorColor: Colors.black,
         validator: (value) {
           if (value!.isEmpty) {

@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/core/common/util/global_exts.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/presentation/screen/note/note.dart';
@@ -25,12 +26,12 @@ class HomeScreen extends StatelessWidget {
           children: [
             AppBar(
               title: Text(LocaleKeys.profileTitle.tr(),
-                  style: TextStyle(
+                  style: theme.appBarTheme.titleTextStyle!.copyWith(
                       color: theme.colorScheme.onSurface,
-                      fontSize: 22,
+                      fontSize: FontSize.onBoardBody(context),
                       fontWeight: FontWeight.w600)),
               leading:
-                  Icon(Iconsax.note_text, color: theme.colorScheme.secondary),
+                  Icon(Iconsax.note_text, color: theme.colorScheme.onSurface),
             ),
             const Divider(),
             const SizedBox(height: AppSize.s8),

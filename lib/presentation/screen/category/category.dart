@@ -7,6 +7,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/ext.dart';
 import 'package:yalda_students_notes/presentation/widgets/category_dialog.dart';
@@ -145,15 +146,15 @@ class _CategoryList extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Padding(
-          padding: const EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.only(top: AppPadding.p16),
           child: ResponsiveGridView.builder(
             itemCount: data.length,
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             gridDelegate: const ResponsiveGridDelegate(
-                crossAxisSpacing: 20.0,
                 maxCrossAxisExtent: 160,
-                mainAxisSpacing: 20.0),
+                crossAxisSpacing: ValueManager.gridSpacing,
+                mainAxisSpacing: ValueManager.gridSpacing),
             itemBuilder: (context, index) =>
                 CategoryItem(categoryData: data[index]),
           ),

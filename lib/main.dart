@@ -33,6 +33,8 @@ const int settingIndex = 3;
 const int favoriteIndex = 4;
 const int newNoteIndex = 5;
 
+ValueNotifier<int> selectedDrawerIndex = ValueNotifier<int>(homeIndex);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -145,6 +147,7 @@ class _MainScreenState extends State<MainScreen> {
     } else if (_history.isNotEmpty) {
       setState(() {
         selectedScreenIndex = _history.last;
+        selectedDrawerIndex.value = _history.last;
         _history.removeLast();
       });
       return false;
@@ -179,8 +182,8 @@ class _MainScreenState extends State<MainScreen> {
                           _settingKey, settingIndex, const SettingScreen()),
                       _navigator(
                           _favoriteKey, favoriteIndex, const FavoriteScreen()),
-                      _navigator(
-                          _newNoteKey, newNoteIndex, const AddNoteScreen()),
+                      _navigator(_newNoteKey, newNoteIndex,
+                          AddNoteScreen(onClosePage: onItemTap)),
                     ],
                   ),
                 ),
@@ -191,23 +194,11 @@ class _MainScreenState extends State<MainScreen> {
                   hiddenWhen: const [Condition.largerThan(name: MOBILE)],
                   replacement: AppDrawer(
                     selectedIndex: selectedScreenIndex,
-                    onTap: (index) {
-                      setState(() {
-                        _history.remove(selectedScreenIndex);
-                        _history.add(selectedScreenIndex);
-                        selectedScreenIndex = index;
-                      });
-                    },
+                    onTap: (index) => onItemTap(index),
                   ),
                   child: CustomBottomNavigation(
                     selectedIndex: selectedScreenIndex,
-                    onTap: (index) {
-                      setState(() {
-                        _history.remove(selectedScreenIndex);
-                        _history.add(selectedScreenIndex);
-                        selectedScreenIndex = index;
-                      });
-                    },
+                    onTap: (index) => onItemTap(index),
                   ),
                 ),
               ),
@@ -218,9 +209,16 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  void onItemTap(int index) {
+    setState(() {
+      _history.remove(selectedScreenIndex);
+      _history.add(selectedScreenIndex);
+      selectedScreenIndex = index;
+      selectedDrawerIndex.value = index;
+    });
+  }
+
   Widget _navigator(GlobalKey key, int index, Widget child) {
-    // debugPrint('index: $index');
-    // debugPrint('key: $key');
     return key.currentState == null && selectedScreenIndex != index
         ? Container()
         : Navigator(

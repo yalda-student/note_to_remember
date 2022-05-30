@@ -12,6 +12,8 @@ import 'package:yalda_students_notes/data/model/category_model.dart';
 import 'package:yalda_students_notes/data/repository/category_repository.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/edit_note/bloc/editnote_bloc.dart';
@@ -113,6 +115,7 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return BlocBuilder<EditNoteBloc, EditNoteState>(
       buildWhen: (previous, current) => current is EditNoteInitial,
@@ -125,14 +128,14 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                 backgroundColor: backGroundColor,
                 title: Text(
                   LocaleKeys.editNote.tr(),
-                  style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                  style: theme.appBarTheme.titleTextStyle!
+                      .copyWith(fontSize: FontSize.onBoardBody(context)),
                 ),
                 centerTitle: true,
                 leading: IconButton(
                     onPressed: () => _closePage(context),
-                    icon:
-                        const Icon(Iconsax.close_circle, color: Colors.black)),
+                    icon: Icon(Iconsax.close_circle,
+                        color: ColorManager.getNoteEditorTextColor(theme))),
                 actions: [
                   ResponsiveVisibility(
                     hiddenWhen: const [Condition.largerThan(name: MOBILE)],
@@ -147,9 +150,10 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                     visibleWhen: const [Condition.largerThan(name: MOBILE)],
                     child: IconButton(
                       tooltip: LocaleKeys.delete.tr(),
-                      onPressed: () => _openCategoryList(context),
+                      onPressed: () => _deleteNote(context),
                       icon: Icon(Iconsax.note_remove,
-                          color: Colors.black, size: AppSize.iconSize(context)),
+                          color: ColorManager.getNoteEditorTextColor(theme),
+                          size: AppSize.iconSize(context)),
                     ),
                   ),
                   ResponsiveVisibility(
@@ -159,7 +163,8 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                       tooltip: LocaleKeys.move.tr(),
                       onPressed: () => _openCategoryList(context),
                       icon: Icon(Iconsax.category_2,
-                          color: Colors.black, size: AppSize.iconSize(context)),
+                          color: ColorManager.getNoteEditorTextColor(theme),
+                          size: AppSize.iconSize(context)),
                     ),
                   ),
                   ResponsiveVisibility(
@@ -169,7 +174,7 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                         tooltip: LocaleKeys.update.tr(),
                         onPressed: () => _updateNote(context),
                         icon: Icon(Iconsax.note_add,
-                            color: Colors.black,
+                            color: ColorManager.getNoteEditorTextColor(theme),
                             size: AppSize.iconSize(context))),
                   ),
                 ],
@@ -250,7 +255,7 @@ class _TitleTextField extends StatelessWidget {
       maxLength: 255,
       decoration: InputDecoration(
         hintText: LocaleKeys.title.tr(),
-        counterStyle: const TextStyle(color: Colors.black),
+        counterStyle: StyleManager.counterTextStyle(theme),
         hintStyle: theme.textTheme.headline5!
             .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
       ),
@@ -260,7 +265,8 @@ class _TitleTextField extends StatelessWidget {
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
       style: theme.textTheme.headline5!.copyWith(
-          color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w600),
+          color: ColorManager.getNoteEditorTextColor(theme).withOpacity(0.8),
+          fontWeight: FontWeight.w600),
     );
   }
 }
@@ -279,7 +285,8 @@ class _ContentTextField extends StatelessWidget {
     return TextFormField(
       controller: _contentController,
       decoration: InputDecoration(hintText: LocaleKeys.startTyping.tr()),
-      style: const TextStyle(color: Colors.black),
+      style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.75)),
       maxLines: 100,
       keyboardType: TextInputType.multiline,
       cursorColor: Colors.black,

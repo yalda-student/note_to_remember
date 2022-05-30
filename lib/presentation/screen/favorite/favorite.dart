@@ -35,7 +35,7 @@ class FavoriteScreen extends StatelessWidget {
               ).tr(),
               leading: Icon(
                 Iconsax.note_favorite,
-                color: theme.colorScheme.secondary,
+                color: theme.colorScheme.onSurface,
               ),
             ),
             Consumer<AppDatabase>(

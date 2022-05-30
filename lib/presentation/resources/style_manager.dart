@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 
 class StyleManager {
   static TextStyle drawerTextStyle(BuildContext context) {
     return TextStyle(
-      fontSize:
-      ResponsiveValue(
+      fontSize: ResponsiveValue(
         context,
         defaultValue: 15.0,
         valueWhen: const [
@@ -22,7 +22,7 @@ class StyleManager {
         overflow: TextOverflow.ellipsis,
         fontWeight: FontWeight.w800,
         fontSize: 18,
-        color: theme.colorScheme.onSurface);
+        color: theme.colorScheme.onSurface.withOpacity(0.85));
   }
 
   static TextStyle noteContentTextStyle(ThemeData theme) {
@@ -30,7 +30,7 @@ class StyleManager {
         overflow: TextOverflow.ellipsis,
         fontWeight: FontWeight.w700,
         fontSize: 16,
-        color: theme.colorScheme.onSurface);
+        color: theme.colorScheme.onSurface.withOpacity(0.7));
   }
 
   static TextStyle noteCategoryTextStyle(ThemeData theme) {
@@ -40,6 +40,12 @@ class StyleManager {
         fontSize: 10,
         color: theme.colorScheme.onSurface);
   }
+
+  static TextStyle counterTextStyle(ThemeData theme) => TextStyle(
+      fontFamily: isPersianLanguage()
+          ? FontConstants.iranMarkerFont
+          : FontConstants.icFont,
+      color: ColorManager.getNoteEditorTextColor(theme));
 
   static TextStyle dialogTitlePersianDarkTextStyle() => const TextStyle(
       fontFamily: FontConstants.iranMarkerFont,

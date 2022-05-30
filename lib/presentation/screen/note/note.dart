@@ -9,6 +9,7 @@ import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
 import 'package:yalda_students_notes/data/model/note_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';
@@ -23,6 +24,7 @@ class NoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(top: AppPadding.p12),
       child: Stack(
@@ -30,13 +32,11 @@ class NoteScreen extends StatelessWidget {
           Column(
             children: [
               ListTile(
-                title: Text(
-                  LocaleKeys.notesList.tr(),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 17),
-                ),
+                title: Text(LocaleKeys.notesList.tr(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: FontSize.s17)),
                 leading:
-                    Icon(Iconsax.note_21, color: theme.colorScheme.secondary),
+                    Icon(Iconsax.note_21, color: theme.colorScheme.onSurface),
               ),
               Consumer<AppDatabase>(
                 builder: (context, value, child) {
@@ -97,10 +97,24 @@ class NoteScreen extends StatelessWidget {
       colorIndex: Colors.white.value,
       createdAt: DateTime.now(),
     );
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const AddNoteScreen(),
-      ),
+    Navigator.of(context).push(_getAnimatedRoute());
+  }
+
+  PageRouteBuilder<dynamic> _getAnimatedRoute() {
+    return PageRouteBuilder(
+      transitionDuration: const Duration(seconds: 1),
+      reverseTransitionDuration: const Duration(seconds: 1),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          AddNoteScreen(onClosePage: () {}),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(position: animation.drive(tween), child: child);
+      },
     );
   }
 }
