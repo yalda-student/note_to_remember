@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:yalda_students_notes/core/common/lang.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
+import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/language_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/about/about_screen.dart';
+import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 
-import '../../../core/common/util/theme_util.dart';
+
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);

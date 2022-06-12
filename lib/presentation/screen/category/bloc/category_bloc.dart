@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/repository/category_repository.dart';
+import 'package:yalda_students_notes/app/app.dart';
+import 'package:yalda_students_notes/data/repository/category_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
 
 part 'category_event.dart';
-
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {

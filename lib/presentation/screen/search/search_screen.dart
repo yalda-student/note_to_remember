@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
+import 'package:yalda_students_notes/data/repository/note_repository_impl.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/screen/search/bloc/searchnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';

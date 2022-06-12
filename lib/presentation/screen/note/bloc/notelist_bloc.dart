@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
+import 'package:yalda_students_notes/data/repository/note_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 
 part 'notelist_event.dart';
-
 part 'notelist_state.dart';
 
 class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {

@@ -5,21 +5,20 @@ import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
-import 'package:yalda_students_notes/core/common/util/theme_util.dart';
+import 'package:yalda_students_notes/app/app.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/data/repository/category_repository.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
+import 'package:yalda_students_notes/data/repository/category_repository_impl.dart';
+import 'package:yalda_students_notes/data/repository/note_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
-import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
+import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/presentation/widgets/color_picker.dart';
 import 'package:yalda_students_notes/presentation/widgets/pop_menu_item.dart';
@@ -241,7 +240,7 @@ class _TitleTextField extends StatelessWidget {
         hintStyle: theme.textTheme.headline6!.copyWith(
             color: ColorManager.getNoteEditorTextColor(theme).withOpacity(0.5),
             fontWeight: FontWeight.w600),
-        counterStyle: StyleManager.counterTextStyle(theme),
+        // counterStyle: StyleManager.counterTextStyle(theme),
       ),
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
@@ -253,6 +252,7 @@ class _TitleTextField extends StatelessWidget {
       },
     );
   }
+
 }
 
 class _ContentTextField extends StatelessWidget {

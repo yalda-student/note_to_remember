@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
+import 'package:yalda_students_notes/data/repository/note_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 
 part 'addnote_event.dart';
-
 part 'addnote_state.dart';
 
 class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
@@ -16,7 +15,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
       : super(AddNoteInitial(_noteData)) {
     on<AddNoteEvent>((event, emit) async {
       if (event is AddNoteSave) {
-        int id = await repository.insertNote(_noteData);
+        await repository.insertNote(_noteData);
       } else if (event is AddNoteColorChange) {
         _noteData = NoteModel(
             title: _noteData.title,

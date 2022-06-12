@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/core/common/const.dart';
-import 'package:yalda_students_notes/core/common/util/theme_util.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
+import 'package:yalda_students_notes/app/app_prefs.dart';
+import 'package:yalda_students_notes/app/di.dart';
+import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 
 extension BuildContextExts on BuildContext {
   bool screenIsHorizontal() {
@@ -16,9 +16,10 @@ extension BuildContextExts on BuildContext {
 
   void changeTheme(bool value, ThemeNotifier themeNotifier) async {
     (value)
-        ? themeNotifier.setTheme(darkTheme)
-        : themeNotifier.setTheme(lightTheme);
-    SharedPref.pref.setBool(AppConstants.darkMode, value);
+        ? themeNotifier.setTheme(await darkTheme)
+        : themeNotifier.setTheme(await lightTheme);
+    final appPref = instance<AppPreferences>();
+    await appPref.setTheme(value);
   }
 
   double get screenHeight => MediaQuery.of(this).size.height;

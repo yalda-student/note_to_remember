@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:yalda_students_notes/core/common/const.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
+import 'package:yalda_students_notes/app/app_prefs.dart';
+import 'package:yalda_students_notes/app/const.dart';
+import 'package:yalda_students_notes/app/di.dart';
+import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 
@@ -43,33 +44,20 @@ class AboutScreen extends StatelessWidget {
                 style: TextStyle(
                     color: theme.colorScheme.onSurface, fontSize: 16)),
           ),
-          ListTile(
-            leading:
-                Icon(FeatherIcons.github, color: theme.colorScheme.onSurface),
-            title: TextButton(
-                onPressed: () => _launchGithub(),
-                child: Container(
-                  alignment: SharedPref.getLanguage().isLanguageRtl()
-                      ? Alignment.centerLeft
-                      : Alignment.centerRight,
-                  child: Text('Github',
-                      style: TextStyle(
-                          color: theme.colorScheme.onSurface, fontSize: 16)),
-                )),
+          _AboutTile(
+            onTap: () {},
+            title: 'Yalda Student',
+            icon: Icon(FeatherIcons.user, color: theme.colorScheme.onSurface),
           ),
-          ListTile(
-            leading: const Icon(FeatherIcons.linkedin, color: Colors.blue),
-            title: Container(
-              alignment: SharedPref.getLanguage().isLanguageRtl()
-                  ? Alignment.centerLeft
-                  : Alignment.centerRight,
-              child: TextButton(
-                  onPressed: () => _launchLinkedIn(),
-                  child: Text('Linkedin',
-                      style: TextStyle(
-                          color: theme.colorScheme.onSurface, fontSize: 16))),
-            ),
+          _AboutTile(
+            onTap: _launchGithub,
+            title: 'Github',
+            icon: Icon(FeatherIcons.github, color: theme.colorScheme.onSurface),
           ),
+          _AboutTile(
+              onTap: _launchLinkedIn,
+              title: 'Linkedin',
+              icon: const Icon(FeatherIcons.linkedin, color: Colors.blue)),
         ],
       ),
     );
@@ -77,7 +65,8 @@ class AboutScreen extends StatelessWidget {
 
   void _launchGithub() async {
     try {
-      await launch(AppConstants.githubUrl);
+      final Uri _url = Uri.parse(AppConstants.githubUrl);
+      await launchUrl(_url);
     } catch (e) {
       debugPrint("Could not launch ${AppConstants.githubUrl}");
     }
@@ -85,9 +74,44 @@ class AboutScreen extends StatelessWidget {
 
   void _launchLinkedIn() async {
     try {
-      await launch(AppConstants.linkedInUrl);
+      final Uri _url = Uri.parse(AppConstants.linkedInUrl);
+      await launchUrl(_url);
     } catch (e) {
       debugPrint("Could not launch ${AppConstants.githubUrl}");
     }
+  }
+}
+
+class _AboutTile extends StatelessWidget {
+  final Function() onTap;
+  final String title;
+  final Widget icon;
+
+  const _AboutTile(
+      {Key? key, required this.onTap, required this.title, required this.icon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final appPref = instance<AppPreferences>();
+    return FutureBuilder<String>(
+        future: appPref.getLanguage(),
+        initialData: const Locale('en', 'US').languageCode,
+        builder: (context, snapshot) {
+          return ListTile(
+            leading: icon,
+            title: Container(
+              alignment: snapshot.data!.isLanguageRtl()
+                  ? Alignment.centerLeft
+                  : Alignment.centerRight,
+              child: TextButton(
+                  onPressed: () => onTap,
+                  child: Text(title,
+                      style: TextStyle(
+                          color: theme.colorScheme.onSurface, fontSize: 16))),
+            ),
+          );
+        });
   }
 }

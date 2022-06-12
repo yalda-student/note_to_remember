@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
+import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/gen/assets.gen.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/main.dart';

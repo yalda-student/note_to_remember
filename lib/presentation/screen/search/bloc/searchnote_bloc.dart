@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
+import 'package:yalda_students_notes/data/repository/note_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 
 part 'searchnote_event.dart';
-
 part 'searchnote_state.dart';
 
 class SearchNoteBloc extends Bloc<SearchNoteEvent, SearchNoteState> {

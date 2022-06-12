@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:yalda_students_notes/core/common/const.dart';
+import 'package:yalda_students_notes/app/const.dart';
 import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 

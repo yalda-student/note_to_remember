@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/core/common/const.dart';
+import 'package:yalda_students_notes/app/app_prefs.dart';
+import 'package:yalda_students_notes/app/di.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 
 mixin FetchData {
   List<NoteModel> fetchNoteData(
@@ -67,24 +67,27 @@ mixin ExtractCategoryData {
 }
 
 int generateColor() {
-  return Color.fromRGBO(
-    Random().nextInt(255),
-    Random().nextInt(255),
-    Random().nextInt(255),
-    1,
-  ).value;
+  return Color.fromRGBO(Random().nextInt(255), Random().nextInt(255),
+          Random().nextInt(255), 1)
+      .value;
 }
 
-bool isPersianLanguage() =>
-    SharedPref.getLanguage() == const Locale('fa', 'IR').languageCode;
+Future<bool> isPersianLanguage() async {
+  final sharedPref = instance<AppPreferences>();
+  return (await sharedPref.getLanguage()) ==
+      const Locale('fa', 'IR').languageCode;
+}
 
 Future<bool> isFirstTime() async {
-  var isFirstTime = SharedPref.pref.getBool(AppConstants.isFirstRun);
-  if (isFirstTime != null && !isFirstTime) {
-    SharedPref.pref.setBool(AppConstants.isFirstRun, false);
+  final appPref = instance<AppPreferences>();
+
+  var isFirstTime = await appPref.isFirstRun();
+  if (!isFirstTime) {
+    // AppPreferences.pref.setBool(firstRun, false);
+    // appPref.setFirstRun(false);
     return false;
   } else {
-    SharedPref.pref.setBool(AppConstants.isFirstRun, false);
+    appPref.setFirstRun(false);
     return true;
   }
 }

@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:yalda_students_notes/core/common/lang.dart';
-import 'package:yalda_students_notes/data/model/country.dart';
+import 'package:yalda_students_notes/domain/model/country.dart';
 import 'package:yalda_students_notes/gen/assets.gen.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/language_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/onboarding/bloc/language_bloc.dart';
 

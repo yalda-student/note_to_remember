@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
-import 'package:yalda_students_notes/core/common/app_providers.dart';
-import 'package:yalda_students_notes/core/common/lang.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
+import 'package:yalda_students_notes/app/app.dart';
+import 'package:yalda_students_notes/app/app_prefs.dart';
+import 'package:yalda_students_notes/app/app_providers.dart';
+import 'package:yalda_students_notes/app/di.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
+import 'package:yalda_students_notes/presentation/resources/language_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/category/category.dart';
 import 'package:yalda_students_notes/presentation/screen/favorite/favorite.dart';
@@ -20,11 +20,10 @@ import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/onboarding/onboard_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/search/search_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/setting/setting_screen.dart';
+import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_navigation.dart';
 import 'package:yalda_students_notes/presentation/widgets/drawer.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
-
-import 'core/common/util/theme_util.dart';
 
 const int homeIndex = 0;
 const int searchIndex = 1;
@@ -33,36 +32,33 @@ const int settingIndex = 3;
 const int favoriteIndex = 4;
 const int newNoteIndex = 5;
 
-ValueNotifier<int> selectedDrawerIndex = ValueNotifier<int>(homeIndex);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   DriftConfig.init();
-  await SharedPref.initSharedPref();
+  await initAppModule();
 
-  SharedPreferences.getInstance().then((prefs) {
-    final darkModeOn = prefs.getBool('darkMode') ?? false;
+  final appPref = instance<AppPreferences>();
+  final darkModeOn = await appPref.getTheme();
+  final appTheme = darkModeOn ? await darkTheme : await lightTheme;
 
-    runApp(
-      EasyLocalization(
-        path: 'asset/gen.translation',
-        supportedLocales: languagesMap.keys.toList(),
-        fallbackLocale: const Locale('fa'),
-        useOnlyLangCode: true,
-        assetLoader: const CodegenLoader(),
-        child: MultiProvider(
-          providers: providerList
-            ..add(
-              ChangeNotifierProvider<ThemeNotifier>(
-                  create: (_) =>
-                      ThemeNotifier(darkModeOn ? darkTheme : lightTheme)),
-            ),
-          child: const MyApp(),
-        ),
+  runApp(
+    EasyLocalization(
+      path: 'asset/gen.translation',
+      supportedLocales: languagesMap.keys.toList(),
+      fallbackLocale: const Locale('fa'),
+      useOnlyLangCode: true,
+      assetLoader: const CodegenLoader(),
+      child: MultiProvider(
+        providers: providerList
+          ..add(
+            ChangeNotifierProvider<ThemeNotifier>(
+                create: (_) => ThemeNotifier(appTheme)),
+          ),
+        child: const MyApp(),
       ),
-    );
-  });
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -147,7 +143,6 @@ class _MainScreenState extends State<MainScreen> {
     } else if (_history.isNotEmpty) {
       setState(() {
         selectedScreenIndex = _history.last;
-        selectedDrawerIndex.value = _history.last;
         _history.removeLast();
       });
       return false;
@@ -214,7 +209,6 @@ class _MainScreenState extends State<MainScreen> {
       _history.remove(selectedScreenIndex);
       _history.add(selectedScreenIndex);
       selectedScreenIndex = index;
-      selectedDrawerIndex.value = index;
     });
   }
 

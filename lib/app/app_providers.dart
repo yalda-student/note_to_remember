@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/app/app.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/repository/category_repository.dart';
-import 'package:yalda_students_notes/data/repository/note_repository.dart';
+import 'package:yalda_students_notes/data/repository/category_repository_impl.dart';
+import 'package:yalda_students_notes/data/repository/note_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category_notes/bloc/category_notes_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';

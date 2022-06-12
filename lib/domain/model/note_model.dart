@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 
 class NoteModel {
@@ -31,27 +30,7 @@ class NoteModel {
         category = '',
         categoryId = noteData.categoryId;
 
-  NoteData toNoteDate() {
-    return NoteData(
-        id: id,
-        title: title,
-        content: content,
-        createdAt: createdAt,
-        colorIndex: colorIndex,
-        categoryId: categoryId,
-        isFavorite: isFavorite);
-  }
 
-  NoteCompanion toNoteCompanion() {
-    return NoteCompanion(
-      id: const Value.absent(),
-      title: Value(title),
-      content: Value(content),
-      createdAt: Value(createdAt),
-      colorIndex: Value(colorIndex),
-      isFavorite: Value(isFavorite),
-    );
-  }
 
   @override
   String toString() {

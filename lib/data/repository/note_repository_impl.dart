@@ -1,21 +1,6 @@
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
-
-abstract class INoteRepository {
-  Future insertNote(NoteModel note);
-
-  Future<void> updateNote(NoteModel note);
-
-  Future<void> deleteNote(int id);
-
-  Future getNoteById(int id);
-
-  Future<List<NoteModel>> getAllNotes({String searchKeyword = ''});
-
-  Future<List<NoteModel>> getStarredNotes();
-
-  Future<List<NoteModel>> getNotesInCategory(int categoryId);
-}
+import 'package:yalda_students_notes/domain/model/note_model.dart';
+import 'package:yalda_students_notes/domain/repository/note_repository.dart';
 
 class NoteRepository implements INoteRepository {
   final AppDatabase datasource;

@@ -5,18 +5,17 @@ import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
-import 'package:yalda_students_notes/core/common/util/theme_util.dart';
+import 'package:yalda_students_notes/app/app.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/repository/category_repository.dart';
+import 'package:yalda_students_notes/data/repository/category_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
-import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/edit_note/bloc/editnote_bloc.dart';
+import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/presentation/widgets/color_picker.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
@@ -255,7 +254,7 @@ class _TitleTextField extends StatelessWidget {
       maxLength: 255,
       decoration: InputDecoration(
         hintText: LocaleKeys.title.tr(),
-        counterStyle: StyleManager.counterTextStyle(theme),
+        // counterStyle: StyleManager.counterTextStyle(theme),
         hintStyle: theme.textTheme.headline5!
             .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
       ),

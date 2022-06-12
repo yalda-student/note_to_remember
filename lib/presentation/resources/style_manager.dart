@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 
@@ -41,11 +40,8 @@ class StyleManager {
         color: theme.colorScheme.onSurface);
   }
 
-  static TextStyle counterTextStyle(ThemeData theme) => TextStyle(
-      fontFamily: isPersianLanguage()
-          ? FontConstants.iranMarkerFont
-          : FontConstants.icFont,
-      color: ColorManager.getNoteEditorTextColor(theme));
+  static TextStyle counterTextStyle(ThemeData theme) =>
+      TextStyle(color: ColorManager.getNoteEditorTextColor(theme));
 
   static TextStyle dialogTitlePersianDarkTextStyle() => const TextStyle(
       fontFamily: FontConstants.iranMarkerFont,

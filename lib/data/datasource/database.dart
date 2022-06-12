@@ -1,10 +1,11 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/app/app.dart';
 import 'package:yalda_students_notes/data/datasource/table/category_data.dart';
 import 'package:yalda_students_notes/data/datasource/table/note_data.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/data/mapper/mapper.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 
 import 'connection/connection.dart' as impl;
 
@@ -28,10 +29,9 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
     }, onCreate: (m) async {
       await m.createAll();
       into(category).insert(CategoryCompanion(
-        title: const Value('None'),
-        color: Value(generateColor()),
-        createdAt: Value(DateTime.now())
-      ));
+          title: const Value('None'),
+          color: Value(generateColor()),
+          createdAt: Value(DateTime.now())));
     });
   }
 
@@ -43,9 +43,9 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
     //     title: Value(noteData.title ?? ''),
     //     createdAt: noteData.createdAt,
     //     color: noteData.color));
-     final id = await into(note).insert(noteData.toNoteCompanion());
-     notifyListeners();
-     return id;
+    final id = await into(note).insert(noteData.toNoteCompanion());
+    notifyListeners();
+    return id;
   }
 
   Future deleteNote(int id) async {

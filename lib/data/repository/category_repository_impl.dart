@@ -1,17 +1,6 @@
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-
-abstract class ICategoryRepository {
-  Future insertCategory(CategoryModel category);
-
-  Future<void> updateCategory(CategoryModel category);
-
-  Future<void> deleteCategory(int id);
-
-  Future<List<CategoryModel>> getAllCategories();
-
-  Future<String> getCategoryTitle(int id);
-}
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/repository/category_repository.dart';
 
 class CategoryRepository implements ICategoryRepository {
   final AppDatabase datasource;

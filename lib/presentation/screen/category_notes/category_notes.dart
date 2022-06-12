@@ -4,11 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
+import 'package:yalda_students_notes/app/app_prefs.dart';
+import 'package:yalda_students_notes/app/di.dart';
+import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category_notes/bloc/category_notes_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';
@@ -192,22 +193,29 @@ class _NoteGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: SharedPref.getLanguage().isLanguageRtl()
-          ? Alignment.centerRight
-          : Alignment.centerLeft,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppPadding.p12),
-        physics: const BouncingScrollPhysics(),
-        child: Wrap(
-          alignment: WrapAlignment.end,
-          runSpacing: ValueManager.gridSpacing,
-          spacing: ValueManager.gridSpacing,
-          children: List.generate(data.length, (index) {
-            return NoteCategoryItem(note: data[index]);
-          }),
-        ),
-      ),
-    );
+    final appPref = instance<AppPreferences>();
+
+    return FutureBuilder<String>(
+        future: appPref.getLanguage(),
+        initialData: const Locale('en', 'US').languageCode,
+        builder: (context, snapshot) {
+          return Align(
+            alignment: snapshot.data!.isLanguageRtl()
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(AppPadding.p12),
+              physics: const BouncingScrollPhysics(),
+              child: Wrap(
+                alignment: WrapAlignment.end,
+                runSpacing: ValueManager.gridSpacing,
+                spacing: ValueManager.gridSpacing,
+                children: List.generate(data.length, (index) {
+                  return NoteCategoryItem(note: data[index]);
+                }),
+              ),
+            ),
+          );
+        });
   }
 }

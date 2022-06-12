@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:yalda_students_notes/core/common/util/global_exts.dart';
+import 'package:yalda_students_notes/app/app_prefs.dart';
+import 'package:yalda_students_notes/app/di.dart';
+import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/datasource/shared_pref.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
@@ -24,6 +25,7 @@ class NoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final appPref = instance<AppPreferences>();
 
     return Padding(
       padding: const EdgeInsets.only(top: AppPadding.p12),
@@ -50,21 +52,27 @@ class NoteScreen extends StatelessWidget {
               )
             ],
           ),
-          Align(
-            alignment: SharedPref.getLanguage().isLanguageRtl()
-                ? Alignment.bottomLeft
-                : Alignment.bottomRight,
-            child: ResponsiveVisibility(
-              hiddenWhen: const [Condition.largerThan(name: MOBILE)],
-              child: Padding(
-                padding: const EdgeInsets.all(AppPadding.p6),
-                child: FloatingActionButton(
-                  backgroundColor: theme.colorScheme.onSurface,
-                  onPressed: () => _openAddNotePage(context),
-                  child: Icon(Iconsax.add, color: theme.colorScheme.primary),
+          FutureBuilder<String>(
+            future: appPref.getLanguage(),
+           initialData: const Locale('en', 'US').languageCode,
+            builder: (context, snapshot) {
+              return Align(
+                alignment: snapshot.data!.isLanguageRtl()
+                    ? Alignment.bottomLeft
+                    : Alignment.bottomRight,
+                child: ResponsiveVisibility(
+                  hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppPadding.p6),
+                    child: FloatingActionButton(
+                      backgroundColor: theme.colorScheme.onSurface,
+                      onPressed: () => _openAddNotePage(context),
+                      child: Icon(Iconsax.add, color: theme.colorScheme.primary),
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }
           )
         ],
       ),

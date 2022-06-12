@@ -4,7 +4,9 @@
 
 ## ℹ️ Description
 
-- Note app; User can categorize their notes; star notes
+- Develop by using Bloc library in clean architecture with Dependency injection
+
+- Note application; User can categorize their notes; star notes
 
 - This Note app is implemented with bloc and provider. It supports dark mode and user can switch between English or Persian language.
 
@@ -24,11 +26,12 @@
 
 
 ## 📦 Packages:
+ - bloc
+ - get_it
+ - responsive framework
+ - easy localization
  - drift
  - provider
- - bloc
- - easy localization
- - responsive framework
 
 
 

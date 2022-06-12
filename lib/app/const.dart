@@ -12,11 +12,6 @@ class AppConstants {
   static const String addNoteRoute = '/add_note';
   static const String editNoteRoute = '/edit_note';
 
-  //shared prefs
-  static const String isFirstRun = 'first_time';
-  static const String darkMode = 'darkMode';
-  static const String appLanguage = 'appLang';
-
   //URLs
   static const String githubUrl =
       'https://github.com/yalda-student/student_note';
