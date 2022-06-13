@@ -1,15 +1,13 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
-import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:yalda_students_notes/app/app.dart';
 import 'package:yalda_students_notes/data/datasource/table/category_data.dart';
 import 'package:yalda_students_notes/data/datasource/table/note_data.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/data/mapper/mapper.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
+
+import 'connection/connection.dart' as impl;
 
 part 'database.g.dart';
 
@@ -19,9 +17,7 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
 
   factory AppDatabase() => _instance;
 
-  AppDatabase._internal() : super(_openConnection());
-
-  // AppDatabase(QueryExecutor e) : super(e);
+  AppDatabase._internal() : super(impl.connect().executor);
 
   @override
   int get schemaVersion => 1;
@@ -30,13 +26,26 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
   MigrationStrategy get migration {
     return MigrationStrategy(beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
+    }, onCreate: (m) async {
+      await m.createAll();
+      into(category).insert(CategoryCompanion(
+          title: const Value('None'),
+          color: Value(generateColor()),
+          createdAt: Value(DateTime.now())));
     });
   }
 
   //-------------Note
 
-  Future<int> addNote(NoteModel noteData) async {
-    return await into(note).insert(noteData.toNoteCompanion());
+  Future<int> insertNote(NoteModel noteData) async {
+    // return note.insertOne(NoteCompanion.insert(
+    //     content: noteData.content,
+    //     title: Value(noteData.title ?? ''),
+    //     createdAt: noteData.createdAt,
+    //     color: noteData.color));
+    final id = await into(note).insert(noteData.toNoteCompanion());
+    notifyListeners();
+    return id;
   }
 
   Future deleteNote(int id) async {
@@ -136,31 +145,3 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier, FetchData {
     return query.map((row) => row.title).getSingle();
   }
 }
-
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase(file);
-  });
-}
-
-// AppDatabase constructDb({bool logStatements = false}) {
-//   if (Platform.isIOS || Platform.isAndroid) {
-//     final executor = LazyDatabase(() async {
-//       final dataDir = await getApplicationDocumentsDirectory();
-//       final dbFile = File(p.join(dataDir.path, 'db.sqlite'));
-//       return VmDatabase(dbFile, logStatements: logStatements);
-//     });
-//     return AppDatabase(executor);
-//   }
-//   if (Platform.isMacOS || Platform.isLinux) {
-//     final file = File('db.sqlite');
-//     return AppDatabase(VmDatabase(file, logStatements: logStatements));
-//   }
-//   // if (Platform.isWindows) {
-//   //   final file = File('db.sqlite');
-//   //   return Database(VMDatabase(file, logStatements: logStatements));
-//   // }
-//   return AppDatabase(VmDatabase.memory(logStatements: logStatements));
-// }

@@ -1,76 +1,127 @@
 import 'package:flutter/material.dart';
+import 'package:yalda_students_notes/app/app.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
 
   ThemeNotifier(this._themeData);
 
-  getTheme() => _themeData;
+  ThemeData getTheme() => _themeData;
 
   setTheme(ThemeData themeData) async {
     _themeData = themeData;
     notifyListeners();
   }
+
+  bool isDark() {
+    return getTheme() == darkTheme;
+  }
 }
 
-final lightTheme = ThemeData(
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-  fontFamily: 'ic_font',
-  scaffoldBackgroundColor: Colors.white,
-  appBarTheme: const AppBarTheme(
-    elevation: 0,
-    color: Colors.white,
-    iconTheme: IconThemeData(color: Color(0xff010101)),
-    titleTextStyle: TextStyle(
-        color: Color(0xff293241),
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-        fontFamily: 'ic_font'),
-  ),
-  colorScheme: ColorScheme.light(
-    primary: Colors.white,
-    primaryContainer: const Color(0xffe8ebed),
-    onPrimary: Colors.grey.shade800,
-    surface: Colors.grey.shade400,
-    secondary: const Color(0xff010101),
-  ),
-  textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.black,
-      selectionColor: Color(0xffc6c8ce),
-      selectionHandleColor: Color(0xff626362)),
-  inputDecorationTheme: const InputDecorationTheme(
-    border: InputBorder.none,
-    contentPadding: EdgeInsets.all(8.0),
-  ),
-);
+Future<ThemeData> get lightTheme async {
+  final isPersian = await isPersianLanguage();
+  return ThemeData(
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    fontFamily: isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
+    radioTheme: RadioThemeData(
+        fillColor: MaterialStateProperty.all(ColorManager.radioButtonColor)),
+    dividerColor: Colors.grey,
+    errorColor: const Color(0xffE01921),
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      elevation: AppSize.s0,
+      color: Colors.white,
+      iconTheme: IconThemeData(color: ColorManager.primaryDark),
+      titleTextStyle: TextStyle(
+          color: Color(0xff293241),
+          fontWeight: FontWeight.bold,
+          fontSize: FontSize.s20),
+    ),
+    colorScheme: ColorScheme.light(
+        primary: Colors.white,
+        secondary: ColorManager.unselectedTabLabelDarkColor,
+        onSurface: ColorManager.primaryDark,
+        onPrimary: Colors.grey.shade800,
+        surface: Colors.grey.shade400,
+        primaryContainer: ColorManager.lightGray,
+        onSecondary: Colors.white,
+        onBackground: ColorManager.primaryDark),
+    textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Colors.black,
+        selectionColor: Color(0xffc6c8ce),
+        selectionHandleColor: Color(0xff626362)),
+    inputDecorationTheme: InputDecorationTheme(
+        border: InputBorder.none,
+        contentPadding: const EdgeInsets.all(AppPadding.p8),
+        counterStyle: TextStyle(
+          color: ColorManager.primaryDark,
+          fontFamily:
+              isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
+        )),
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white,
+      titleTextStyle: isPersian
+          ? StyleManager.dialogTitlePersianLightTextStyle()
+          : StyleManager.dialogTitleEnglishLightTextStyle(),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
+    ),
+  );
+}
 
-final darkTheme = ThemeData(
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-  dividerColor: Colors.grey.shade400,
-  fontFamily: 'ic_font',
-  scaffoldBackgroundColor: const Color(0xff010101),
-  appBarTheme: const AppBarTheme(
-    color: Color(0xff010101),
-    elevation: 0,
-    titleTextStyle: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-        fontFamily: 'ic_font'),
-  ),
-  colorScheme: ColorScheme.dark(
-    primary: const Color(0xff010101),
-    secondary: Colors.white,
-    onPrimary: Colors.black54,
-    surface: Colors.grey.shade400,
-    primaryContainer: const Color(0xffe8ebed),
-  ),
-  textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.black,
-      selectionColor: Color(0xffc6c8ce),
-      selectionHandleColor: Color(0xff626362)),
-  inputDecorationTheme: const InputDecorationTheme(
-    border: InputBorder.none,
-    contentPadding: EdgeInsets.all(8.0),
-  ),
-);
+Future<ThemeData> get darkTheme async {
+  final isPersian = await isPersianLanguage();
+  return ThemeData(
+    fontFamily: isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    dividerColor: Colors.grey,
+    errorColor: const Color(0xffFF4545),
+    scaffoldBackgroundColor: ColorManager.primaryDark,
+    appBarTheme: AppBarTheme(
+      color: ColorManager.primaryDark,
+      elevation: AppSize.s0,
+      titleTextStyle: TextStyle(
+          fontFamily:
+              isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: FontSize.s20),
+    ),
+    colorScheme: const ColorScheme.dark(
+        primary: ColorManager.primaryDark,
+        secondary: Colors.white,
+        onSurface: Colors.white,
+        onPrimary: ColorManager.unselectedTabLabelDarkColor,
+        surface: ColorManager.tabBarDarkColor,
+        primaryContainer: ColorManager.lightGray,
+        onSecondary: ColorManager.bottomNavigationDarkColor,
+        onBackground: ColorManager.bottomNavigationDarkColor),
+    radioTheme: RadioThemeData(
+        fillColor: MaterialStateProperty.all(ColorManager.radioButtonColor)),
+    textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Colors.black,
+        selectionColor: Color(0xffc6c8ce),
+        selectionHandleColor: Color(0xff626362)),
+    inputDecorationTheme:  InputDecorationTheme(
+      border: InputBorder.none,
+      contentPadding: const EdgeInsets.all(AppPadding.p8),
+        counterStyle: TextStyle(
+          color: ColorManager.tabBarDarkColor,
+          fontFamily:
+          isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
+        )
+    ),
+    dialogTheme: DialogTheme(
+      titleTextStyle: isPersian
+          ? StyleManager.dialogTitlePersianDarkTextStyle()
+          : StyleManager.dialogTitleEnglishDarkTextStyle(),
+      backgroundColor: ColorManager.bottomNavigationDarkColor,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
+    ),
+  );
+}

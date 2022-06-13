@@ -30,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+.fvm/
 
 lib/game_card.dart
 

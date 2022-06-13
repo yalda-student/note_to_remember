@@ -53,7 +53,11 @@ class CodegenLoader extends AssetLoader{
   "create": "Create",
   "update": "Update",
   "note": "Note",
-  "delete_none_category": "You can't delete None Category."
+  "delete_none_category": "You can't delete None Category.",
+  "home": "Home",
+  "note_to_remember": "Note to Remember",
+  "new_category": "New Category",
+  "new_note": "New Note"
 };
 static const Map<String,dynamic> fa = {
   "profileTitle": "یادداشت های من",
@@ -94,7 +98,11 @@ static const Map<String,dynamic> fa = {
   "create": "ایجاد",
   "update": "ذخیره",
   "note": "یادداشت",
-  "delete_none_category": "شما نمی توانید دسته None را پاک کنید. "
+  "delete_none_category": "شما نمی توانید دسته None را پاک کنید. ",
+  "home": "خانه",
+  "note_to_remember": "یادداشتی برای یادآوری",
+  "new_category": "دسته جدید",
+  "new_note": "یادداشت جدید"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "fa": fa};
 }

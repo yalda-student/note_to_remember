@@ -3,13 +3,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:yalda_students_notes/core/common/lang.dart';
-import 'package:yalda_students_notes/core/common/const.dart';
+import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/language_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/about/about_screen.dart';
 import 'package:yalda_students_notes/presentation/util/theme_util.dart';
+
+
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -31,13 +33,12 @@ class _SettingScreenState extends State<SettingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBar(
-              title: Text(
-                LocaleKeys.setting.tr(),
-                style: TextStyle(color: theme.colorScheme.secondary),
-              ),
-              leading: const Icon(Iconsax.setting),
-            ),
+            ListTile(
+                title: Text(LocaleKeys.setting.tr(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 17)),
+                leading:
+                    Icon(Iconsax.setting, color: theme.colorScheme.secondary)),
             const Divider(),
             ListTile(
               title: const Text(LocaleKeys.theme).tr(),
@@ -47,7 +48,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: DayNightSwitcher(
                   isDarkModeEnabled: _enableDarkTheme,
                   sunColor: Colors.amber,
-                  onStateChanged: (val) => onThemeChanged(val, themeNotifier),
+                  onStateChanged: (val) =>
+                      context.changeTheme(val, themeNotifier),
                 ),
               ),
             ),
@@ -79,14 +81,6 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
     );
   }
-
-  void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-    (value)
-        ? themeNotifier.setTheme(darkTheme)
-        : themeNotifier.setTheme(lightTheme);
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setBool(AppConstants.darkMode, value);
-  }
 }
 
 class _LanguageSwitcher extends StatelessWidget with AppLanguage {
@@ -100,8 +94,8 @@ class _LanguageSwitcher extends StatelessWidget with AppLanguage {
       minWidth: 75.0,
       cornerRadius: 20.0,
       activeBgColors: [
-        [theme.colorScheme.secondary],
-        [theme.colorScheme.secondary]
+        [theme.colorScheme.onSurface],
+        [theme.colorScheme.onSurface]
       ],
       activeFgColor: theme.colorScheme.surface,
       inactiveBgColor: theme.colorScheme.surface,
@@ -115,9 +109,9 @@ class _LanguageSwitcher extends StatelessWidget with AppLanguage {
       curve: Curves.linear,
       customTextStyles: [
         theme.textTheme.subtitle1!
-            .copyWith(color: const Color(0xff6996ea), fontSize: 13),
+            .copyWith(color: ColorManager.radioButtonColor, fontSize: 13),
         theme.textTheme.subtitle1!
-            .copyWith(color: const Color(0xff6996ea), fontSize: 13)
+            .copyWith(color: ColorManager.radioButtonColor, fontSize: 13)
       ],
       radiusStyle: true,
       animate: true,

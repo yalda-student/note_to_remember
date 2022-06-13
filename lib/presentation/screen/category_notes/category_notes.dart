@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+import 'package:yalda_students_notes/app/app_prefs.dart';
+import 'package:yalda_students_notes/app/di.dart';
+import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/category_notes/bloc/category_notes_bloc.dart';
 import 'package:yalda_students_notes/presentation/widgets/empty_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/invalid_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/loading_state.dart';
 import 'package:yalda_students_notes/presentation/widgets/note_category_item.dart';
-
 
 class CategoryNotesScreen extends StatelessWidget {
   CategoryModel category;
@@ -33,7 +37,8 @@ class CategoryNotesScreen extends StatelessWidget {
               buildWhen: (previous, current) {
                 if (current is CategoryNotesName) {
                   title = current.title;
-                  category = CategoryModel(id: category.id, title: title, color: category.color);
+                  category = CategoryModel(
+                      id: category.id, title: title, color: category.color);
                 }
                 return current is CategoryNotesName;
               },
@@ -66,6 +71,7 @@ class CategoryNotesScreen extends StatelessWidget {
             ),
             const Divider(),
             BlocBuilder<CategoryNotesBloc, CategoryNotesState>(
+              buildWhen: (previous, current) => current is! CategoryNotesName,
               builder: (context, state) {
                 return _handleStates(state);
               },
@@ -89,7 +95,7 @@ class CategoryNotesScreen extends StatelessWidget {
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Rename category'),
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            borderRadius: BorderRadius.all(Radius.circular(AppSize.s20))),
         content: SingleChildScrollView(
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
@@ -104,7 +110,7 @@ class CategoryNotesScreen extends StatelessWidget {
                       fillColor: theme.colorScheme.surface.withOpacity(0.5),
                       enabledBorder: outlineInputBorder,
                       focusedBorder: outlineInputBorder,
-                      contentPadding: const EdgeInsets.all(10.0)),
+                      contentPadding: const EdgeInsets.all(AppPadding.p10)),
                   onChanged: (value) {
                     context
                         .read<CategoryNotesBloc>()
@@ -125,10 +131,8 @@ class CategoryNotesScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
           ),
           TextButton(
-            child: Text(
-              'Rename',
-              style: TextStyle(color: theme.colorScheme.secondary),
-            ),
+            child: Text('Rename',
+                style: TextStyle(color: theme.colorScheme.secondary)),
             onPressed: () {
               context.read<CategoryNotesBloc>().add(CategoryNoteRename());
               Navigator.of(context).pop();
@@ -145,7 +149,11 @@ class CategoryNotesScreen extends StatelessWidget {
     } else if (state is CategoryNotesEmptyState) {
       return const EmptyState();
     } else if (state is CategoryNotesSuccess) {
-      return _NoteList(data: state.data);
+      return ResponsiveVisibility(
+        child: _NoteList(data: state.data),
+        replacement: _NoteGrid(data: state.data),
+        hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+      );
     } else {
       return const InvalidState();
     }
@@ -159,14 +167,55 @@ class _NoteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('_NoteList');
     return Expanded(
       child: ListView.builder(
         itemCount: data.length,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return NoteCategoryItem(note: data[index]);
+          return Container(
+              margin: const EdgeInsets.fromLTRB(
+                  AppSize.s8, AppSize.s16, AppSize.s8, AppSize.s0),
+              child: NoteCategoryItem(note: data[index]));
         },
       ),
     );
+  }
+}
+
+class _NoteGrid extends StatelessWidget {
+  final List<NoteModel> data;
+
+  const _NoteGrid({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final appPref = instance<AppPreferences>();
+
+    return FutureBuilder<String>(
+        future: appPref.getLanguage(),
+        initialData: const Locale('en', 'US').languageCode,
+        builder: (context, snapshot) {
+          return Align(
+            alignment: snapshot.data!.isLanguageRtl()
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(AppPadding.p12),
+              physics: const BouncingScrollPhysics(),
+              child: Wrap(
+                alignment: WrapAlignment.end,
+                runSpacing: ValueManager.gridSpacing,
+                spacing: ValueManager.gridSpacing,
+                children: List.generate(data.length, (index) {
+                  return NoteCategoryItem(note: data[index]);
+                }),
+              ),
+            ),
+          );
+        });
   }
 }

@@ -1,8 +1,11 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/data/model/note_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
+import 'package:yalda_students_notes/presentation/util/color_util.dart';
 
-class NoteCategoryItem extends StatefulWidget {
+class NoteCategoryItem extends StatelessWidget {
   final NoteModel note;
 
   const NoteCategoryItem({
@@ -11,53 +14,43 @@ class NoteCategoryItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<NoteCategoryItem> createState() => _NoteCategoryItemState();
-}
-
-class _NoteCategoryItemState extends State<NoteCategoryItem> {
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final noteColor = getNoteColor(context, note.colorIndex);
+
+    // debugPrint(note.toString());
     return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.fromLTRB(8, 16, 8, 0),
+      width: 170,
+      padding: const EdgeInsets.all(AppPadding.p16),
       decoration: BoxDecoration(
-        color: Color(widget.note.color).withOpacity(0.85),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey, width: 0.3),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(widget.note.color),
-            Color(widget.note.color).withOpacity(0.55),
-          ],
-        ),
-      ),
+          color: noteColor, borderRadius: BorderRadius.circular(15)),
       child: ExpandablePanel(
+        theme: ExpandableThemeData(iconColor: theme.colorScheme.onSurface),
         header: Text(
-          widget.note.title ?? '',
+          note.title,
           style: TextStyle(
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w800,
-              fontSize: 19,
-              color: theme.colorScheme.secondary),
+              fontSize: FontSize.s19,
+              color: theme.colorScheme.onSurface),
         ),
         collapsed: Text(
-          widget.note.content,
+          note.content,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontWeight: FontWeight.normal,
-              fontSize: 15,
-              color: theme.colorScheme.secondary),
+              fontSize: FontSize.s15,
+              color: theme.colorScheme.onSurface),
         ),
         expanded: Text(
-          widget.note.content,
+          note.content,
+          softWrap: true,
           style: TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: 17,
-              color: theme.colorScheme.secondary),
+              fontSize: FontSize.s16,
+              color: theme.colorScheme.onSurface),
         ),
       ),
     );

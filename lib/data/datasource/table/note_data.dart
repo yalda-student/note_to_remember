@@ -10,7 +10,7 @@ class Note extends Table {
 
   DateTimeColumn get createdAt => dateTime()();
 
-  IntColumn get color => integer()();
+  IntColumn get colorIndex => integer()();
 
   BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
 

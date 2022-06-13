@@ -1,11 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/repository/category_repository.dart';
+import 'package:yalda_students_notes/data/repository/category_repository_impl.dart';
 
 part 'language_event.dart';
-
 part 'language_state.dart';
 
 class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
@@ -15,11 +12,6 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
     on<OnBoardingEvent>((event, emit) {
       if (event is OnBoardingLanguageChangeEvent) {
         emit(OnBoardingInitial());
-      } else if (event is OnBoardingCreateCategory) {
-        repository.insertCategory(CategoryModel(
-          title: 'None',
-          color: generateColor(),
-        ));
       }
     });
   }

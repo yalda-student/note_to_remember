@@ -3,20 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:yalda_students_notes/common/color.dart';
-import 'package:yalda_students_notes/core/common/app.dart';
+import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+import 'package:yalda_students_notes/app/app.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
-import 'package:yalda_students_notes/data/model/category_model.dart';
-import 'package:yalda_students_notes/data/repository/category_repository.dart';
+import 'package:yalda_students_notes/data/repository/category_repository_impl.dart';
+import 'package:yalda_students_notes/data/repository/note_repository_impl.dart';
+import 'package:yalda_students_notes/domain/model/category_model.dart';
+import 'package:yalda_students_notes/domain/model/note_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/main.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/bloc/addnote_bloc.dart';
 import 'package:yalda_students_notes/presentation/screen/category/bloc/category_bloc.dart';
-import 'package:yalda_students_notes/presentation/screen/home/home_screen.dart';
+import 'package:yalda_students_notes/presentation/util/theme_util.dart';
 import 'package:yalda_students_notes/presentation/widgets/bottom_sheet.dart';
 import 'package:yalda_students_notes/presentation/widgets/color_picker.dart';
+import 'package:yalda_students_notes/presentation/widgets/pop_menu_item.dart';
 
 class AddNoteScreen extends StatefulWidget {
-  const AddNoteScreen({Key? key}) : super(key: key);
+  final Function onClosePage;
+
+  const AddNoteScreen({Key? key, required this.onClosePage}) : super(key: key);
 
   @override
   State<AddNoteScreen> createState() => _AddNoteScreenState();
@@ -25,15 +35,14 @@ class AddNoteScreen extends StatefulWidget {
 class _AddNoteScreenState extends State<AddNoteScreen>
     with ExtractCategoryData {
   int colorIndex = 0;
+  late Color backGroundColor;
+  late bool? isMobile;
+  late bool? _isDark;
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -45,85 +54,130 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocBuilder<AddNoteBloc, AddNoteState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: colors[colorIndex],
-          body: SafeArea(
-              child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                AppBar(
-                  backgroundColor: colors[colorIndex],
-                  title: Text(
-                    LocaleKeys.add_note,
-                    style: TextStyle(
-                        color: theme.colorScheme.secondary,
-                        fontWeight: FontWeight.bold),
-                  ).tr(),
-                  centerTitle: true,
-                  leading: IconButton(
-                      onPressed: () {
-                        closePage();
-                      },
-                      icon: Icon(Iconsax.close_circle,
-                          color: theme.colorScheme.secondary)),
-                  actions: [
-                    PopupMenuButton(
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                        PopupMenuItem(
-                          child: TextButton.icon(
-                            onPressed: () => saveNote(context),
-                            icon: const Icon(Iconsax.note_add,
-                                color: Colors.black),
-                            label: Text(
-                              LocaleKeys.save.tr(),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          child: TextButton.icon(
-                            onPressed: () => _openCategoryList(context),
-                            icon: const Icon(Iconsax.category_2,
-                                color: Colors.black),
-                            label: Text(
-                              LocaleKeys.move.tr(),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const Divider(),
-                const SizedBox(height: 8),
-                ColorPicker(
-                    selectedIndex: colorIndex,
-                    onTap: (index) {
-                      colorIndex = index;
-                      context
-                          .read<AddNoteBloc>()
-                          .add(AddNoteColorChange(colors[index]));
-                    }),
-                const SizedBox(height: 8),
-                _TitleTextField(
-                    titleController: _titleController, theme: theme),
-                const SizedBox(height: 4),
-                _ContextTextField(
-                    contentController: _contentController, theme: theme)
-              ],
-            ),
-          )),
+    _isDark = Provider.of<ThemeNotifier>(context, listen: false).isDark();
+
+    isMobile = ResponsiveValue<bool>(context,
+            defaultValue: true,
+            valueWhen: [const Condition.largerThan(name: MOBILE, value: false)])
+        .value;
+
+    setBackgroundColor();
+
+    return BlocProvider<AddNoteBloc>(
+      create: (context) {
+        final _note = NoteModel(
+          title: '',
+          content: '',
+          isFavorite: false,
+          colorIndex: colorIndex,
+          createdAt: DateTime.now(),
         );
+        return AddNoteBloc(NoteRepository(context.read<AppDatabase>()), _note);
       },
+      child: BlocBuilder<AddNoteBloc, AddNoteState>(
+        builder: (context, state) {
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: backGroundColor,
+            body: SafeArea(
+                child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  AppBar(
+                    backgroundColor: backGroundColor,
+                    title: Text(
+                      LocaleKeys.add_note.tr(),
+                      style: theme.appBarTheme.titleTextStyle!
+                          .copyWith(fontSize: FontSize.onBoardBody(context)),
+                    ),
+                    centerTitle: true,
+                    leading: isMobile!
+                        ? IconButton(
+                            onPressed: () => closePage(),
+                            icon: Icon(Iconsax.close_circle,
+                                color:
+                                    ColorManager.getNoteEditorTextColor(theme)))
+                        : const SizedBox(),
+                    actions: [
+                      ResponsiveVisibility(
+                        hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+                        child: PopupMenuButton(
+                          itemBuilder: (BuildContext context1) =>
+                              popupMenuItems,
+                          onSelected: (value) =>
+                              _handleMenuItemSelect(context, value),
+                        ),
+                      ),
+                      ResponsiveVisibility(
+                        visible: false,
+                        visibleWhen: const [Condition.largerThan(name: MOBILE)],
+                        child: IconButton(
+                          tooltip: LocaleKeys.move.tr(),
+                          onPressed: () => _openCategoryList(context),
+                          icon: Icon(Iconsax.category_2,
+                              color: ColorManager.getNoteEditorTextColor(theme),
+                              size: AppSize.iconSize(context)),
+                        ),
+                      ),
+                      ResponsiveVisibility(
+                        visible: false,
+                        visibleWhen: const [Condition.largerThan(name: MOBILE)],
+                        child: IconButton(
+                            tooltip: LocaleKeys.save.tr(),
+                            onPressed: () => _saveNote(context),
+                            icon: Icon(Iconsax.note_add,
+                                color:
+                                    ColorManager.getNoteEditorTextColor(theme),
+                                size: AppSize.iconSize(context))),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  const SizedBox(height: 8),
+                  ColorPicker(
+                      selectedIndex: colorIndex,
+                      onTap: (index) {
+                        colorIndex = index;
+                        setBackgroundColor();
+                        context
+                            .read<AddNoteBloc>()
+                            .add(AddNoteColorChange(index));
+                      }),
+                  const SizedBox(height: 8),
+                  _TitleTextField(
+                      titleController: _titleController, theme: theme),
+                  const SizedBox(height: 4),
+                  _ContentTextField(
+                      contentController: _contentController, theme: theme)
+                ],
+              ),
+            )),
+          );
+        },
+      ),
     );
   }
 
-  void saveNote(BuildContext context) {
-    var validate = _formKey.currentState!.validate();
+  void setBackgroundColor() {
+    final color = ColorManager.noteColors[colorIndex];
+    backGroundColor = _isDark! ? color.darkColor : color.lightColor;
+  }
+
+  void _handleMenuItemSelect(BuildContext context, value) {
+    switch (value) {
+      case 0:
+        _saveNote(context);
+        break;
+      case 1:
+        _openCategoryList(context);
+        break;
+      default:
+    }
+  }
+
+  void _saveNote(BuildContext context) {
+    final validate = _formKey.currentState!.validate();
 
     if (validate) {
       context.read<AddNoteBloc>().add(AddNoteSave());
@@ -132,12 +186,15 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   }
 
   void closePage() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
-      ),
-    );
+    if (isMobile!) {
+      Navigator.of(context).pop();
+    } else {
+      widget.onClosePage(homeIndex);
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const HomeScreen()),
+      // );
+    }
   }
 
   void _openCategoryList(BuildContext context) async {
@@ -180,20 +237,26 @@ class _TitleTextField extends StatelessWidget {
       maxLength: 255,
       decoration: InputDecoration(
         hintText: LocaleKeys.title.tr(),
-        hintStyle: theme.textTheme.headline5!
-            .copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
+        hintStyle: theme.textTheme.headline6!.copyWith(
+            color: ColorManager.getNoteEditorTextColor(theme).withOpacity(0.5),
+            fontWeight: FontWeight.w600),
+        // counterStyle: StyleManager.counterTextStyle(theme),
       ),
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.next,
+      style: theme.textTheme.headline6!.copyWith(
+          color: ColorManager.getNoteEditorTextColor(theme).withOpacity(0.8),
+          fontWeight: FontWeight.w600),
       onChanged: (value) {
         context.read<AddNoteBloc>().add(AddNoteTitleChange(value));
       },
     );
   }
+
 }
 
-class _ContextTextField extends StatelessWidget {
-  const _ContextTextField({
+class _ContentTextField extends StatelessWidget {
+  const _ContentTextField({
     Key? key,
     required TextEditingController contentController,
     required this.theme,
@@ -210,9 +273,17 @@ class _ContextTextField extends StatelessWidget {
         controller: _contentController,
         decoration: InputDecoration(
           hintText: LocaleKeys.startTyping.tr(),
+          hintStyle: TextStyle(
+              color:
+                  ColorManager.getNoteEditorTextColor(theme).withOpacity(0.5),
+              fontWeight: FontWeight.w600),
         ),
-        maxLines: 12,
-        cursorColor: theme.colorScheme.secondary,
+        maxLines: 100,
+        keyboardType: TextInputType.multiline,
+        style: TextStyle(
+            color:
+                ColorManager.getNoteEditorTextColor(theme).withOpacity(0.75)),
+        cursorColor: Colors.black,
         validator: (value) {
           if (value!.isEmpty) {
             return LocaleKeys.content_Cannot_Be_Empty.tr();
@@ -226,3 +297,14 @@ class _ContextTextField extends StatelessWidget {
     );
   }
 }
+
+final popupMenuItems = <PopupMenuEntry>[
+  PopupMenuItem(
+      value: 0,
+      child: AppPopupMenuItem(
+          title: LocaleKeys.save.tr(), icon: Iconsax.note_add)),
+  PopupMenuItem(
+      value: 1,
+      child: AppPopupMenuItem(
+          title: LocaleKeys.move.tr(), icon: Iconsax.category_2)),
+];
