@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
 
 part 'starrednotes_event.dart';
 part 'starrednotes_state.dart';
@@ -22,7 +22,7 @@ class StarredNotesBloc extends Bloc<StarredNotesEvent, StarredNotesState> {
       if (isEmpty) {
         emit(StarredNotesEmpty());
       } else {
-        final noteList = await database.getStarNotes().first;
+        final noteList = await database.getStarNotes();
         debugPrint('starred: $noteList');
         emit(StarredNotesSuccess(noteList));
       }

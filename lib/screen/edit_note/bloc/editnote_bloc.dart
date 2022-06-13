@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
 
-part 'editnote_event.dart';
+part 'editnote_event.dart';t';
+
 part 'editnote_state.dart';
 
 class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
@@ -19,6 +20,7 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
       } else if (event is EditNoteColorChange) {
         _noteData = NoteData(
             id: _noteData.id,
+            categoryId: _noteData.categoryId,
             title: _noteData.title,
             content: _noteData.content,
             createdAt: _noteData.createdAt,
@@ -33,6 +35,7 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             content: _noteData.content,
             createdAt: _noteData.createdAt,
             color: _noteData.color,
+            categoryId: _noteData.categoryId,
             isFavorite: _noteData.isFavorite);
 
         emit(EditNoteInitial(_noteData));
@@ -43,6 +46,7 @@ class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
             content: event.content,
             createdAt: _noteData.createdAt,
             color: _noteData.color,
+            categoryId: _noteData.categoryId,
             isFavorite: _noteData.isFavorite);
 
         emit(EditNoteInitial(_noteData));

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:yalda_students_notes/data/source/database.dart';
+import 'package:yalda_students_notes/data/datasource/database.dart';
 
 part 'searchnote_event.dart';
 part 'searchnote_state.dart';
@@ -26,7 +26,7 @@ class SearchNoteBloc extends Bloc<SearchNoteEvent, SearchNoteState> {
       if (isEmpty) {
         emit(SearchNoteEmpty());
       } else {
-        final noteList = await _database.getAllNotes(keyword: expression).first;
+        final noteList = await _database.getAllNotes(expression).first;
          debugPrint('$noteList');
         emit(SearchNoteSuccess(noteList));
       }
