@@ -1,4 +1,5 @@
-import 'package:yalda_students_notes/data/source/database.dart';
+
+import 'package:yalda_students_notes/data/datasource/database.dart';
 
 class DriftConfig {
   static late AppDatabase appDatabase;

@@ -30,6 +30,9 @@
 .pub-cache/
 .pub/
 /build/
+.fvm/
+
+lib/game_card.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
