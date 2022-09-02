@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/favorite/favorite.dart';
 import 'package:yalda_students_notes/presentation/screen/note/note.dart';
@@ -38,7 +39,7 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: ContainedTabBarView(
                 tabs: [
-                  const Text(LocaleKeys.notes).tr(),
+                   const Text(LocaleKeys.notes).tr(),
                   const Text(LocaleKeys.favorite_Notes).tr()
                 ],
                 views: const [NoteScreen(), FavoriteScreen()],
@@ -60,6 +61,7 @@ class HomeScreen extends StatelessWidget {
                   alignment: TabBarAlignment.center,
                   indicatorColor: Colors.transparent,
                   labelColor: theme.colorScheme.primary,
+                  labelStyle: StyleManager.tabBarTextStyle(context),
                   unselectedLabelColor: theme.colorScheme.onPrimary,
                   indicator: ContainerTabIndicator(
                     color: theme.colorScheme.onSurface,

@@ -27,7 +27,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    _enableDarkTheme = (themeNotifier.getTheme() == darkTheme);
+    _enableDarkTheme = themeNotifier.isDark();
 
     return Scaffold(
       body: SafeArea(

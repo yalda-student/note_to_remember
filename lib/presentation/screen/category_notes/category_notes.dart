@@ -30,7 +30,6 @@ class CategoryNotesScreen extends StatelessWidget {
     return Scaffold(body: Consumer<AppDatabase>(
       builder: (context, value, child) {
         context.read<CategoryNotesBloc>().add(CategoryNoteStart(category.id));
-
         return Column(
           children: [
             BlocBuilder<CategoryNotesBloc, CategoryNotesState>(

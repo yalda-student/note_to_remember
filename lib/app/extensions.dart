@@ -16,8 +16,8 @@ extension BuildContextExts on BuildContext {
 
   void changeTheme(bool value, ThemeNotifier themeNotifier) async {
     (value)
-        ? themeNotifier.setTheme(await darkTheme)
-        : themeNotifier.setTheme(await lightTheme);
+        ? themeNotifier.setTheme(darkTheme)
+        : themeNotifier.setTheme(lightTheme);
     final appPref = instance<AppPreferences>();
     await appPref.setTheme(value);
   }

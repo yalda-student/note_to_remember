@@ -10,6 +10,7 @@ import 'package:yalda_students_notes/app/app.dart';
 import 'package:yalda_students_notes/app/app_prefs.dart';
 import 'package:yalda_students_notes/app/app_providers.dart';
 import 'package:yalda_students_notes/app/di.dart';
+import 'package:yalda_students_notes/app/global.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
 import 'package:yalda_students_notes/presentation/resources/language_manager.dart';
@@ -40,7 +41,12 @@ void main() async {
 
   final appPref = instance<AppPreferences>();
   final darkModeOn = await appPref.getTheme();
-  final appTheme = darkModeOn ? await darkTheme : await lightTheme;
+  final appTheme = darkModeOn ? darkTheme : lightTheme;
+
+  // debugPrint('getTheme: $appTheme');
+  // debugPrint('lightTheme: $lightTheme');
+  // debugPrint('darkTheme: $darkTheme');
+  // debugPrint('dark: $darkModeOn');
 
   runApp(
     EasyLocalization(
@@ -67,9 +73,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    final languageCode =
-        EasyLocalization.of(context)!.currentLocale!.languageCode;
-
+    final currentLocale = EasyLocalization.of(context)!.currentLocale!;
+    appLocale = currentLocale;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -100,7 +105,7 @@ class MyApp extends StatelessWidget {
               return const MainScreen();
             }
           }),
-      locale: Locale(languageCode),
+      locale: Locale(currentLocale.languageCode),
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
     );

@@ -17,14 +17,15 @@ class ThemeNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  bool isDark() {
-    return getTheme() == darkTheme;
-  }
+ bool isDark() {
+   return getTheme().brightness == Brightness.dark;
+ }
 }
 
-Future<ThemeData> get lightTheme async {
-  final isPersian = await isPersianLanguage();
+ThemeData get lightTheme {
+  final isPersian = isPersianLanguage();
   return ThemeData(
+    brightness: Brightness.light,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
     radioTheme: RadioThemeData(
@@ -73,9 +74,10 @@ Future<ThemeData> get lightTheme async {
   );
 }
 
-Future<ThemeData> get darkTheme async {
-  final isPersian = await isPersianLanguage();
+ThemeData get darkTheme {
+  final isPersian = isPersianLanguage();
   return ThemeData(
+    brightness: Brightness.dark,
     fontFamily: isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     dividerColor: Colors.grey,
@@ -106,15 +108,14 @@ Future<ThemeData> get darkTheme async {
         cursorColor: Colors.black,
         selectionColor: Color(0xffc6c8ce),
         selectionHandleColor: Color(0xff626362)),
-    inputDecorationTheme:  InputDecorationTheme(
-      border: InputBorder.none,
-      contentPadding: const EdgeInsets.all(AppPadding.p8),
+    inputDecorationTheme: InputDecorationTheme(
+        border: InputBorder.none,
+        contentPadding: const EdgeInsets.all(AppPadding.p8),
         counterStyle: TextStyle(
           color: ColorManager.tabBarDarkColor,
           fontFamily:
-          isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
-        )
-    ),
+              isPersian ? FontConstants.iranMarkerFont : FontConstants.icFont,
+        )),
     dialogTheme: DialogTheme(
       titleTextStyle: isPersian
           ? StyleManager.dialogTitlePersianDarkTextStyle()

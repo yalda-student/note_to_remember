@@ -1,6 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
+import 'package:yalda_students_notes/app/functions.dart';
 import 'package:yalda_students_notes/domain/model/note_model.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
@@ -15,6 +16,14 @@ class NoteListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    String date;
+    if (EasyLocalization.of(context)!.currentLocale !=
+        const Locale('en', 'US')) {
+      date = convertToJalaliDate(data.createdAt);
+    } else {
+      date = DateFormat('dd/MM/yyyy').format(data.createdAt);
+    }
 
     return Container(
       height: 100,
@@ -41,7 +50,8 @@ class NoteListItem extends StatelessWidget {
                       style: StyleManager.noteTitleTextStyle(theme)),
                 ),
                 if (data.isFavorite)
-                  Icon(Iconsax.heart5, color: theme.errorColor, size: AppSize.s20)
+                  Icon(Iconsax.heart5,
+                      color: theme.errorColor, size: AppSize.s20)
               ],
             ),
             Row(
@@ -55,7 +65,7 @@ class NoteListItem extends StatelessWidget {
                       color: theme.colorScheme.onSurface),
                 ),
                 Text(
-                  DateFormat('dd/MM/yyyy').format(data.createdAt),
+                  date,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       fontWeight: FontWeight.normal,

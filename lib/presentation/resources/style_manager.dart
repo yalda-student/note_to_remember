@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
@@ -14,6 +15,24 @@ class StyleManager {
         ],
       ).value,
     );
+  }
+
+  static TextStyle tabBarTextStyle(BuildContext context) {
+    var isEn =
+        EasyLocalization.of(context)!.currentLocale == const Locale('en', 'US');
+    return Theme.of(context)
+        .textTheme
+        .bodyText1!
+        .apply(fontSizeDelta: isEn ? 0.0 : -4.0);
+  }
+
+  static TextStyle headerTextStyle(BuildContext context) {
+    var isEn =
+        EasyLocalization.of(context)!.currentLocale == const Locale('en', 'US');
+    return Theme.of(context)
+        .textTheme
+        .headline6!
+        .apply(fontSizeDelta: isEn ? -2.0 : -5.0, fontWeightDelta: 5);
   }
 
   static TextStyle noteTitleTextStyle(ThemeData theme) {

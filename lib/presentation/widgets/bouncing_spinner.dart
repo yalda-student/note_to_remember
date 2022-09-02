@@ -56,32 +56,36 @@ class _BouncingSpinnerState extends State<BouncingSpinner>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.radius * widget.length,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: List<Widget>.generate(widget.length, (index) {
-          final isEven = index % 2 == 0;
-          final offset = widget.offset! * index;
-          final color = isEven ? widget.color2 : widget.color1;
-          final scale =
-              isEven ? animation.value : (1 - animation.value as double);
+    return Center(
+      child: Container(
+        alignment: Alignment.center,
+        width: (widget.radius*0.6) * widget.length ,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: List<Widget>.generate(widget.length, (index) {
+            final isEven = index % 2 == 0;
+            final offset = widget.offset! * index;
+            final color = isEven ? widget.color2 : widget.color1;
+            final scale =
+                isEven ? animation.value : (1 - animation.value as double);
 
-          return Positioned(
-            left: offset,
-            child: Transform.scale(
-              scale: scale,
-              child: Container(
-                width: widget.radius,
-                height: widget.radius,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: color,
+            return Positioned(
+              left: offset,
+              top: 50,
+              child: Transform.scale(
+                scale: scale,
+                child: Container(
+                  width: widget.radius,
+                  height: widget.radius,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color,
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }

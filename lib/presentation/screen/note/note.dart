@@ -10,7 +10,7 @@ import 'package:yalda_students_notes/app/extensions.dart';
 import 'package:yalda_students_notes/data/datasource/database.dart';
 import 'package:yalda_students_notes/domain/model/note_model.dart';
 import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
-import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/style_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/note/bloc/notelist_bloc.dart';
@@ -35,8 +35,7 @@ class NoteScreen extends StatelessWidget {
             children: [
               ListTile(
                 title: Text(LocaleKeys.notesList.tr(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: FontSize.s17)),
+                    style: StyleManager.headerTextStyle(context)),
                 leading:
                     Icon(Iconsax.note_21, color: theme.colorScheme.onSurface),
               ),
