@@ -33,19 +33,20 @@ class CategoryItem extends StatelessWidget {
       openBuilder: (context, openContainer) =>
           CategoryNotesScreen(category: categoryData),
       closedBuilder: (context, openContainer) {
+        final categoryColor = Color(categoryData.color);
         return InkWell(
           onTap: () => openContainer.call(),
           onDoubleTap: () => _deleteCategory(context),
           child: Container(
             padding: const EdgeInsets.all(AppPadding.p10),
             decoration: BoxDecoration(
-                color: Color(categoryData.color).withOpacity(0.075),
+                color: categoryColor.withOpacity(0.075),
+                border: Border.all(color: categoryColor.withOpacity(0.075)),
                 borderRadius: BorderRadius.circular(AppSize.s15)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Iconsax.folder_25,
-                    color: Color(categoryData.color), size: 45),
+                Icon(Iconsax.folder_25, color: categoryColor, size: 40),
                 Text(categoryData.title,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: FontSize.s15)),
@@ -56,7 +57,8 @@ class CategoryItem extends StatelessWidget {
                       fontSize: ResponsiveValue(context,
                           defaultValue: FontSize.s13,
                           valueWhen: const [
-                            Condition.largerThan(name: MOBILE, value: FontSize.s11),
+                            Condition.largerThan(
+                                name: MOBILE, value: FontSize.s11),
                           ]).value),
                 ),
               ],

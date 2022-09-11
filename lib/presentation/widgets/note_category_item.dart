@@ -1,9 +1,17 @@
+import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
+import 'package:detectable_text_field/widgets/detectable_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yalda_students_notes/domain/model/note_model.dart';
+import 'package:yalda_students_notes/gen/translation/locale_keys.g.dart';
+import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/font_manager.dart';
 import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/util/color_util.dart';
+import 'package:yalda_students_notes/presentation/widgets/top_snackbar/custom_snack_bar.dart';
+import 'package:yalda_students_notes/presentation/widgets/top_snackbar/top_snack_bar.dart';
 
 class NoteCategoryItem extends StatelessWidget {
   final NoteModel note;
@@ -19,12 +27,11 @@ class NoteCategoryItem extends StatelessWidget {
 
     final noteColor = getNoteColor(context, note.colorIndex);
 
-    // debugPrint(note.toString());
     return Container(
       width: 170,
       padding: const EdgeInsets.all(AppPadding.p16),
       decoration: BoxDecoration(
-          color: noteColor, borderRadius: BorderRadius.circular(15)),
+          color: noteColor, borderRadius: BorderRadius.circular(AppSize.s15)),
       child: ExpandablePanel(
         theme: ExpandableThemeData(iconColor: theme.colorScheme.onSurface),
         header: Text(
@@ -44,13 +51,24 @@ class NoteCategoryItem extends StatelessWidget {
               fontSize: FontSize.s15,
               color: theme.colorScheme.onSurface),
         ),
-        expanded: Text(
-          note.content,
+        expanded: DetectableText(
+          text: note.content,
           softWrap: true,
-          style: TextStyle(
+          detectionRegExp: detectionRegExp(atSign: false, hashtag: false)!,
+          basicStyle: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: FontSize.s16,
               color: theme.colorScheme.onSurface),
+          onTap: (text) async {
+            await Clipboard.setData(ClipboardData(text: text));
+            showTopSnackBar(
+                context, CustomSnackBar.info(message: LocaleKeys.copy.tr()));
+          },
+          detectedStyle: const TextStyle(
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.w500,
+              fontSize: FontSize.s16,
+              color: ColorManager.radioButtonColor),
         ),
       ),
     );

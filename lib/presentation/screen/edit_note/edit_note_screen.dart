@@ -60,7 +60,16 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     return BlocBuilder<EditNoteBloc, EditNoteState>(
       builder: (ctx, state) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: backGroundColor,
+          floatingActionButton: ResponsiveVisibility(
+            hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+            child: FloatingActionButton(
+                backgroundColor: theme.colorScheme.onSurface,
+                onPressed: () => _updateNote(context),
+                tooltip: LocaleKeys.update.tr(),
+                child: const Icon(Iconsax.note_add)),
+          ),
           body: SafeArea(
               child: state is EditNoteInitial
                   ? Form(
@@ -121,7 +130,6 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
       builder: (context, state) {
         final color = ColorManager.noteColors[colorIndex];
         Color backGroundColor = _isDark! ? color.darkColor : color.lightColor;
-
         return state is EditNoteInitial
             ? AppBar(
                 backgroundColor: backGroundColor,
@@ -186,24 +194,12 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
   void _handleMenuItemSelect(BuildContext context, value) {
     switch (value) {
       case 0:
-        _updateNote(context);
-        break;
-      case 1:
         _openCategoryList(context);
         break;
-      case 2:
+      case 1:
         _deleteNote(context);
         break;
       default:
-    }
-  }
-
-  void _updateNote(BuildContext context) {
-    var validate = _formKey.currentState!.validate();
-
-    if (validate) {
-      context.read<EditNoteBloc>().add(EditNoteUpdate());
-      _closePage(context);
     }
   }
 
@@ -211,8 +207,6 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
     context.read<EditNoteBloc>().add(EditNoteDelete());
     _closePage(context);
   }
-
-  void _closePage(BuildContext context) => Navigator.of(context).pop();
 
   void _openCategoryList(BuildContext context) async {
     final result = await showCupertinoModalBottomSheet(
@@ -302,11 +296,18 @@ class _ContentTextField extends StatelessWidget {
   }
 }
 
+void _updateNote(BuildContext context) {
+  var validate = _formKey.currentState!.validate();
+
+  if (validate) {
+    context.read<EditNoteBloc>().add(EditNoteUpdate());
+    _closePage(context);
+  }
+}
+
+void _closePage(BuildContext context) => Navigator.of(context).pop();
+
 final popupMenuItems = <PopupMenuEntry>[
-  PopupMenuItem(
-      value: 0,
-      child: AppPopupMenuItem(
-          title: LocaleKeys.update.tr(), icon: Iconsax.note_add)),
   PopupMenuItem(
       value: 1,
       child: AppPopupMenuItem(

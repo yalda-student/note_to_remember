@@ -1,6 +1,8 @@
+import 'package:auto_direction/auto_direction.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_textfield/flutter_social_textfield.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +44,8 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
+  final SocialTextEditingController _contentController =
+      SocialTextEditingController();
 
   @override
   void dispose() {
@@ -79,6 +82,14 @@ class _AddNoteScreenState extends State<AddNoteScreen>
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: backGroundColor,
+            floatingActionButton: ResponsiveVisibility(
+              hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+              child: FloatingActionButton(
+                  backgroundColor: theme.colorScheme.onSurface,
+                  onPressed: () => _saveNote(context),
+                  tooltip: LocaleKeys.save.tr(),
+                  child: const Icon(Iconsax.note_add)),
+            ),
             body: SafeArea(
                 child: Form(
               key: _formKey,
@@ -167,9 +178,6 @@ class _AddNoteScreenState extends State<AddNoteScreen>
   void _handleMenuItemSelect(BuildContext context, value) {
     switch (value) {
       case 0:
-        _saveNote(context);
-        break;
-      case 1:
         _openCategoryList(context);
         break;
       default:
@@ -252,57 +260,84 @@ class _TitleTextField extends StatelessWidget {
       },
     );
   }
-
 }
 
-class _ContentTextField extends StatelessWidget {
+class _ContentTextField extends StatefulWidget {
   const _ContentTextField({
     Key? key,
-    required TextEditingController contentController,
+    required SocialTextEditingController contentController,
     required this.theme,
   })  : _contentController = contentController,
         super(key: key);
 
-  final TextEditingController _contentController;
+  final SocialTextEditingController _contentController;
   final ThemeData theme;
+
+  @override
+  State<_ContentTextField> createState() => _ContentTextFieldState();
+}
+
+class _ContentTextFieldState extends State<_ContentTextField> {
+  @override
+  void initState() {
+    super.initState();
+    widget._contentController
+      ..setTextStyle(
+          DetectedType.mention,
+          TextStyle(
+              color: Colors.purple,
+              backgroundColor: Colors.purple.withAlpha(50)))
+      ..setTextStyle(
+          DetectedType.url,
+          const TextStyle(
+              color: Colors.blue, decoration: TextDecoration.underline))
+      ..setTextStyle(DetectedType.hashtag,
+          const TextStyle(color: Colors.blue, fontWeight: FontWeight.w600));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TextFormField(
-        controller: _contentController,
-        decoration: InputDecoration(
-          hintText: LocaleKeys.startTyping.tr(),
-          hintStyle: TextStyle(
-              color:
-                  ColorManager.getNoteEditorTextColor(theme).withOpacity(0.5),
-              fontWeight: FontWeight.w600),
+      child: AutoDirection(
+        text: widget._contentController.text,
+        child: TextFormField(
+          expands: true,
+          maxLines: null,
+          minLines: null,
+          controller: widget._contentController,
+          decoration: InputDecoration(
+            hintText: LocaleKeys.startTyping.tr(),
+            hintStyle: TextStyle(
+                color: ColorManager.getNoteEditorTextColor(widget.theme)
+                    .withOpacity(0.5),
+                fontWeight: FontWeight.w600),
+          ),
+          keyboardType: TextInputType.multiline,
+          style: TextStyle(
+              color: ColorManager.getNoteEditorTextColor(widget.theme)
+                  .withOpacity(0.75)),
+          cursorColor: Colors.black,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return LocaleKeys.content_Cannot_Be_Empty.tr();
+            }
+            return null;
+          },
+          onChanged: (value) {
+            // setState(() {
+            //   text = value;
+            // });
+            var detectRtlDirectionality = Bidi.detectRtlDirectionality(value);
+            debugPrint(detectRtlDirectionality.toString());
+            context.read<AddNoteBloc>().add(AddNoteContentChange(value));
+          },
         ),
-        maxLines: 100,
-        keyboardType: TextInputType.multiline,
-        style: TextStyle(
-            color:
-                ColorManager.getNoteEditorTextColor(theme).withOpacity(0.75)),
-        cursorColor: Colors.black,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return LocaleKeys.content_Cannot_Be_Empty.tr();
-          }
-          return null;
-        },
-        onChanged: (value) {
-          context.read<AddNoteBloc>().add(AddNoteContentChange(value));
-        },
       ),
     );
   }
 }
 
 final popupMenuItems = <PopupMenuEntry>[
-  PopupMenuItem(
-      value: 0,
-      child: AppPopupMenuItem(
-          title: LocaleKeys.save.tr(), icon: Iconsax.note_add)),
   PopupMenuItem(
       value: 1,
       child: AppPopupMenuItem(

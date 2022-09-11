@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:yalda_students_notes/app/const.dart';
 import 'package:yalda_students_notes/main.dart';
 import 'package:yalda_students_notes/presentation/resources/color_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int selectedIndex;
@@ -75,10 +76,12 @@ class BottomNavigationItem extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
-      child: Icon(
-        icon,
-        color:
-            isActive ? ColorManager.activeColor : theme.dividerColor,
+      child: Container(
+        padding: const EdgeInsets.all(AppPadding.p16),
+        child: Icon(
+          icon,
+          color: isActive ? ColorManager.activeColor : theme.dividerColor,
+        ),
       ),
     );
   }

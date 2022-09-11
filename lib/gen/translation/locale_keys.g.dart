@@ -44,5 +44,6 @@ abstract class  LocaleKeys {
   static const note_to_remember = 'note_to_remember';
   static const new_category = 'new_category';
   static const new_note = 'new_note';
+  static const copy = 'copy';
 
 }

@@ -1,12 +1,12 @@
 import 'package:yalda_students_notes/data/datasource/database.dart';
 
 class NoteModel {
-  final int id;
-  final String title;
-  final String content;
-  final DateTime createdAt;
-  final int colorIndex;
-  final bool isFavorite;
+  int id;
+  String title;
+  String content;
+  DateTime createdAt;
+  int colorIndex;
+  bool isFavorite;
   int categoryId;
   String category;
 
@@ -29,8 +29,6 @@ class NoteModel {
         isFavorite = noteData.isFavorite,
         category = '',
         categoryId = noteData.categoryId;
-
-
 
   @override
   String toString() {

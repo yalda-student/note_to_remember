@@ -153,6 +153,7 @@ class _CategoryList extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             gridDelegate: const ResponsiveGridDelegate(
                 maxCrossAxisExtent: 160,
+                childAspectRatio: 0.9,
                 crossAxisSpacing: ValueManager.gridSpacing,
                 mainAxisSpacing: ValueManager.gridSpacing),
             itemBuilder: (context, index) =>

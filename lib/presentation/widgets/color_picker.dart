@@ -16,7 +16,7 @@ class ColorPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 38,
-      padding: const EdgeInsets.only(left: 6),
+      padding: const EdgeInsets.only(left: 6, right: 10),
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: ColorManager.noteColors.length,
@@ -39,16 +39,18 @@ class ColorPicker extends StatelessWidget {
                   width: itemSize,
                   margin: const EdgeInsets.fromLTRB(6, 4, 0, 4),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(itemSize / 2),
                     color: _isDark ? color.darkColor : color.lightColor,
+                    shape: BoxShape.circle,
                     border: Border.all(
-                        color:  Colors.grey.withOpacity(0.8), width: 1),
+                        color: Colors.grey.withOpacity(0.8), width: 1),
                   ),
                 ),
                 selectedIndex == index
                     ? Icon(Icons.check,
                         size: AppSize.checkIconSize(context),
-                    color: _isDark? Colors.white.withOpacity(0.8) :Colors.black.withOpacity(0.8) )
+                        color: _isDark
+                            ? Colors.white.withOpacity(0.8)
+                            : Colors.black.withOpacity(0.8))
                     : const SizedBox()
               ],
             ),

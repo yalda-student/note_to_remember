@@ -8,56 +8,44 @@ part 'addnote_event.dart';
 part 'addnote_state.dart';
 
 class AddNoteBloc extends Bloc<AddNoteEvent, AddNoteState> {
-  NoteModel _noteData;
+  final NoteModel _noteData;
   final NoteRepository repository;
 
   AddNoteBloc(this.repository, this._noteData)
       : super(AddNoteInitial(_noteData)) {
     on<AddNoteEvent>((event, emit) async {
       if (event is AddNoteSave) {
+        if (_noteData.title.isEmpty) {
+          _noteData.title = getFirstWord(_noteData.content);
+        }
         await repository.insertNote(_noteData);
       } else if (event is AddNoteColorChange) {
-        _noteData = NoteModel(
-            title: _noteData.title,
-            content: _noteData.content,
-            createdAt: _noteData.createdAt,
-            colorIndex: event.colorIndex,
-            categoryId: _noteData.categoryId,
-            isFavorite: _noteData.isFavorite);
+        _noteData.colorIndex = event.colorIndex;
 
         emit(AddNoteInitial(_noteData));
       } else if (event is AddNoteTitleChange) {
-        _noteData = NoteModel(
-            title: event.title,
-            content: _noteData.content,
-            createdAt: _noteData.createdAt,
-            colorIndex: _noteData.colorIndex,
-            categoryId: _noteData.categoryId,
-            isFavorite: _noteData.isFavorite);
+        _noteData.title = event.title;
 
         emit(AddNoteInitial(_noteData));
       } else if (event is AddNoteCategoryChange) {
-        _noteData = NoteModel(
-            title: _noteData.title,
-            content: _noteData.content,
-            createdAt: _noteData.createdAt,
-            colorIndex: _noteData.colorIndex,
-            categoryId: event.category.id,
-            category: event.category.title,
-            isFavorite: _noteData.isFavorite);
+        _noteData.category = event.category.title;
+        _noteData.categoryId = event.category.id;
 
         emit(AddNoteInitial(_noteData));
       } else if (event is AddNoteContentChange) {
-        _noteData = NoteModel(
-            title: _noteData.title,
-            content: event.content,
-            createdAt: _noteData.createdAt,
-            colorIndex: _noteData.colorIndex,
-            categoryId: _noteData.categoryId,
-            isFavorite: _noteData.isFavorite);
+        _noteData.content = event.content;
 
         emit(AddNoteInitial(_noteData));
       }
     });
+  }
+
+  String getFirstWord(String inputString) {
+    List<String> wordList = inputString.split(' ');
+    if (wordList.isNotEmpty) {
+      return wordList[0];
+    } else {
+      return ' ';
+    }
   }
 }

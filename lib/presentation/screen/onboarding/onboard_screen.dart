@@ -35,7 +35,7 @@ class OnBoardingScreen extends StatelessWidget {
 
     return BlocBuilder<OnBoardingBloc, OnBoardingState>(
       buildWhen: (previous, current) =>
-          current is OnBoardingLanguageChangeEvent,
+          current is OnBoardingInitial,
       builder: (context, state) {
         return IntroductionScreen(
           key: ValueKey('${context.locale}'),

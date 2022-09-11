@@ -43,11 +43,6 @@ void main() async {
   final darkModeOn = await appPref.getTheme();
   final appTheme = darkModeOn ? darkTheme : lightTheme;
 
-  // debugPrint('getTheme: $appTheme');
-  // debugPrint('lightTheme: $lightTheme');
-  // debugPrint('darkTheme: $darkTheme');
-  // debugPrint('dark: $darkModeOn');
-
   runApp(
     EasyLocalization(
       path: 'asset/gen.translation',

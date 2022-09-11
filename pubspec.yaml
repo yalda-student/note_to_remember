@@ -52,6 +52,9 @@ dependencies:
   flutter_platform_alert: ^0.2.6
   get_it: ^7.2.0
   shamsi_date: ^1.0.1
+  auto_direction: ^0.0.6
+  flutter_social_textfield: ^0.1.0
+  detectable_text_field: ^2.0.3
 
 dev_dependencies:
   flutter_test:
