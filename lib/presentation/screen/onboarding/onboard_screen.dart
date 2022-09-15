@@ -15,9 +15,9 @@ import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/onboarding/bloc/language_bloc.dart';
 
 class OnBoardingScreen extends StatelessWidget {
-  OnBoardingScreen({Key? key}) : super(key: key);
+  const OnBoardingScreen({Key? key}) : super(key: key);
 
-  final introKey = GlobalKey<IntroductionScreenState>();
+  // final introKey = GlobalKey<IntroductionScreenState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,9 @@ class OnBoardingScreen extends StatelessWidget {
         imagePadding: EdgeInsets.zero);
 
     return BlocBuilder<OnBoardingBloc, OnBoardingState>(
-      buildWhen: (previous, current) =>
-          current is OnBoardingInitial,
       builder: (context, state) {
         return IntroductionScreen(
-          key: ValueKey('${context.locale}'),
+          // key: ValueKey('${context.locale}'),
           globalBackgroundColor: Colors.white,
           globalHeader: const Align(
             alignment: Alignment.topRight,
@@ -116,15 +114,11 @@ class OnBoardingScreen extends StatelessWidget {
     );
   }
 
-  void _onIntroEnd(context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const MainScreen()),
-    );
-  }
+  void _onIntroEnd(context) => Navigator.of(context)
+      .pushReplacement(MaterialPageRoute(builder: (_) => const MainScreen()));
 
-  Widget _buildImage(String assetName, [double width = 350]) {
-    return Image.asset(assetName, width: width);
-  }
+  Widget _buildImage(String assetName, [double width = 350]) =>
+      Image.asset(assetName, width: width);
 }
 
 class _LanguageDropDown extends StatelessWidget with AppLanguage {
@@ -140,8 +134,12 @@ class _LanguageDropDown extends StatelessWidget with AppLanguage {
         value: EasyLocalization.of(context)!.currentLocale,
         icon: const Icon(Iconsax.arrow_circle_down),
         onChanged: (Locale? newLocale) {
-          onLanguageChange(context, newLocale ?? const Locale('en', 'US'));
-          context.read<OnBoardingBloc>().add(OnBoardingLanguageChangeEvent());
+          // final themeNotifier =
+          //     Provider.of<LanguageNotifier>(context, listen: false);
+          // themeNotifier.setLocale(newLocale!);
+
+          onLanguageChange(context, newLocale!);
+          // context.read<OnBoardingBloc>().add(OnBoardingLanguageChangeEvent());
         },
         items: countries
             .map<DropdownMenuItem<Locale>>(

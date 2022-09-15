@@ -58,7 +58,8 @@ class CodegenLoader extends AssetLoader{
   "note_to_remember": "Note to Remember",
   "new_category": "New Category",
   "new_note": "New Note",
-  "copy": "Copied"
+  "copy": "Copied",
+  "share": "Share"
 };
 static const Map<String,dynamic> fa = {
   "profileTitle": "یادداشت های من",
@@ -104,7 +105,8 @@ static const Map<String,dynamic> fa = {
   "note_to_remember": "یادداشتی برای یادآوری",
   "new_category": "دسته جدید",
   "new_note": "یادداشت جدید",
-  "copy": "ک‍پی شد"
+  "copy": "ک‍پی شد",
+  "share": "اشتراک گذاری"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "fa": fa};
 }

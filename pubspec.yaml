@@ -34,7 +34,7 @@ dependencies:
   day_night_switcher: ^0.2.0+1
   shared_preferences: ^2.0.12
   equatable: ^2.0.3
-  easy_localization: ^3.0.0
+  easy_localization: ^3.0.1
   toggle_switch: ^2.0.1
   expandable: ^5.0.1
   modal_bottom_sheet: ^2.0.1
@@ -55,6 +55,7 @@ dependencies:
   auto_direction: ^0.0.6
   flutter_social_textfield: ^0.1.0
   detectable_text_field: ^2.0.3
+  share_plus: ^4.1.0
 
 dev_dependencies:
   flutter_test:

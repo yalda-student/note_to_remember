@@ -14,6 +14,7 @@ import 'package:yalda_students_notes/app/global.dart';
 import 'package:yalda_students_notes/data/drift_config.dart';
 import 'package:yalda_students_notes/gen/translation/codegen_loader.g.dart';
 import 'package:yalda_students_notes/presentation/resources/language_manager.dart';
+import 'package:yalda_students_notes/presentation/resources/value_manager.dart';
 import 'package:yalda_students_notes/presentation/screen/add_note/add_note_screen.dart';
 import 'package:yalda_students_notes/presentation/screen/category/category.dart';
 import 'package:yalda_students_notes/presentation/screen/favorite/favorite.dart';
@@ -68,8 +69,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    final currentLocale = EasyLocalization.of(context)!.currentLocale!;
-    appLocale = currentLocale;
+    // final localeNotifier = Provider.of<LanguageNotifier>(context);
+    appLocale = EasyLocalization.of(context)!.currentLocale!;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -79,12 +80,7 @@ class MyApp extends StatelessWidget {
       title: 'My Notes',
       builder: (context, widget) => ResponsiveWrapper.builder(
           ClampingScrollWrapper.builder(context, widget!),
-          breakpoints: const [
-            ResponsiveBreakpoint.resize(300, name: MOBILE),
-            ResponsiveBreakpoint.autoScale(650, name: TABLET),
-            ResponsiveBreakpoint.resize(850, name: DESKTOP),
-            ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
-          ],
+          breakpoints: breakPoints,
           background: Container(color: const Color(0xFFF5F5F5))),
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.getTheme(),
@@ -94,13 +90,15 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingState();
             }
+            debugPrint('main.dart');
             if (snapshot.data! && !kIsWeb) {
-              return OnBoardingScreen();
+              // if (!kIsWeb) {
+              return const OnBoardingScreen();
             } else {
               return const MainScreen();
             }
           }),
-      locale: Locale(currentLocale.languageCode),
+      locale: appLocale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
     );

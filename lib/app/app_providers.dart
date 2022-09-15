@@ -19,9 +19,7 @@ final providerList = [
   BlocProvider<NoteListBloc>(
       create: (context) =>
           NoteListBloc(NoteRepository(context.read<AppDatabase>()))),
-  BlocProvider<OnBoardingBloc>(
-      create: (context) =>
-          OnBoardingBloc(CategoryRepository(context.read<AppDatabase>()))),
+  BlocProvider<OnBoardingBloc>(create: (context) => OnBoardingBloc()),
   BlocProvider<CategoryNotesBloc>(
     create: (context) => CategoryNotesBloc(
         categoryRepository: CategoryRepository(context.read<AppDatabase>()),

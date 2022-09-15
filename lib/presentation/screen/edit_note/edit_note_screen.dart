@@ -156,6 +156,17 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
                     visible: false,
                     visibleWhen: const [Condition.largerThan(name: MOBILE)],
                     child: IconButton(
+                      tooltip: LocaleKeys.share.tr(),
+                      onPressed: () => _shareNote(context),
+                      icon: Icon(Iconsax.share,
+                          color: ColorManager.getNoteEditorTextColor(theme),
+                          size: AppSize.iconSize(context)),
+                    ),
+                  ),
+                  ResponsiveVisibility(
+                    visible: false,
+                    visibleWhen: const [Condition.largerThan(name: MOBILE)],
+                    child: IconButton(
                       tooltip: LocaleKeys.delete.tr(),
                       onPressed: () => _deleteNote(context),
                       icon: Icon(Iconsax.note_remove,
@@ -199,6 +210,9 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
       case 1:
         _deleteNote(context);
         break;
+      case 2:
+        _shareNote(context);
+        break;
       default:
     }
   }
@@ -227,6 +241,10 @@ class _AppBar extends StatelessWidget with ExtractCategoryData {
     var categoryModel = extractCategoryData(result);
 
     context.read<EditNoteBloc>().add(EditNoteCategoryChange(categoryModel));
+  }
+
+  void _shareNote(BuildContext context) {
+    context.read<EditNoteBloc>().add(EditNoteShare());
   }
 }
 
@@ -309,11 +327,15 @@ void _closePage(BuildContext context) => Navigator.of(context).pop();
 
 final popupMenuItems = <PopupMenuEntry>[
   PopupMenuItem(
-      value: 1,
+      value: 0,
       child: AppPopupMenuItem(
           title: LocaleKeys.move.tr(), icon: Iconsax.category_2)),
   PopupMenuItem(
-      value: 2,
+      value: 1,
       child: AppPopupMenuItem(
           title: LocaleKeys.delete.tr(), icon: Iconsax.note_remove)),
+  PopupMenuItem(
+      value: 2,
+      child:
+          AppPopupMenuItem(title: LocaleKeys.share.tr(), icon: Iconsax.share)),
 ];

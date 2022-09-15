@@ -6,6 +6,7 @@ import 'package:yalda_students_notes/app/di.dart';
 mixin AppLanguage {
   void onLanguageChange(BuildContext context, Locale locale) async {
     await context.setLocale(locale);
+    // EasyLocalization.of(context)!.setLocale(locale);
     final appPref = instance<AppPreferences>();
 
     if (locale == const Locale('en', 'US')) {

@@ -9,6 +9,8 @@ class EditNoteUpdate extends EditNoteEvent {}
 
 class EditNoteDelete extends EditNoteEvent {}
 
+class EditNoteShare extends EditNoteEvent {}
+
 class EditNoteTitleChange extends EditNoteEvent {
   final String title;
 
@@ -19,7 +21,6 @@ class EditNoteContentChange extends EditNoteEvent {
   final String content;
 
   EditNoteContentChange(this.content);
-
 }
 
 class EditNoteColorChange extends EditNoteEvent {
@@ -28,8 +29,7 @@ class EditNoteColorChange extends EditNoteEvent {
   EditNoteColorChange(this.colorIndex);
 }
 
-class EditNoteCategoryChange extends EditNoteEvent{
-
+class EditNoteCategoryChange extends EditNoteEvent {
   final CategoryModel category;
 
   EditNoteCategoryChange(this.category);

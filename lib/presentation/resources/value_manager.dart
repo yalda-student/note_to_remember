@@ -45,3 +45,10 @@ class AppSize {
         const Condition.equals(name: TABLET, value: s15),
       ]).value!;
 }
+
+const breakPoints = [
+  ResponsiveBreakpoint.resize(300, name: MOBILE),
+  ResponsiveBreakpoint.autoScale(650, name: TABLET),
+  ResponsiveBreakpoint.resize(850, name: DESKTOP),
+  ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
+];
