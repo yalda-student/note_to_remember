@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=D:\flutter"
-export "FLUTTER_APPLICATION_PATH=E:\Flutter Exercize Projects\yalda_students_notes\yalda_students_notes"
+export "FLUTTER_ROOT=/Users/yalda/Flutter/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/yalda/StudioProjects/note_to_remember"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

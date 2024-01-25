@@ -150,52 +150,55 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: WillPopScope(
-        onWillPop: _onWillPop,
-        child: SafeArea(
-          child: ResponsiveRowColumn(
-            rowMainAxisAlignment: MainAxisAlignment.center,
-            layout: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
-                ? ResponsiveRowColumnType.COLUMN
-                : ResponsiveRowColumnType.ROW,
-            children: [
-              ResponsiveRowColumnItem(
-                columnOrder: 1,
-                child: Expanded(
-                  child: IndexedStack(
-                    index: selectedScreenIndex,
-                    children: [
-                      _navigator(_homeKey, homeIndex, const HomeScreen()),
-                      _navigator(_searchKey, searchIndex, const SearchScreen()),
-                      _navigator(
-                          _categoryKey, categoryIndex, const CategoryScreen()),
-                      _navigator(
-                          _settingKey, settingIndex, const SettingScreen()),
-                      _navigator(
-                          _favoriteKey, favoriteIndex, const FavoriteScreen()),
-                      _navigator(_newNoteKey, newNoteIndex,
-                          AddNoteScreen(onClosePage: onItemTap)),
-                    ],
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: WillPopScope(
+          onWillPop: _onWillPop,
+          child: SafeArea(
+            child: ResponsiveRowColumn(
+              rowMainAxisAlignment: MainAxisAlignment.center,
+              layout: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
+                  ? ResponsiveRowColumnType.COLUMN
+                  : ResponsiveRowColumnType.ROW,
+              children: [
+                ResponsiveRowColumnItem(
+                  columnOrder: 1,
+                  child: Expanded(
+                    child: IndexedStack(
+                      index: selectedScreenIndex,
+                      children: [
+                        _navigator(_homeKey, homeIndex, const HomeScreen()),
+                        _navigator(
+                            _searchKey, searchIndex, const SearchScreen()),
+                        _navigator(_categoryKey, categoryIndex,
+                            const CategoryScreen()),
+                        _navigator(
+                            _settingKey, settingIndex, const SettingScreen()),
+                        _navigator(_favoriteKey, favoriteIndex,
+                            const FavoriteScreen()),
+                        _navigator(_newNoteKey, newNoteIndex,
+                            AddNoteScreen(onClosePage: onItemTap)),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              ResponsiveRowColumnItem(
-                rowOrder: 0,
-                child: ResponsiveVisibility(
-                  hiddenWhen: const [Condition.largerThan(name: MOBILE)],
-                  replacement: AppDrawer(
-                    selectedIndex: selectedScreenIndex,
-                    onTap: (index) => onItemTap(index),
-                  ),
-                  child: CustomBottomNavigation(
-                    selectedIndex: selectedScreenIndex,
-                    onTap: (index) => onItemTap(index),
+                ResponsiveRowColumnItem(
+                  rowOrder: 0,
+                  child: ResponsiveVisibility(
+                    hiddenWhen: const [Condition.largerThan(name: MOBILE)],
+                    replacement: AppDrawer(
+                      selectedIndex: selectedScreenIndex,
+                      onTap: (index) => onItemTap(index),
+                    ),
+                    child: CustomBottomNavigation(
+                      selectedIndex: selectedScreenIndex,
+                      onTap: (index) => onItemTap(index),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
